@@ -24,6 +24,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let item = items[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
+        if item.isExpired {
+            cell.itemExpiryLabel.textColor = .red
+        }
         cell.storageLabel.text = item.storage
         return cell
     }

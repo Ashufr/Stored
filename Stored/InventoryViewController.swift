@@ -21,9 +21,9 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         return cell
     }
     
-    let storages = [Storage(name: "Pantry", count: 4), Storage(name: "Fridge", count: 7), Storage(name: "Freezer", count: 2), Storage(name: "Shelf", count: 8), Storage(name: "All", count: 21)]
     
-    @IBOutlet var invenctoryCollectionView: UICollectionView!
+    
+    @IBOutlet var inventoryCollectionView: UICollectionView!
     @IBOutlet var inventoryTableView: UITableView!
     
     
@@ -37,11 +37,22 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         cell.storageImage.image  = UIImage(named: storage.name)
         cell.storageName.text = storage.name
         cell.storageItemsCount.text = "\(storage.count)"
-
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        cell.addGestureRecognizer(tapGesture)
         return cell
         
     }
     
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        print("obgjd")
+        let location = sender.location(in: inventoryCollectionView)
+        if let indexPath = inventoryCollectionView.indexPathForItem(at: location){
+            performSegue(withIdentifier: "StorageSegue", sender: indexPath)
+        }
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,11 +62,29 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         inventoryTableView.isScrollEnabled = false
         
         let layout = generateGridLayout()
-        invenctoryCollectionView.delegate = self
-        invenctoryCollectionView.dataSource = self
-        invenctoryCollectionView.collectionViewLayout = layout
+        inventoryCollectionView.delegate = self
+        inventoryCollectionView.dataSource = self
+        inventoryCollectionView.collectionViewLayout = layout
         // Do any additional setup after loading the view.
-        invenctoryCollectionView.isScrollEnabled = false
+        inventoryCollectionView.isScrollEnabled = false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "StorageSegue" {
+            if let indexPath = sender as? IndexPath{
+                if let destinationVC = segue.destination as? InventoryStorageTableViewController {
+                    print(storages[indexPath.row])
+                    destinationVC.storage = storages[indexPath.row]
+                }else{
+//                    print(segue.destination as! InventoryStorageTableViewController)
+                }
+            }else {
+                print(sender!)
+            }
+            
+        }else{
+            print(segue.identifier!)
+        }
     }
     
     func generateGridLayout() -> UICollectionViewLayout {
