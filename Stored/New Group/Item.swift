@@ -20,3 +20,5 @@ struct Item {
         return "Expires in \(components.day ?? 0) days"
     }
 }
+
+var items = [Item(name: "Chocolate", storage: "Fridge", expiryDate: Date(timeIntervalSinceNow: 864000)), Item(name: "Chips", storage: "Shelf", expiryDate: Date(timeIntervalSinceNow: 432000)), Item(name: "Ice Cream", storage: "Freezer", expiryDate: Date(timeIntervalSinceNow: 1000000))]

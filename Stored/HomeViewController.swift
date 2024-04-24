@@ -10,9 +10,9 @@ import UIKit
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
-    @IBOutlet var tableView: UITableView!
+    @IBOutlet var homeTableView: UITableView!
     
-    var items = [Item(name: "Chocolate", storage: "Fridge", expiryDate: Date(timeIntervalSinceNow: 864000)), Item(name: "Chips", storage: "Shelf", expiryDate: Date(timeIntervalSinceNow: 432000)), Item(name: "Ice Cream", storage: "Freezer", expiryDate: Date(timeIntervalSinceNow: 1000000))]
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items.count
@@ -28,15 +28,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 70
-//    }
+
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
+        homeTableView.dataSource = self
+        homeTableView.delegate = self
+        homeTableView.isScrollEnabled = false
         // Do any additional setup after loading the view.
     }
 
