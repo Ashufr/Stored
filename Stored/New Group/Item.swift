@@ -41,9 +41,7 @@ func calulateDateDifference(startDate : Date, endDate : Date) -> Int {
 let recentlyAddedItems = [
     Item(name: "Tomatoes", storage: "Pantry", expiryDate: Date(timeIntervalSinceNow: 172800)),
     Item(name: "Chicken Breast", storage: "Fridge", expiryDate: Date(timeIntervalSinceNow: 259200)),
-    Item(name: "Ice Cream", storage: "Freezer", expiryDate: Date(timeIntervalSinceNow: 345600)),
-    Item(name: "Cereal", storage: "Shelf", expiryDate: Date(timeIntervalSinceNow: 432000)),
-    Item(name: "Spinach", storage: "Fridge", expiryDate: Date(timeIntervalSinceNow: 518400))
+    Item(name: "Ice Cream", storage: "Freezer", expiryDate: Date(timeIntervalSinceNow: 345600))
 ]
 
 

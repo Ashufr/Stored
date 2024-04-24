@@ -78,6 +78,9 @@ func categorizeStorage(_ items: [Item]) -> [ExpiryCategory: [Item]] {
         }
     }
     
+    for (category, items) in categorizedStorage {
+            categorizedStorage[category] = items.sorted(by: { $0.expiryDate < $1.expiryDate })
+    }
     return categorizedStorage
 }
 

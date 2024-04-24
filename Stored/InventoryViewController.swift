@@ -61,7 +61,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         
         inventoryTableView.dataSource = self
         inventoryTableView.delegate = self
-        inventoryTableView.isScrollEnabled = false
+//        inventoryTableView.isScrollEnabled = false
         
         let layout = generateGridLayout()
         inventoryCollectionView.delegate = self
