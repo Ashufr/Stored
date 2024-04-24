@@ -9,8 +9,38 @@ import Foundation
 
 struct Storage {
     var name : String
-    var count : Int
     var items : [Item]
+    
+    var count : Int {
+        items.count
+    }
+    
+    private static var allInstances = [Storage]()
+    
+    static var all: Storage {
+            var allItems = [Item]()
+            var itemIdentifierSet = Set<String>()
+
+            // Aggregate items from all storage instances
+            for storageInstance in allInstances {
+                for item in storageInstance.items {
+                    // Check if the item identifier has already been added
+                    if !itemIdentifierSet.contains(item.name) {
+                        allItems.append(item)
+                        itemIdentifierSet.insert(item.name)
+                    }
+                }
+            }
+
+            return Storage(name: "All", items: allItems)
+        }
+    
+    init(name: String, items: [Item]) {
+        self.name = name
+        self.items = items
+        Storage.allInstances.append(self)
+    }
+
 }
 
 
@@ -78,4 +108,9 @@ func getExpiryCategory(forString stringValue: String) -> ExpiryCategory {
 }
 
 
-let storages = [Storage(name: "Pantry", count: 4, items: items), Storage(name: "Fridge", count: 7, items: items), Storage(name: "Freezer", count: 2, items: items), Storage(name: "Shelf", count: 8, items: items), Storage(name: "All", count: 21, items: items)]
+let storages: [Storage] = [
+    Storage(name: "Pantry", items: pantryItems),
+    Storage(name: "Fridge", items: fridgeItems),
+    Storage(name: "Freezer", items: freezerItems),
+    Storage(name: "Shelf", items: shelfItems)
+]

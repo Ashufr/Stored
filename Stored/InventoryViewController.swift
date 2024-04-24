@@ -9,12 +9,12 @@ import UIKit
 
 class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items.count
+        recentlyAddedItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InventoryRecentlyCell", for: indexPath) as! InventoryTableViewCell
-        let item = items[indexPath.row]
+        let item = recentlyAddedItems[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
         if item.isExpired {
@@ -31,12 +31,12 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        storages.count
+        storages.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InventoryCollectionCell", for: indexPath) as! InventoryCollectionViewCell
-        let storage = storages[indexPath.row]
+        let storage = indexPath.row < storages.count ? storages[indexPath.row] : Storage.all
         cell.storageImage.image  = UIImage(named: storage.name)
         cell.storageName.text = storage.name
         cell.storageItemsCount.text = "\(storage.count)"
@@ -49,7 +49,6 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        print("obgjd")
         let location = sender.location(in: inventoryCollectionView)
         if let indexPath = inventoryCollectionView.indexPathForItem(at: location){
             performSegue(withIdentifier: "StorageSegue", sender: indexPath)
@@ -73,11 +72,13 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "StorageSegue" {
             if let indexPath = sender as? IndexPath{
+                let storage = indexPath.row < storages.count ? storages[indexPath.row] : Storage.all
                 if let destinationVC = segue.destination as? InventoryStorageViewController {
-                    print(storages[indexPath.row])
-                    destinationVC.storage = storages[indexPath.row]
+//                    print(storage)
+                    destinationVC.storage = storage
                 }else{
 //                    print(segue.destination as! InventoryStorageTableViewController)
                 }
