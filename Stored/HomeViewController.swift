@@ -7,18 +7,24 @@
 
 import UIKit
 
-class tller: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     @IBOutlet var tableView: UITableView!
     
+    var items = [Item(name: "Chocolate", storage: "Fridge", expiryDate: Date(timeIntervalSinceNow: 864000)), Item(name: "Chips", storage: "Shelf", expiryDate: Date(timeIntervalSinceNow: 432000)), Item(name: "Ice Cream", storage: "Freezer", expiryDate: Date(timeIntervalSinceNow: 1000000))]
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as! HomeTableViewCell
-        cell.itemNameLabel.text = "Hi"
+        
+        let item = items[indexPath.row]
+        cell.itemNameLabel.text = item.name
+        cell.itemExpiryLabel.text = item.expiryDescription
+        cell.storageLabel.text = item.storage
         return cell
     }
     
