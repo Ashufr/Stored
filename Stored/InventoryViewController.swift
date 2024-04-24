@@ -17,6 +17,9 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         let item = items[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
+        if item.isExpired {
+            cell.itemExpiryLabel.textColor = .red
+        }
         cell.itemStorageLabel.text = item.storage
         return cell
     }
@@ -72,7 +75,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "StorageSegue" {
             if let indexPath = sender as? IndexPath{
-                if let destinationVC = segue.destination as? InventoryStorageTableViewController {
+                if let destinationVC = segue.destination as? InventoryStorageViewController {
                     print(storages[indexPath.row])
                     destinationVC.storage = storages[indexPath.row]
                 }else{

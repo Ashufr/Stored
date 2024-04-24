@@ -64,4 +64,18 @@ func getExpiryCategory(for intValue: Int) -> ExpiryCategory {
     }
 }
 
+func getExpiryCategory(forString stringValue: String) -> ExpiryCategory {
+    switch stringValue {
+    case "Expired":
+        return .expired
+    case "Today":
+        return .today
+    case "This Month":
+        return .thisMonth
+    default:
+        return .later
+    }
+}
+
+
 let storages = [Storage(name: "Pantry", count: 4, items: items), Storage(name: "Fridge", count: 7, items: items), Storage(name: "Freezer", count: 2, items: items), Storage(name: "Shelf", count: 8, items: items), Storage(name: "All", count: 21, items: items)]

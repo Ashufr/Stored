@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F4A51702BD944E200F5B930 /* InventoryStorageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */; };
+		3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */; };
 		3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7D21522BD14583003B3634 /* AppDelegate.swift */; };
 		3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7D21542BD14583003B3634 /* SceneDelegate.swift */; };
 		3F7D21572BD14583003B3634 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7D21562BD14583003B3634 /* HomeViewController.swift */; };
@@ -14,7 +16,6 @@
 		3F7D215F2BD1458F003B3634 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3F7D215E2BD1458F003B3634 /* Base */; };
 		3F830C022BD8E9BD00E01E2C /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */; };
 		3F830C042BD9018800E01E2C /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F830C032BD9018800E01E2C /* Storage.swift */; };
-		3F830C0C2BD92C0D00E01E2C /* InventoryStorageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F830C0B2BD92C0D00E01E2C /* InventoryStorageTableViewController.swift */; };
 		3F993F4D2BD8B9EC006FE29E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F4C2BD8B9EC006FE29E /* Item.swift */; };
 		3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */; };
 		3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */; };
@@ -23,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryStorageTableViewCell.swift; sourceTree = "<group>"; };
+		3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryStorageViewController.swift; sourceTree = "<group>"; };
 		3F7D214F2BD14583003B3634 /* Stored.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stored.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7D21522BD14583003B3634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F7D21542BD14583003B3634 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -32,7 +35,6 @@
 		3F7D21602BD1458F003B3634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
 		3F830C032BD9018800E01E2C /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
-		3F830C0B2BD92C0D00E01E2C /* InventoryStorageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryStorageTableViewController.swift; sourceTree = "<group>"; };
 		3F993F4C2BD8B9EC006FE29E /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -78,8 +80,9 @@
 				3FDD7AEA2BD7CAD5006F1A34 /* HomeTableViewCell.swift */,
 				3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */,
 				3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */,
-				3F830C0B2BD92C0D00E01E2C /* InventoryStorageTableViewController.swift */,
 				3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */,
+				3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */,
+				3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */,
 				3F993F4B2BD8B9D3006FE29E /* New Group */,
 				3F993F522BD8D270006FE29E /* Assets.xcassets */,
 				3F7D21602BD1458F003B3634 /* Info.plist */,
@@ -168,12 +171,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F830C022BD8E9BD00E01E2C /* InventoryTableViewCell.swift in Sources */,
+				3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */,
 				3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */,
 				3F993F4D2BD8B9EC006FE29E /* Item.swift in Sources */,
 				3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */,
 				3F7D21572BD14583003B3634 /* HomeViewController.swift in Sources */,
 				3F830C042BD9018800E01E2C /* Storage.swift in Sources */,
-				3F830C0C2BD92C0D00E01E2C /* InventoryStorageTableViewController.swift in Sources */,
+				3F4A51702BD944E200F5B930 /* InventoryStorageTableViewCell.swift in Sources */,
 				3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* HomeTableViewCell.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
@@ -336,7 +340,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -365,7 +369,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
