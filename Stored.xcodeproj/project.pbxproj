@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F4A51702BD944E200F5B930 /* InventoryStorageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */; };
+		3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */; };
 		3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */; };
 		3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7D21522BD14583003B3634 /* AppDelegate.swift */; };
 		3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7D21542BD14583003B3634 /* SceneDelegate.swift */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryStorageTableViewCell.swift; sourceTree = "<group>"; };
+		3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertController.swift; sourceTree = "<group>"; };
 		3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryStorageViewController.swift; sourceTree = "<group>"; };
 		3F7D214F2BD14583003B3634 /* Stored.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stored.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F7D21522BD14583003B3634 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				3F993F522BD8D270006FE29E /* Assets.xcassets */,
 				3F7D21602BD1458F003B3634 /* Info.plist */,
 				3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */,
+				3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */,
 			);
 			path = Stored;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				3F7D21572BD14583003B3634 /* HomeViewController.swift in Sources */,
 				3F830C042BD9018800E01E2C /* Storage.swift in Sources */,
 				3F4A51702BD944E200F5B930 /* InventoryStorageTableViewCell.swift in Sources */,
+				3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */,
 				3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* HomeTableViewCell.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
@@ -404,6 +408,7 @@
 				DEVELOPMENT_TEAM = 8N6D23QF8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stored/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Stored would like to access your camera to scan codes";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -415,7 +420,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cookies.www.Stored;
+				PRODUCT_BUNDLE_IDENTIFIER = cookies.www.Storedx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -429,11 +434,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8N6D23QF8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stored/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Stored would like to access your camera to scan codes";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -445,7 +452,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = cookies.www.Stored;
+				PRODUCT_BUNDLE_IDENTIFIER = cookies.www.Storedx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
