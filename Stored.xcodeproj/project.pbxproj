@@ -20,6 +20,17 @@
 		3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */; };
 		3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */; };
 		3F993F532BD8D270006FE29E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F993F522BD8D270006FE29E /* Assets.xcassets */; };
+		3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */; };
+		3FB635F02BDA4B1C00F75D29 /* InventoryNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */; };
+		3FBF67F62BDA1C23005C58A9 /* SF-Pro-Rounded-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67ED2BDA1C22005C58A9 /* SF-Pro-Rounded-Ultralight.otf */; };
+		3FBF67F72BDA1C23005C58A9 /* SF-Pro-Rounded-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67EE2BDA1C22005C58A9 /* SF-Pro-Rounded-Black.otf */; };
+		3FBF67F82BDA1C23005C58A9 /* SF-Pro-Rounded-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67EF2BDA1C22005C58A9 /* SF-Pro-Rounded-Bold.otf */; };
+		3FBF67F92BDA1C23005C58A9 /* SF-Pro-Rounded-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F02BDA1C23005C58A9 /* SF-Pro-Rounded-Heavy.otf */; };
+		3FBF67FA2BDA1C23005C58A9 /* SF-Pro-Rounded-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F12BDA1C23005C58A9 /* SF-Pro-Rounded-Regular.otf */; };
+		3FBF67FB2BDA1C23005C58A9 /* SF-Pro-Rounded-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F22BDA1C23005C58A9 /* SF-Pro-Rounded-Medium.otf */; };
+		3FBF67FC2BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F32BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf */; };
+		3FBF67FD2BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F42BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf */; };
+		3FBF67FE2BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F52BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf */; };
 		3FDD7AEB2BD7CAD5006F1A34 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDD7AEA2BD7CAD5006F1A34 /* HomeTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +50,17 @@
 		3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F993F522BD8D270006FE29E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanItemButton.swift; sourceTree = "<group>"; };
+		3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InventoryNavigationController.swift; path = Stored/InventoryNavigationController.swift; sourceTree = SOURCE_ROOT; };
+		3FBF67ED2BDA1C22005C58A9 /* SF-Pro-Rounded-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Ultralight.otf"; sourceTree = "<group>"; };
+		3FBF67EE2BDA1C22005C58A9 /* SF-Pro-Rounded-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Black.otf"; sourceTree = "<group>"; };
+		3FBF67EF2BDA1C22005C58A9 /* SF-Pro-Rounded-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Bold.otf"; sourceTree = "<group>"; };
+		3FBF67F02BDA1C23005C58A9 /* SF-Pro-Rounded-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Heavy.otf"; sourceTree = "<group>"; };
+		3FBF67F12BDA1C23005C58A9 /* SF-Pro-Rounded-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Regular.otf"; sourceTree = "<group>"; };
+		3FBF67F22BDA1C23005C58A9 /* SF-Pro-Rounded-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Medium.otf"; sourceTree = "<group>"; };
+		3FBF67F32BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Thin.otf"; sourceTree = "<group>"; };
+		3FBF67F42BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Semibold.otf"; sourceTree = "<group>"; };
+		3FBF67F52BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
 		3FDD7AEA2BD7CAD5006F1A34 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,6 +78,7 @@
 		3F7D21462BD14583003B3634 = {
 			isa = PBXGroup;
 			children = (
+				3FBF67EC2BDA1BFE005C58A9 /* Fonts */,
 				3F7D21512BD14583003B3634 /* Stored */,
 				3F7D21502BD14583003B3634 /* Products */,
 			);
@@ -83,20 +106,54 @@
 				3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */,
 				3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */,
 				3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */,
-				3F993F4B2BD8B9D3006FE29E /* New Group */,
+				3F993F4B2BD8B9D3006FE29E /* Data Models */,
+				3FCFBDB12BDA450300ABB9BF /* Button */,
 				3F993F522BD8D270006FE29E /* Assets.xcassets */,
 				3F7D21602BD1458F003B3634 /* Info.plist */,
+				3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */,
 			);
 			path = Stored;
 			sourceTree = "<group>";
 		};
-		3F993F4B2BD8B9D3006FE29E /* New Group */ = {
+		3F993F4B2BD8B9D3006FE29E /* Data Models */ = {
 			isa = PBXGroup;
 			children = (
 				3F993F4C2BD8B9EC006FE29E /* Item.swift */,
 				3F830C032BD9018800E01E2C /* Storage.swift */,
 			);
-			path = "New Group";
+			path = "Data Models";
+			sourceTree = "<group>";
+		};
+		3FBF67EC2BDA1BFE005C58A9 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				3FBF67FF2BDA1C3C005C58A9 /* SF Pro Rounded */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		3FBF67FF2BDA1C3C005C58A9 /* SF Pro Rounded */ = {
+			isa = PBXGroup;
+			children = (
+				3FBF67EE2BDA1C22005C58A9 /* SF-Pro-Rounded-Black.otf */,
+				3FBF67EF2BDA1C22005C58A9 /* SF-Pro-Rounded-Bold.otf */,
+				3FBF67F02BDA1C23005C58A9 /* SF-Pro-Rounded-Heavy.otf */,
+				3FBF67F52BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf */,
+				3FBF67F22BDA1C23005C58A9 /* SF-Pro-Rounded-Medium.otf */,
+				3FBF67F12BDA1C23005C58A9 /* SF-Pro-Rounded-Regular.otf */,
+				3FBF67F42BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf */,
+				3FBF67F32BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf */,
+				3FBF67ED2BDA1C22005C58A9 /* SF-Pro-Rounded-Ultralight.otf */,
+			);
+			path = "SF Pro Rounded";
+			sourceTree = "<group>";
+		};
+		3FCFBDB12BDA450300ABB9BF /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */,
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,8 +214,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FBF67FB2BDA1C23005C58A9 /* SF-Pro-Rounded-Medium.otf in Resources */,
+				3FBF67FE2BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf in Resources */,
 				3F7D215F2BD1458F003B3634 /* Base in Resources */,
+				3FBF67FD2BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf in Resources */,
 				3F993F532BD8D270006FE29E /* Assets.xcassets in Resources */,
+				3FBF67FC2BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf in Resources */,
+				3FBF67F72BDA1C23005C58A9 /* SF-Pro-Rounded-Black.otf in Resources */,
+				3FBF67F82BDA1C23005C58A9 /* SF-Pro-Rounded-Bold.otf in Resources */,
+				3FBF67F62BDA1C23005C58A9 /* SF-Pro-Rounded-Ultralight.otf in Resources */,
+				3FBF67FA2BDA1C23005C58A9 /* SF-Pro-Rounded-Regular.otf in Resources */,
+				3FBF67F92BDA1C23005C58A9 /* SF-Pro-Rounded-Heavy.otf in Resources */,
 				3F7D215A2BD14583003B3634 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,6 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FB635F02BDA4B1C00F75D29 /* InventoryNavigationController.swift in Sources */,
 				3F830C022BD8E9BD00E01E2C /* InventoryTableViewCell.swift in Sources */,
 				3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */,
 				3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */,
@@ -181,6 +248,7 @@
 				3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* HomeTableViewCell.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
+				3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,9 +398,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8N6D23QF8N;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stored/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

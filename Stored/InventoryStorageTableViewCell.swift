@@ -11,5 +11,9 @@ class InventoryStorageTableViewCell: UITableViewCell {
 
     @IBOutlet var itemNameLabel: UILabel!
     @IBOutlet var itemExpiryLabel: UILabel!
+    
+    func isRed () {
+        itemExpiryLabel.textColor = .red
+    }
 
 }

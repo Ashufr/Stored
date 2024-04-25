@@ -8,6 +8,18 @@
 import UIKit
 
 class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
+    
+//    let scanButton: ScanItemButton = {
+//        let button = ScanItemButton(type: .system)
+////        button.setTitle("ScanButton", for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
+    
+    
+    @IBOutlet var inventoryCollectionView: UICollectionView!
+    @IBOutlet var inventoryTableView: UITableView!
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         recentlyAddedItems.count
     }
@@ -25,11 +37,6 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     
-    
-    @IBOutlet var inventoryCollectionView: UICollectionView!
-    @IBOutlet var inventoryTableView: UITableView!
-    
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         storages.count + 1
     }
@@ -40,6 +47,8 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         cell.storageImage.image  = UIImage(named: storage.name)
         cell.storageName.text = storage.name
         cell.storageItemsCount.text = "\(storage.count)"
+        cell.storageName.font = UIFont(name: "SFProRounded-Bold", size: 21)
+        cell.storageItemsCount.font = UIFont(name: "SFProRounded-Bold", size: 21)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         cell.addGestureRecognizer(tapGesture)
@@ -61,7 +70,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         
         inventoryTableView.dataSource = self
         inventoryTableView.delegate = self
-//        inventoryTableView.isScrollEnabled = false
+        inventoryTableView.isScrollEnabled = false
         
         let layout = generateGridLayout()
         inventoryCollectionView.delegate = self
@@ -69,7 +78,11 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         inventoryCollectionView.collectionViewLayout = layout
         // Do any additional setup after loading the view.
         inventoryCollectionView.isScrollEnabled = false
+        
+//        scanButton.setupUI(in: view)
+        navigationController?.addScanButton()
     }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         

@@ -66,10 +66,19 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         cell.itemExpiryLabel.text = item.expiryDescription
         if item.isExpired {
             print(item)
-            cell.itemExpiryLabel.textColor = .red
+            cell.isRed()
         }
+
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let expiryCategory = getExpiryCategory(forString: sections[section])
+        guard let items = categorizedItems[expiryCategory] else {return}
+        print("\(items[indexPath.row].isExpired) \(items[indexPath.row])")
+    }
+
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         sections[section]
@@ -112,6 +121,8 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
 //                print(item)
 //            }
         }
+        
+        navigationController?.addScanButton()
         
     }
     
