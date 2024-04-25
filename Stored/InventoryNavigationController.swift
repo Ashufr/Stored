@@ -11,7 +11,7 @@ class InventoryNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        addScanButton()
         // Do any additional setup after loading the view.
     }
 }
@@ -29,9 +29,15 @@ extension UINavigationController {
 //          button.setTitle("ScanButton", for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.tag = 999
+            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
             return button
         }()
         
         scanButton.setupUI(in: view)
     }
+    
+    @objc func buttonTapped(_ sender: UIButton) {
+            // Add your code here to handle the button tap
+            print("Button tapped!")
+        }
 }

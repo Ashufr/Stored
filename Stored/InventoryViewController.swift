@@ -11,7 +11,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
 //    let scanButton: ScanItemButton = {
 //        let button = ScanItemButton(type: .system)
-////        button.setTitle("ScanButton", for: .normal)
+//        button.setTitle("ScanButton", for: .normal)
 //        button.translatesAutoresizingMaskIntoConstraints = false
 //        return button
 //    }()
@@ -80,7 +80,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         inventoryCollectionView.isScrollEnabled = false
         
 //        scanButton.setupUI(in: view)
-        navigationController?.addScanButton()
+//        navigationController?.addScanButton()
     }
 
     

@@ -122,7 +122,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
 //            }
         }
         
-        navigationController?.addScanButton()
+//        navigationController?.addScanButton()
         
     }
     

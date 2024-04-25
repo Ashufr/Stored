@@ -24,7 +24,7 @@ class ScanItemButton: UIButton {
         let buttonImage = UIImage(named: "ScanButtonSmall")
         setImage(buttonImage, for: .normal)
         self.setImage(buttonImage?.withRenderingMode(.alwaysOriginal), for: .normal)
-
+        
 
         // Apply drop shadow
         layer.shadowColor = UIColor.black.cgColor
@@ -39,7 +39,7 @@ extension ScanItemButton {
     func setupUI(in view: UIView) {
         // Add button to the view
         view.addSubview(self)
-
+        
         // Setup constraints for button (bottom right corner)
         NSLayoutConstraint.activate([
             trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
