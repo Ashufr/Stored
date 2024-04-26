@@ -802,7 +802,7 @@
                                             <fontDescription key="titleFontDescription" type="boldSystem" pointSize="21"/>
                                         </buttonConfiguration>
                                         <connections>
-                                            <action selector="okTapped:" destination="6sX-9W-6Vk" eventType="touchUpInside" id="YlV-au-KTA"/>
+                                            <action selector="okTapped:" destination="6sX-9W-6Vk" eventType="touchUpInside" id="lLv-Vl-bgJ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -820,7 +820,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Quick Add" id="RcX-Zr-RGf"/>
                     <connections>
-                        <outlet property="OkBtn" destination="ZNi-Dt-9af" id="4zf-l1-OsU"/>
                         <outlet property="popupView" destination="Rct-GL-Ae4" id="ben-6B-iuC"/>
                         <outlet property="quickAddTableView" destination="7P2-1Q-ug8" id="No3-gz-tAk"/>
                     </connections>

@@ -20,16 +20,6 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
     var popupShown = false
     var shouldPopUpShow = 0
     
-  
-    
-    // Overlay view for dimming effect
-        lazy var overlayView: UIView = {
-            let view = UIView(frame: UIScreen.main.bounds)
-            view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-            view.alpha = 0
-            return view
-        }()
-    
     
     
     override func viewDidLoad() {
@@ -44,10 +34,6 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
         popupView.isHidden = true
         popupView.layer.cornerRadius = 10
  
-        // Add overlay view to the top of the view hierarchy
-               view.addSubview(overlayView)
-               view.sendSubviewToBack(overlayView)
-        
         
            // Add observer for cell height update
            NotificationCenter.default.addObserver(self, selector: #selector(updateCellHeight), name: NSNotification.Name(rawValue: "UpdateCellHeight"), object: nil)
@@ -112,10 +98,6 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
             return
         }
         
-        UIView.animate(withDuration: 0.3) {
-                self.overlayView.alpha = self.isPopupVisible ? 1 : 0
-                self.quickAddTableView.alpha = self.isPopupVisible ? 0.5 : 1
-            }
         
     }
     
@@ -133,10 +115,6 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
         
         popupView.isHidden = true
         
-        // Hide overlay view when the pop-up view is dismissed
-               UIView.animate(withDuration: 0.3) {
-                   self.overlayView.alpha = 0
-               }
         
         isPopupVisible = false
     }
