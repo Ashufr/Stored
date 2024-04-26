@@ -8,13 +8,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recentlyAddedItems.count
+        ItemData.getInstance().recentlyAddedItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as! HomeTableViewCell
         
-        let item = recentlyAddedItems[indexPath.row]
+        let item = ItemData.getInstance().recentlyAddedItems[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
         if item.isExpired {

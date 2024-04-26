@@ -64,13 +64,13 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         switch itemStorage {
         case "Pantry":
-            storages[0].items.append(newItem)
+            StorageData.getInstance().storages[0].items.append(newItem)
         case "Fridge":
-            storages[1].items.append(newItem)
+            StorageData.getInstance().storages[1].items.append(newItem)
         case "Freezer":
-            storages[2].items.append(newItem)
+            StorageData.getInstance().storages[2].items.append(newItem)
         case "Shelf":
-            storages[3].items.append(newItem)
+            StorageData.getInstance().storages[3].items.append(newItem)
         default:
             break
         }

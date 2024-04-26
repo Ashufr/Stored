@@ -43,7 +43,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let expiryCategory = getExpiryCategory(forString: sections[section])
+        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
 //        print("\(expiryCategory) : \(categorizedItems[expiryCategory]?.count ?? 0)")
         return categorizedItems[expiryCategory]?.count ?? 0
     }
@@ -51,7 +51,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = inventoryStorageTableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! InventoryStorageTableViewCell
-        let expiryCategory = getExpiryCategory(forString: sections[indexPath.section])
+        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
         guard let items = categorizedItems[expiryCategory] else {return UITableViewCell()}
         
         let item = items[indexPath.row]
@@ -68,7 +68,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
-        let expiryCategory = getExpiryCategory(forString: sections[section])
+        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
         guard let items = categorizedItems[expiryCategory] else {return}
         print("\(items[indexPath.row].isExpired) \(items[indexPath.row])")
     }
@@ -104,7 +104,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         super.viewDidLoad()
         
         if let storage = storage {
-            categorizedItems = categorizeStorage(storage.items)
+            categorizedItems = StorageData.getInstance().categorizeStorage(storage.items)
         }
         
         inventoryStorageTableView.dataSource = self

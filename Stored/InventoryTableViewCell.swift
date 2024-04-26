@@ -6,4 +6,6 @@ class InventoryTableViewCell: UITableViewCell {
     @IBOutlet var itemExpiryLabel: UILabel!
     @IBOutlet var itemStorageLabel: UILabel!
     
+    
+    
 }
