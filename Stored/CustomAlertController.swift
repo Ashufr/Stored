@@ -445,14 +445,29 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     @IBAction func addButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
-        print("Add")
-
-        // Print the selected date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        let date = dateFormatter.string(from: datePicker.date)
-        print(date)
+        
+        guard let itemName = titleTextField.text else {return}
+        let itemQuantity = Int(quantityLabel.text ?? "0") ?? 1
+    
+        let itemExpiryDate = datePicker.date
+        
+        let selectedStorageIndex = pickerView.selectedRow(inComponent: 0)
+        let itemStorage = storageLocations[selectedStorageIndex]
+        
+        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate)
+        
+        switch itemStorage {
+        case "Pantry":
+            storages[0].items.append(newItem)
+        case "Fridge":
+            storages[1].items.append(newItem)
+        case "Freezer":
+            storages[2].items.append(newItem)
+        case "Shelf":
+            storages[3].items.append(newItem)
+        default:
+            break
+        }
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIButton) {

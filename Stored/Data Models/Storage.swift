@@ -111,7 +111,7 @@ func getExpiryCategory(forString stringValue: String) -> ExpiryCategory {
 }
 
 
-let storages: [Storage] = [
+var storages: [Storage] = [
     Storage(name: "Pantry", items: pantryItems),
     Storage(name: "Fridge", items: fridgeItems),
     Storage(name: "Freezer", items: freezerItems),
