@@ -1,20 +1,6 @@
-//
-//  InventoryViewController.swift
-//  Stored
-//
-//  Created by student on 24/04/24.
-//
-
 import UIKit
 
 class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
-    
-//    let scanButton: ScanItemButton = {
-//        let button = ScanItemButton(type: .system)
-//        button.setTitle("ScanButton", for: .normal)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        return button
-//    }()
     
     
     @IBOutlet var inventoryCollectionView: UICollectionView!

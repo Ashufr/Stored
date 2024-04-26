@@ -1,10 +1,3 @@
-//
-//  ScanItemButton.swift
-//  Stored
-//
-//  Created by student on 25/04/24.
-//
-
 import UIKit
 
 class ScanItemButton: UIButton {

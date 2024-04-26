@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  Stored
-//
-//  Created by student on 18/04/24.
-//
-
 import UIKit
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
