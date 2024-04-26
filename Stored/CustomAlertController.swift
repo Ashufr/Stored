@@ -394,8 +394,9 @@
 
 import UIKit
 
-class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
+    @IBOutlet var titleTextField: UITextField!
     @IBOutlet var quantityLabel: UILabel!
     @IBOutlet var quantityStepper: UIStepper!
     
@@ -408,11 +409,22 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     let storageLocations = ["Pantry", "Fridge", "Freezer", "Shelf"]
     
+    var productTitle : String?
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
         pickerView.dataSource = self
         pickerView.delegate = self
+        
+        titleTextField.delegate = self
+        if let productTitle = productTitle {
+            titleTextField.text = productTitle
+        }
         
         print("View")
         datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
@@ -471,6 +483,20 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
        func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
            return storageLocations[row]
        }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder()
+            return true
+        }
+        
+        func textFieldDidBeginEditing(_ textField: UITextField) {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            view.addGestureRecognizer(tapGesture)
+        }
+        
+        @objc func dismissKeyboard() {
+            view.endEditing(true)
+        }
 
 }
 

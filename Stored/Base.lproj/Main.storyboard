@@ -520,14 +520,14 @@
                                                                 <constraint firstAttribute="width" constant="50" id="qKY-4U-XII"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ce-SD-2oC">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2ce-SD-2oC">
                                                             <rect key="frame" x="60" y="0.0" width="278" height="50.333333333333336"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bL7-ev-7eP">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="278" height="50.333333333333336"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="218" height="50.333333333333336"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Item Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aEX-l0-6K3">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="278" height="28"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="218" height="28"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="28" id="Rlf-uU-6ls"/>
                                                                             </constraints>
@@ -536,7 +536,7 @@
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Expiry" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eIc-ap-Je2">
-                                                                            <rect key="frame" x="0.0" y="28" width="278" height="22.333333333333329"/>
+                                                                            <rect key="frame" x="0.0" y="28" width="218" height="22.333333333333329"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                             <color key="textColor" red="0.55686277149999996" green="0.55294120309999995" blue="0.57254904510000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                             <nil key="highlightedColor"/>
@@ -547,9 +547,17 @@
                                                                         <constraint firstItem="aEX-l0-6K3" firstAttribute="leading" secondItem="bL7-ev-7eP" secondAttribute="leading" id="Rty-1T-hbE"/>
                                                                     </constraints>
                                                                 </stackView>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wrs-86-ZlC">
+                                                                    <rect key="frame" x="228" y="0.0" width="50" height="50.333333333333336"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="50" id="19H-Ih-tnY"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" red="0.55686277149999996" green="0.55294120309999995" blue="0.57254904510000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="trailing" secondItem="bL7-ev-7eP" secondAttribute="trailing" id="KBl-th-lWc"/>
                                                                 <constraint firstAttribute="bottom" secondItem="bL7-ev-7eP" secondAttribute="bottom" id="P4W-aL-ueN"/>
                                                                 <constraint firstItem="bL7-ev-7eP" firstAttribute="leading" secondItem="2ce-SD-2oC" secondAttribute="leading" id="h4V-H3-SO8"/>
                                                                 <constraint firstItem="bL7-ev-7eP" firstAttribute="top" secondItem="2ce-SD-2oC" secondAttribute="top" id="qXB-EP-IUp"/>
@@ -574,6 +582,7 @@
                                         <connections>
                                             <outlet property="itemExpiryLabel" destination="eIc-ap-Je2" id="vt1-Nc-INp"/>
                                             <outlet property="itemNameLabel" destination="aEX-l0-6K3" id="lGy-aL-YP0"/>
+                                            <outlet property="itemQuantityLabel" destination="wrs-86-ZlC" id="qWO-fz-Cno"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -673,6 +682,14 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Cancel"/>
                                     </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Oreo" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eCk-uH-cOh">
+                                        <rect key="frame" x="20" y="16" width="220" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.94901967050000002" green="0.94901967050000002" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -688,6 +705,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="agh-XJ-jMn"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ELf-hS-1zy" firstAttribute="centerX" secondItem="YjG-Ux-6x5" secondAttribute="centerX" id="rot-tJ-n3M"/>
                             <constraint firstItem="ELf-hS-1zy" firstAttribute="centerY" secondItem="YjG-Ux-6x5" secondAttribute="centerY" id="zjk-Qs-9Jz"/>
@@ -700,6 +718,7 @@
                         <outlet property="pickerView" destination="rYH-yE-nCM" id="g13-OY-9rV"/>
                         <outlet property="quantityLabel" destination="aFa-KZ-qv8" id="BWT-RM-KEl"/>
                         <outlet property="quantityStepper" destination="tSq-na-is9" id="kF7-1A-DqT"/>
+                        <outlet property="titleTextField" destination="eCk-uH-cOh" id="4Fx-rq-5vb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="60E-ME-aLv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -795,8 +814,8 @@
         <image name="bolt.circle" catalog="system" width="128" height="123"/>
         <image name="calendar" catalog="system" width="128" height="107"/>
         <image name="house" catalog="system" width="128" height="104"/>
-        <image name="pencil.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="person" catalog="system" width="128" height="121"/>
+        <image name="pencil.circle.fill" catalog="system" width="32" height="32"/>
+        <image name="person" catalog="system" width="32" height="32"/>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

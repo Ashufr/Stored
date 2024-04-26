@@ -64,6 +64,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         let item = items[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
+        cell.itemQuantityLabel.text = "x\(item.quantity)"
         if item.isExpired {
             print(item)
             cell.isRed()

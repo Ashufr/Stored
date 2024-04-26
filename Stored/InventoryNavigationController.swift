@@ -470,12 +470,14 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
     }
     
-    func displayCustomAlert() {
+    func displayCustomAlert(productNameString : String) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let customAlertController = storyboard.instantiateViewController(withIdentifier: "CustomAlertVC") as? CustomAlertController else {
             return
         }
+        
+        customAlertController.productTitle = productNameString
         
         // Configure custom animation for the presentation
         customAlertController.modalPresentationStyle = .overFullScreen
@@ -528,7 +530,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                     // Present the product name in an alert
                     DispatchQueue.main.async {
 //
-                        self.displayCustomAlert()
+                        self.displayCustomAlert(productNameString: productName)
                     }
                 } else {
                     print("Product name not found in response")
