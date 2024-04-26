@@ -427,9 +427,9 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
         
         print("View")
-        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
-        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
-        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+//        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+//        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+//        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
     }
 
     
@@ -443,7 +443,7 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         
     }
-    @objc func addButtonTapped(_ sender: UIButton) {
+    @IBAction func addButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
         print("Add")
 
@@ -455,12 +455,12 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
         print(date)
     }
     
-    @objc func cancelButtonTapped(_ sender: UIButton) {
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
         print("cancel")
         dismiss(animated: true, completion: nil)
     }
     
-    @objc func datePickerValueChanged() {
+    @IBAction func datePickerValueChanged() {
         dismiss(animated: true, completion: nil)
 
         let dateFormatter = DateFormatter()
