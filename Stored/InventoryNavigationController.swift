@@ -1,14 +1,28 @@
+
+
 import UIKit
 import AVFoundation
 
-class InventoryNavigationController: UINavigationController {
+class InventoryNavigationController: UINavigationController, AVCaptureMetadataOutputObjectsDelegate, CustomAlertDelegate {
+    func alertDismissed() {
+        captureSession?.startRunning()
+    }
     
+    
+    private var cameraViewController: UIViewController?
+    
+    var backgroundView : UIView?
+    var loadingIndicator : UIActivityIndicatorView?
+    
+    
+    var captureSession: AVCaptureSession?
+    var previewLayer: AVCaptureVideoPreviewLayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addScanButton()
+        //        setupCaptureSession()
     }
-    
     func addScanButton() {
         if view.viewWithTag(999) != nil {
             // Button already exists, no need to add it again
@@ -31,36 +45,17 @@ class InventoryNavigationController: UINavigationController {
         presentCameraViewController()
     }
     
+    
     func presentCameraViewController() {
-        let cameraViewController = CameraViewController()
-        present(cameraViewController, animated: true, completion: nil)
-    }
-}
-
-class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    
-    var captureSession: AVCaptureSession!
-    var previewLayer: AVCaptureVideoPreviewLayer!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupCaptureSession()
-    }
-    
-    func setupCaptureSession() {
+        let cameraViewController = UIViewController()
+        cameraViewController.modalPresentationStyle = .popover
+        
         captureSession = AVCaptureSession()
+        guard let captureSession = captureSession else {return}
         
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
-            print("Your device is not applicable")
-            return
-        }
-        
-        let videoInput: AVCaptureDeviceInput
-        
-        do {
-            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-        } catch {
-            print("Your device cannot give video input")
+        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video),
+              let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice) else {
+            print("Unable to access camera")
             return
         }
         
@@ -72,7 +67,6 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
         
         let metaDataOutput = AVCaptureMetadataOutput()
-        
         if captureSession.canAddOutput(metaDataOutput) {
             captureSession.addOutput(metaDataOutput)
             metaDataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
@@ -83,18 +77,43 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.frame = view.layer.bounds
+        guard let previewLayer = previewLayer else {return}
+        previewLayer.frame = cameraViewController.view.layer.bounds
         previewLayer.videoGravity = .resizeAspectFill
-        
-        view.layer.addSublayer(previewLayer)
+        cameraViewController.view.layer.addSublayer(previewLayer)
         
         captureSession.startRunning()
+        
+        present(cameraViewController, animated: true, completion: nil)
     }
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let first = metadataObjects.first,
            let readableObject = first as? AVMetadataMachineReadableCodeObject,
            let stringValue = readableObject.stringValue {
+            captureSession!.stopRunning()
+            
+            backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+            guard let backgroundView = backgroundView else {return}
+            backgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+            backgroundView.layer.cornerRadius = 10
+            
+            // Initialize the loading indicator
+            loadingIndicator = UIActivityIndicatorView(style: .large)
+            loadingIndicator?.startAnimating()
+            
+            // Center the loading indicator within the background view
+            loadingIndicator?.center = CGPoint(x: backgroundView.bounds.midX, y: backgroundView.bounds.midY)
+            
+            // Add the loading indicator to the background view
+            backgroundView.addSubview(loadingIndicator!)
+            
+            // Add the background view to the top window
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let topWindow = scene.windows.first {
+                backgroundView.center = topWindow.center
+                topWindow.addSubview(backgroundView)
+            }
             found(code: stringValue)
         } else {
             print("Not able to read")
@@ -103,24 +122,45 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     func displayCustomAlert(productNameString : String) {
         
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = scene.windows.first else {
+            print("Unable to find window scene")
+            return
+        }
+        
+        var topViewController = window.rootViewController
+        while let presentedViewController = topViewController?.presentedViewController {
+            topViewController = presentedViewController
+        }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let customAlertController = storyboard.instantiateViewController(withIdentifier: "CustomAlertVC") as? CustomAlertController else {
             return
         }
         
+        
+        
         customAlertController.productTitle = productNameString
+        customAlertController.cameraDelegate = self
         
         // Configure custom animation for the presentation
         customAlertController.modalPresentationStyle = .overFullScreen
         customAlertController.modalTransitionStyle = .crossDissolve // or any other transition style you prefer
         
         // Present the CustomAlertController modally with animation
-        present(customAlertController, animated: true, completion: nil)
+        topViewController?.present(customAlertController, animated: true){
+            self.loadingIndicator!.stopAnimating()
+            self.loadingIndicator!.removeFromSuperview()
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let topWindow = scene.windows.first {
+                for subview in topWindow.subviews {
+                    if subview.backgroundColor == UIColor.white.withAlphaComponent(0.9) {
+                        subview.removeFromSuperview()
+                    }
+                }
+            }
+        }
     }
-
-
-
-
     
     func found(code: String) {
         print(code)
@@ -160,7 +200,6 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
                     
                     // Present the product name in an alert
                     DispatchQueue.main.async {
-//
                         self.displayCustomAlert(productNameString: productName)
                     }
                 } else {
@@ -175,3 +214,4 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         task.resume()
     }
 }
+

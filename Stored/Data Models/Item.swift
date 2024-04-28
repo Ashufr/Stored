@@ -36,7 +36,7 @@ class ItemData{
     func calulateDateDifference(startDate : Date, endDate : Date) -> Int {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: startDate, to: endDate)
-        print(components)
+//        print(components)
         return components.day!
     }
     let recentlyAddedItems: [Item] = [

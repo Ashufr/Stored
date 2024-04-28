@@ -1,6 +1,12 @@
 import UIKit
 
+protocol CustomAlertDelegate{
+    func alertDismissed()
+}
+
 class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+    
+    var cameraDelegate : CustomAlertDelegate?
     
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var quantityLabel: UILabel!
@@ -18,6 +24,11 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var productTitle : String?
     
     
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion)
+        print("diididd")
+        cameraDelegate?.alertDismissed()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
