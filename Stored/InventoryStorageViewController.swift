@@ -1,6 +1,14 @@
 import UIKit
 
-class InventoryStorageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class InventoryStorageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomAlertRefreshDelegate {
+    func finishedAddingItem() {
+        print("Finalalal")
+        inventoryStorageTableView.reloadData()
+    }
+    
+    
+    
+    
     
     var storage : Storage?
     var categorizedItems = [ExpiryCategory : [Item]]()

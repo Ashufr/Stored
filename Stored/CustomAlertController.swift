@@ -1,12 +1,19 @@
 import UIKit
 
-protocol CustomAlertDelegate{
+protocol CustomAlertDismissalDelegate{
     func alertDismissed()
+}
+
+protocol CustomAlertRefreshDelegate{
+    func finishedAddingItem()
 }
 
 class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
-    var cameraDelegate : CustomAlertDelegate?
+    var cameraDelegate : CustomAlertDismissalDelegate?
+    
+    var inventoryStorageTableDelegate : CustomAlertRefreshDelegate?
+    var inventoryCollectionDelegate : CustomAlertRefreshDelegate?
     
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var quantityLabel: UILabel!
@@ -26,7 +33,7 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         super.dismiss(animated: flag, completion: completion)
-        print("diididd")
+//        print("diididd")
         cameraDelegate?.alertDismissed()
     }
     
@@ -43,7 +50,7 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
             titleTextField.text = productTitle
         }
         
-        print("View")
+//        print("View")
 //        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
 //        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
 //        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
@@ -85,6 +92,8 @@ class CustomAlertController: UIViewController, UIPickerViewDelegate, UIPickerVie
         default:
             break
         }
+        inventoryStorageTableDelegate?.finishedAddingItem()
+        inventoryCollectionDelegate?.finishedAddingItem()
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIButton) {

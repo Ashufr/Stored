@@ -1,9 +1,7 @@
-
-
 import UIKit
 import AVFoundation
 
-class InventoryNavigationController: UINavigationController, AVCaptureMetadataOutputObjectsDelegate, CustomAlertDelegate {
+class InventoryNavigationController: UINavigationController, AVCaptureMetadataOutputObjectsDelegate, CustomAlertDismissalDelegate {
     func alertDismissed() {
         captureSession?.startRunning()
     }
@@ -138,10 +136,27 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
             return
         }
         
-        
+        if let topViewController = self.topViewController {
+            // Step 2: Check if the top view controller is of type InventoryViewController
+            if let inventoryViewController = topViewController as? InventoryViewController {
+                customAlertController.inventoryCollectionDelegate = inventoryViewController
+                // Step 3: Access the embedded InventoryStorageViewController
+                if let inventoryStorageViewController = inventoryViewController.children.first(where: { $0 is InventoryStorageViewController }) as? InventoryStorageViewController {
+                    // Now you have access to the InventoryStorageViewController
+                    print("Found InventoryStorageViewController: \(inventoryStorageViewController)")
+                } else {
+                    print("InventoryStorageViewController not found")
+                }
+            } else {
+                print("Top view controller is not of type InventoryViewController")
+            }
+        } else {
+            print("No view controller in the navigation stack")
+        }
         
         customAlertController.productTitle = productNameString
         customAlertController.cameraDelegate = self
+        
         
         // Configure custom animation for the presentation
         customAlertController.modalPresentationStyle = .overFullScreen

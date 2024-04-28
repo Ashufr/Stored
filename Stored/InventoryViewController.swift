@@ -1,6 +1,11 @@
 import UIKit
 
-class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
+class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, CustomAlertRefreshDelegate {
+    func finishedAddingItem() {
+        inventoryTableView.reloadData()
+        inventoryCollectionView.reloadData()
+    }
+    
     
     
     @IBOutlet var inventoryCollectionView: UICollectionView!
