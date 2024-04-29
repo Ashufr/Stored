@@ -12,7 +12,7 @@ class CustomAlertController: UIViewController {
     
     // MARK: - Properties
     
-    weak var cameraDelegate: CustomAlertDismissalDelegate?
+    var cameraDelegate: CustomAlertDismissalDelegate?
     var inventoryStorageTableDelegate: CustomAlertRefreshDelegate?
     var inventoryCollectionDelegate: CustomAlertRefreshDelegate?
     
@@ -49,6 +49,9 @@ class CustomAlertController: UIViewController {
     
     @IBAction private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
+        if let cameraDelegate = cameraDelegate {
+            cameraDelegate.alertDismissed()
+        }
     }
     
     @IBAction private func datePickerValueChanged() {
@@ -89,6 +92,9 @@ class CustomAlertController: UIViewController {
         }
         if let inventoryCollectionDelegate = inventoryCollectionDelegate {
             inventoryCollectionDelegate.finishedAddingItem()
+        }
+        if let cameraDelegate = cameraDelegate {
+            cameraDelegate.alertDismissed()
         }
     }
     
