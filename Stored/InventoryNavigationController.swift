@@ -1,13 +1,13 @@
 import UIKit
 import AVFoundation
 
-class InventoryNavigationController: UINavigationController, AVCaptureMetadataOutputObjectsDelegate, CustomAlertDismissalDelegate {
+class InventoryNavigationController: UINavigationController {
     
     // MARK: - Properties
     
-    private var cameraViewController: CameraViewController?
-    private var backgroundView: UIView?
-    private var loadingIndicator: UIActivityIndicatorView?
+    var cameraViewController: CameraViewController?
+    var backgroundView: UIView?
+    var loadingIndicator: UIActivityIndicatorView?
     
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer!
@@ -114,7 +114,6 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
         dismiss(animated: true, completion: nil)
     }
     
-    
     // MARK: - Frame Setup
     
     private func setupRectangularFrame(on view: UIView) {
@@ -203,9 +202,11 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
         view.layer.addSublayer(frameLayer)
     }
 
-    
-    // MARK: - AVCaptureMetadataOutputObjectsDelegate
-    
+}
+
+// MARK: - AVCaptureMetadataOutputObjectsDelegate
+
+extension InventoryNavigationController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let first = metadataObjects.first,
            let readableObject = first as? AVMetadataMachineReadableCodeObject,
@@ -232,9 +233,63 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
             print("Not able to read")
         }
     }
+}
+
+// MARK: - CustomAlertDismissalDelegate
+
+extension InventoryNavigationController: CustomAlertDismissalDelegate {
+    func alertDismissed() {
+        captureSession?.startRunning()
+    }
+}
+
+// MARK: - ItemNotFoundAlert
+
+extension InventoryNavigationController {
+    func itemNotFoundAlert() {
+        DispatchQueue.main.async {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else {
+                print("Unable to find window scene")
+                return
+            }
+            
+            var topViewController = window.rootViewController
+            while let presentedViewController = topViewController?.presentedViewController {
+                topViewController = presentedViewController
+            }
+
+            let alertController = UIAlertController(title: "Item Not Found", message: "The item was not found.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                self.captureSession?.startRunning()
+            }
+            alertController.addAction(okAction)
+
+            // Present the alert on the topmost view controller
+            topViewController?.present(alertController, animated: true) {
+                self.loadingIndicator?.stopAnimating()
+                self.loadingIndicator?.removeFromSuperview()
+            
+                if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let topWindow = scene.windows.first {
+                    for subview in topWindow.subviews {
+                        if subview.backgroundColor == UIColor.white.withAlphaComponent(0.9) {
+                            subview.removeFromSuperview()
+                        }
+                    }
+                }
+            }
+        }
+    }
     
-    // MARK: - CustomAlertController
-    
+    @objc func itemNotFoundAlertDismissed() {
+        captureSession?.startRunning()
+    }
+}
+
+// MARK: - CustomAlertController
+
+extension InventoryNavigationController {
     func displayCustomAlert(productNameString: String) {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = scene.windows.first else {
@@ -282,7 +337,11 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
             }
         }
     }
-    
+}
+
+// MARK: - API Request
+
+extension InventoryNavigationController {
     func found(code: String) {
         let apiString = "https://world.openfoodfacts.net/api/v2/product/\(code)"
         guard let url = URL(string: apiString) else {
@@ -311,7 +370,7 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
                         self.displayCustomAlert(productNameString: productName)
                     }
                 } else {
-                    print("Product name not found in response")
+                    self.itemNotFoundAlert()
                 }
             } catch {
                 print("Error parsing JSON: \(error)")
@@ -320,11 +379,53 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
         
         task.resume()
     }
+}
+
+// MARK: - Zoom and Focus Functionality
+
+extension InventoryNavigationController {
+    // MARK: - Zoom Functionality
     
-    // MARK: - CustomAlertDismissalDelegate
+    func zoomCamera(to zoomFactor: CGFloat) {
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else {
+            print("No video capture device found")
+            return
+        }
+        
+        do {
+            try captureDevice.lockForConfiguration()
+            defer { captureDevice.unlockForConfiguration() }
+            
+            let maxZoomFactor = captureDevice.activeFormat.videoMaxZoomFactor
+            let clampedZoomFactor = max(1.0, min(zoomFactor, maxZoomFactor))
+            captureDevice.videoZoomFactor = clampedZoomFactor
+        } catch {
+            print("Failed to lock device for configuration: \(error.localizedDescription)")
+        }
+    }
     
-    func alertDismissed() {
-        print("dismissde")
-        captureSession?.startRunning()
+    // MARK: - Focus Functionality
+    
+    func focusCamera(at point: CGPoint) {
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else {
+            print("No video capture device found")
+            return
+        }
+        
+        do {
+            try captureDevice.lockForConfiguration()
+            defer { captureDevice.unlockForConfiguration() }
+            
+            if captureDevice.isFocusPointOfInterestSupported {
+                captureDevice.focusPointOfInterest = point
+            }
+            
+            if captureDevice.isFocusModeSupported(.autoFocus) {
+                captureDevice.focusMode = .autoFocus
+            }
+        } catch {
+            print("Failed to lock device for configuration: \(error.localizedDescription)")
+        }
     }
 }
+
