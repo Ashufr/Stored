@@ -49,9 +49,7 @@ class CustomAlertController: UIViewController {
     
     @IBAction private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
-        if let cameraDelegate = cameraDelegate {
-            cameraDelegate.alertDismissed()
-        }
+        cameraDelegate?.alertDismissed()
     }
     
     @IBAction private func datePickerValueChanged() {

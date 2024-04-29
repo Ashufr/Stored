@@ -47,6 +47,7 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
         
         setupCaptureSession()
         setupBackButton(on: cameraViewController.view)
+        setupRectangularFrame(on: cameraViewController.view)
         
         present(cameraViewController, animated: true, completion: nil)
     }
@@ -112,6 +113,96 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
     @objc private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
+    
+    
+    // MARK: - Frame Setup
+    
+    private func setupRectangularFrame(on view: UIView) {
+        let frameLayer = CALayer()
+        frameLayer.backgroundColor = UIColor.clear.cgColor // Set background color to clear
+        let frameSize = CGSize(width: 320, height: 200) // Adjust frame size as needed
+        let frameOrigin = CGPoint(x: view.bounds.midX - frameSize.width / 2, y: view.bounds.midY - frameSize.height / 2 - 50) // Adjust the -50 value to move the frame higher
+        frameLayer.frame = CGRect(origin: frameOrigin, size: frameSize)
+        
+        // Create a mask layer with rounded corners
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = frameLayer.bounds
+        maskLayer.path = UIBezierPath(roundedRect: frameLayer.bounds, cornerRadius: 50).cgPath // Adjust corner radius as needed
+    
+        
+        // Invert the mask to show border only near the corners
+        let invertedMaskLayer = CAShapeLayer()
+        invertedMaskLayer.path = maskLayer.path
+        invertedMaskLayer.fillColor = UIColor.clear.cgColor
+        
+        let cornerRadius: CGFloat = 8
+        let lineWidth: CGFloat = 3
+
+        // Top-left corner
+        let borderLayer1 = CAShapeLayer()
+        borderLayer1.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 40, height: 40), cornerRadius: cornerRadius).cgPath
+        borderLayer1.lineWidth = lineWidth
+        borderLayer1.strokeColor = UIColor.white.cgColor
+        borderLayer1.fillColor = UIColor.clear.cgColor
+
+        // Add curved stroke for top-left corner
+        let curvePath1 = UIBezierPath()
+        curvePath1.move(to: CGPoint(x: 30, y: 0))
+        curvePath1.addQuadCurve(to: CGPoint(x: 0, y: 30), controlPoint: CGPoint(x: 0, y: 0))
+        borderLayer1.path = curvePath1.cgPath
+
+        // Top-right corner
+        let borderLayer2 = CAShapeLayer()
+        borderLayer2.path = UIBezierPath(roundedRect: CGRect(x: frameSize.width - 40, y: 0, width: 40, height: 40), cornerRadius: cornerRadius).cgPath
+        borderLayer2.lineWidth = lineWidth
+        borderLayer2.strokeColor = UIColor.white.cgColor
+        borderLayer2.fillColor = UIColor.clear.cgColor
+
+        // Add curved stroke for top-right corner
+        let curvePath2 = UIBezierPath()
+        curvePath2.move(to: CGPoint(x: frameSize.width - 30, y: 0))
+        curvePath2.addQuadCurve(to: CGPoint(x: frameSize.width, y: 30), controlPoint: CGPoint(x: frameSize.width, y: 0))
+        borderLayer2.path = curvePath2.cgPath
+
+        // Bottom-left corner
+        let borderLayer3 = CAShapeLayer()
+        borderLayer3.path = UIBezierPath(roundedRect: CGRect(x: 0, y: frameSize.height - 40, width: 40, height: 40), cornerRadius: cornerRadius).cgPath
+        borderLayer3.lineWidth = lineWidth
+        borderLayer3.strokeColor = UIColor.white.cgColor
+        borderLayer3.fillColor = UIColor.clear.cgColor
+
+        // Add curved stroke for bottom-left corner
+        let curvePath3 = UIBezierPath()
+        curvePath3.move(to: CGPoint(x: 0, y: frameSize.height - 30))
+        curvePath3.addQuadCurve(to: CGPoint(x: 30, y: frameSize.height), controlPoint: CGPoint(x: 0, y: frameSize.height))
+        borderLayer3.path = curvePath3.cgPath
+
+        // Bottom-right corner
+        let borderLayer4 = CAShapeLayer()
+        borderLayer4.path = UIBezierPath(roundedRect: CGRect(x: frameSize.width - 40, y: frameSize.height - 40, width: 40, height: 40), cornerRadius: cornerRadius).cgPath
+        borderLayer4.lineWidth = lineWidth
+        borderLayer4.strokeColor = UIColor.white.cgColor
+        borderLayer4.fillColor = UIColor.clear.cgColor
+
+        // Add curved stroke for bottom-right corner
+        let curvePath4 = UIBezierPath()
+        curvePath4.move(to: CGPoint(x: frameSize.width - 30, y: frameSize.height))
+        curvePath4.addQuadCurve(to: CGPoint(x: frameSize.width, y: frameSize.height - 30), controlPoint: CGPoint(x: frameSize.width, y: frameSize.height))
+        borderLayer4.path = curvePath4.cgPath
+
+
+
+        // Add the inverted mask and corner border layers to the frame layer
+        frameLayer.addSublayer(invertedMaskLayer)
+        frameLayer.addSublayer(borderLayer1)
+        frameLayer.addSublayer(borderLayer2)
+        frameLayer.addSublayer(borderLayer3)
+        frameLayer.addSublayer(borderLayer4)
+        
+        // Add the frame layer to the view's layer
+        view.layer.addSublayer(frameLayer)
+    }
+
     
     // MARK: - AVCaptureMetadataOutputObjectsDelegate
     

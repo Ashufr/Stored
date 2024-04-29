@@ -1,15 +1,15 @@
-
-
 import UIKit
 
-
-class CameraViewController : UIViewController{
-    var parentNavigationController : InventoryNavigationController?
+class CameraViewController: UIViewController {
     
-    override func viewWillDisappear(_ animated: Bool) {
+    // MARK: - Properties
+    
+    var parentNavigationController: InventoryNavigationController?
+    
+    // MARK: - View Lifecycle
+    
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        parentNavigationController!.captureSession!.stopRunning()
+        parentNavigationController?.captureSession?.stopRunning()
     }
-
 }
-
