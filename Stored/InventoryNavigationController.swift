@@ -83,7 +83,7 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
         previewLayer.frame = cameraViewController.view.layer.bounds
         previewLayer.videoGravity = .resizeAspectFill
         cameraViewController.view.layer.addSublayer(previewLayer)
-
+        
         
         let backButton = UIButton(type: .system)
         backButton.backgroundColor = .white
@@ -93,15 +93,17 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
         backButton.layer.cornerRadius = 8 // Adjust corner radius as needed
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         backButton.translatesAutoresizingMaskIntoConstraints = false
+        
         cameraViewController.view.addSubview(backButton)
-
-        // Constraints for the back button
+        
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: cameraViewController.view.safeAreaLayoutGuide.topAnchor, constant: 16),
             backButton.leadingAnchor.constraint(equalTo: cameraViewController.view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             backButton.widthAnchor.constraint(equalToConstant: 40),
             backButton.heightAnchor.constraint(equalToConstant: 40)
         ])
+        
+        
         view.bringSubviewToFront(backButton)
         
         captureSession.startRunning()
@@ -110,9 +112,9 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
     }
     
     @objc func backButtonTapped() {
-            // Dismiss the camera view controller
-            dismiss(animated: true, completion: nil)
-        }
+        // Dismiss the camera view controller
+        dismiss(animated: true, completion: nil)
+    }
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if let first = metadataObjects.first,
@@ -147,7 +149,7 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
         }
     }
     
-        
+    
     func displayCustomAlert(productNameString : String) {
         
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -170,7 +172,7 @@ class InventoryNavigationController: UINavigationController, AVCaptureMetadataOu
             if let inventoryViewController = topViewController as? InventoryViewController {
                 customAlertController.inventoryCollectionDelegate = inventoryViewController
                 customAlertController.inventoryStorageTableDelegate = inventoryViewController.inventoryStorageViewController
-               
+                
             }else if let inventoryStorageController = topViewController as? InventoryStorageViewController{
                 print("Found Storage")
                 customAlertController.inventoryCollectionDelegate = inventoryStorageController.inventoryViewController

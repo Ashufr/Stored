@@ -643,7 +643,7 @@
                                         <rect key="frame" x="20.333333333333258" y="124" width="94" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
-                                            <action selector="stepperTapped:forEvent:" destination="Uh2-YP-jfc" eventType="valueChanged" id="0xh-DV-F36"/>
+                                            <action selector="stepperTapped:" destination="Uh2-YP-jfc" eventType="valueChanged" id="371-ge-HzD"/>
                                         </connections>
                                     </stepper>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Best Before" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMa-wq-KiA">
