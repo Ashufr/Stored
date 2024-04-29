@@ -47,17 +47,3 @@ class CameraViewController: UIViewController {
     
 }
 
-
-//topViewController?.present(customAlertController, animated: true) {
-//    self.loadingIndicator?.stopAnimating()
-//    self.loadingIndicator?.removeFromSuperview()
-//    
-//    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-//       let topWindow = scene.windows.first {
-//        for subview in topWindow.subviews {
-//            if subview.backgroundColor == UIColor.white.withAlphaComponent(0.9) {
-//                subview.removeFromSuperview()
-//            }
-//        }
-//    }
-//}
