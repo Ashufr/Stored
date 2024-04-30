@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  Stored
-//
-//  Created by student on 18/04/24.
-//
-
 import UIKit
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -15,15 +8,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items.count
+        ItemData.getInstance().recentlyAddedItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as! HomeTableViewCell
         
-        let item = items[indexPath.row]
+        let item = ItemData.getInstance().recentlyAddedItems[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
+        if item.isExpired {
+            cell.itemExpiryLabel.textColor = .red
+        }
         cell.storageLabel.text = item.storage
         return cell
     }
@@ -35,7 +31,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         homeTableView.dataSource = self
         homeTableView.delegate = self
-        homeTableView.isScrollEnabled = false
+//        homeTableView.isScrollEnabled = false
         // Do any additional setup after loading the view.
     }
 
