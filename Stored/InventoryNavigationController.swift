@@ -343,7 +343,7 @@ extension InventoryNavigationController {
 
 extension InventoryNavigationController {
     func found(code: String) {
-        let apiString = "https://world.openfoodfacts.net/api/v2/product/\(code)"
+        let apiString = "https://world.openfoodfacts.net/api/v3/product/\(code)"
         guard let url = URL(string: apiString) else {
             print("Invalid API URL")
             return
