@@ -1,6 +1,6 @@
 import UIKit
 
-class HomeTableViewCell: UITableViewCell {
+class ExpiringTableViewCell: UITableViewCell {
 
     
     @IBOutlet var itemNameLabel: UILabel!

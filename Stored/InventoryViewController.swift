@@ -13,7 +13,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         ItemData.getInstance().recentlyAddedItems.count
-            }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InventoryRecentlyCell", for: indexPath) as! InventoryTableViewCell

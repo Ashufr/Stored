@@ -1,8 +1,78 @@
 import UIKit
 
 class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        expiringCategorizedItems[StorageData.getInstance().getExpiryCategory(forString: sections[section])]?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = expiringTableView.dequeueReusableCell(withIdentifier: "ExpiringTableViewCell", for: indexPath) as! ExpiringTableViewCell
+        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
+        guard let items = expiringCategorizedItems[expiryCategory] else {return UITableViewCell()}
+        let item = items[indexPath.row]
+        cell.itemNameLabel.text = item.name
+        cell.itemExpiryLabel.text = item.expiryDescription
+        cell.storageLabel.text = item.storage
+        return cell
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        sections[section]
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+            
+        let titleLabel = UILabel()
+        titleLabel.frame = CGRect(x: 5, y: 0, width: tableView.frame.width - 30, height: 30)
+     
+        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        titleLabel.text = sections[section]
+        headerView.addSubview(titleLabel)
+            
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
+    var expiringCategorizedItems : [ExpiryCategory: [Item]] = [:]
+    var sections : [String]{
+        var tempSections = [String]()
+        let todayItemsCount = expiringCategorizedItems[.today]?.count ?? 0
+        let tomorrowItemsCount = expiringCategorizedItems[.tomorrow]?.count ?? 0
+        let thisWeekItemsCount = expiringCategorizedItems[.thisWeek]?.count ?? 0
+//        print(expiredItemsCount)
+//        print(todayItemsCount)
+//        print(thisMonthItemsCount)
+//        print(laterItemsCount)
+        
+        if todayItemsCount > 0 {
+            tempSections.append("Today")
+//            print("\(tempSections[tempSections.count-1]) appended")
+
+        }
+        if tomorrowItemsCount > 0 {
+            tempSections.append("Tomorrow")
+//            print("\(tempSections[tempSections.count-1]) appended")
+        }
+        if thisWeekItemsCount > 0 {
+            tempSections.append("This Week")
+//            print("\(tempSections[tempSections.count-1]) appended")
+
+        }
+
+        return tempSections
+    }
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -38,37 +108,22 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet var expiringCollectionView: UICollectionView!
     
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        ItemData.getInstance().recentlyAddedItems.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as! HomeTableViewCell
-        
-        let item = ItemData.getInstance().recentlyAddedItems[indexPath.row]
-        cell.itemNameLabel.text = item.name
-        cell.itemExpiryLabel.text = item.expiryDescription
-        if item.isExpired {
-            cell.itemExpiryLabel.textColor = .red
-        }
-        cell.storageLabel.text = item.storage
-        return cell
-    }
-    
+    @IBOutlet var expiringTableView: UITableView!
 
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        homeTableView.dataSource = self
-//        homeTableView.delegate = self
-//        homeTableView.isScrollEnabled = false
+        expiringCategorizedItems = StorageData.getInstance().categorizeStorage(ItemData.getInstance().expiringItems)
+        expiringTableView.dataSource = self
+        expiringTableView.delegate = self
         let layout = generateGridLayout()
         expiringCollectionView.delegate = self
         expiringCollectionView.dataSource = self
         expiringCollectionView.collectionViewLayout = layout
-//        expiringCollectionView.isScrollEnabled = false
+        expiringCollectionView.isScrollEnabled = false
+        
+        
     }
 
     func generateGridLayout() -> UICollectionViewLayout {
@@ -78,7 +133,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
         
         // Group dimension will have 1/4th of the section
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1)), subitem: item, count: 2)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.9)), subitem: item, count: 2)
         
         group.interItemSpacing = .fixed(padding)
 

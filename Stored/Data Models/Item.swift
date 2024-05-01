@@ -11,16 +11,19 @@ struct Item {
         return ItemData.getInstance().calulateDateDifference(startDate: Date(), endDate: expiryDate) < 0
     }
     var expiryDescription : String {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         let days = ItemData.getInstance().calulateDateDifference(startDate: Date(), endDate: expiryDate)
-        if days == 0{
-            return "Expires Today"
-        }else if days == 1 {
-            return "Expires in 1 day"
-        }else if days > 1 {
-            return "Expires in \(days) days"
-        }
-        else{
+        
+        if days < 0 {
             return "Expired \(days * -1) days ago"
+        }else if calendar.isDate(expiryDate, inSameDayAs: currentDate) {
+            return "Expires Today"
+        }else if calendar.isDate(expiryDate, inSameDayAs: tomorrow) {
+            return "Expires Tomorrow"
+        }else {
+            return "Expires in \(days) days"
         }
     }
     
@@ -46,6 +49,19 @@ class ItemData{
 //        print(components)
         return components.day!
     }
+    
+    let expiringItems: [Item] = [
+        Item(name: "Milk", quantity: 1, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 0, to: Date())!),
+        Item(name: "Bread", quantity: 1, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 0, to: Date())!),
+        Item(name: "Yogurt", quantity: 1, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 1, to: Date())!),
+        Item(name: "Apples", quantity: 3, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 2, to: Date())!),
+        Item(name: "Eggs", quantity: 6, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 3, to: Date())!),
+        Item(name: "Potatoes", quantity: 5, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 3, to: Date())!),
+        Item(name: "Frozen Pizza", quantity: 2, storage: "Freezer", expiryDate: Calendar.current.date(byAdding: .day, value: 3, to: Date())!)
+    ]
+
+
+    
     let recentlyAddedItems: [Item] = [
         Item(name: "Tomatoes", quantity: 5, storage: "Pantry", expiryDate: Date(timeIntervalSinceNow: 172800)),
         Item(name: "Chicken Breast", quantity: 3, storage: "Fridge", expiryDate: Date(timeIntervalSinceNow: 259200)),
