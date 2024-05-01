@@ -10,6 +10,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
         guard let items = expiringCategorizedItems[expiryCategory] else {return UITableViewCell()}
         let item = items[indexPath.row]
+    
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
         cell.storageLabel.text = item.storage
@@ -96,13 +97,18 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             cell.bottomLabel.text = "Expired Items"
             cell.upperStackView.backgroundColor = upperStackColor
             cell.bottomView.backgroundColor = bottomContainerColor
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+            cell.addGestureRecognizer(tapGesture)
         }
         cell.layer.cornerRadius = 10
         cell.layer.masksToBounds = true
         return cell
     }
     
-    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        // Perform the segue programmatically
+        performSegue(withIdentifier: "ExpiredSegue", sender: nil)
+    }
     
 //    @IBOutlet var homeTableView: UITableView!
     
