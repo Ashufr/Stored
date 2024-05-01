@@ -44,10 +44,12 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
             if cell.itemStepper.value == 0 {
                 return
             }
+
             let storage = StorageData.getInstance().getStorage(for: item.storage)
             let newItem = Item(quickAddItem: item )
             storage.items.append(newItem)
-            
+            cell.itemStepper.value = 0
+            cell.itemStepperLabel.text = "0"
             
             let alertController = UIAlertController(title: "Item Added", message: "\(item.name) x\(Int(cell.itemStepper.value)) has been added to your \(item.storage)", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
