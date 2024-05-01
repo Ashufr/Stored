@@ -12,12 +12,6 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet var quickAddTableView: UITableView!
 
-    @IBOutlet var popupView: UIView!
-    
-    @IBOutlet weak var OkBtn: UIButton!
-    
-    var isPopupVisible = false
-    var popupShown = false
     var shouldPopUpShow = 0
     
     
@@ -31,12 +25,6 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
            quickAddTableView.layer.cornerRadius = 10
            quickAddTableView.clipsToBounds = true
            
-        popupView.isHidden = true
-        popupView.layer.cornerRadius = 10
- 
-        
-           // Add observer for cell height update
-           NotificationCenter.default.addObserver(self, selector: #selector(updateCellHeight), name: NSNotification.Name(rawValue: "UpdateCellHeight"), object: nil)
         
         
        }
@@ -72,26 +60,18 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
         if let image = sender.currentImage {
             if(image == UIImage(systemName: "plus.circle")) {
                 // isPopupVisible.toggle()
-                popupView.isHidden = !isPopupVisible
+             
                 
                 // If the pop-up view is visible, center it above the table
-                if isPopupVisible {
-                    centerPopupView()
-                }
                 
             }
             if(image == UIImage(systemName: "checkmark.circle.fill")) {
                 if(shouldPopUpShow == 0) { shouldPopUpShow = 1 }
                 else if shouldPopUpShow == 1 {
                     shouldPopUpShow = 0
-                    isPopupVisible.toggle()
+                    let overLayer = OverLayerPopUp()
+                    overLayer.appear(sender: self)
           
-                    popupView.isHidden = !isPopupVisible
-                    
-                    // If the pop-up view is visible, center it above the table
-                    if isPopupVisible {
-                        centerPopupView()
-                    }
                 }
             }
         } else {
@@ -111,26 +91,7 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
-    @IBAction func okTapped(_ sender: Any) {
-        
-        popupView.isHidden = true
-        
-        
-        isPopupVisible = false
-    }
     
-    private func centerPopupView() {
-            guard let tableViewSuperview = quickAddTableView.superview else { return }
-            
-            let tableCenterX = tableViewSuperview.bounds.midX
-            let tableCenterY = tableViewSuperview.bounds.midY
-            let popupWidth = popupView.bounds.width
-            let popupHeight = popupView.bounds.height
-            let popupX = tableCenterX - (popupWidth / 2)
-            let popupY = tableCenterY - (popupHeight / 2)
-            
-            popupView.frame = CGRect(x: popupX, y: popupY, width: popupWidth, height: popupHeight)
-        }
        // Action method for handling "+" button tap
        @objc func updateCellHeight() {
            DispatchQueue.main.async {

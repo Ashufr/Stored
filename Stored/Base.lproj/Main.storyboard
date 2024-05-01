@@ -582,11 +582,8 @@
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Coca Cola" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wA9-WA-Jhd">
                                                                             <rect key="frame" x="0.0" y="0.0" width="205" height="20.666666666666668"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22.670000000000002" id="1lb-2p-RIO"/>
                                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="187.66999999999999" id="8Ud-h2-jns"/>
-                                                                                <constraint firstAttribute="width" constant="205" id="9Sl-9e-S9o"/>
                                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20.670000000000002" id="EKe-4o-k4d"/>
-                                                                                <constraint firstAttribute="height" constant="20.333333333333332" id="X7W-el-fwn"/>
                                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="187.66999999999999" id="i5d-Kf-ZUw"/>
                                                                             </constraints>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -602,7 +599,6 @@
                                                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="EhW-YO-IJL"/>
                                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="27.670000000000002" id="NgB-1f-abG"/>
                                                                                         <constraint firstAttribute="height" constant="27.670000000000002" id="Qjp-ws-EEd"/>
-                                                                                        <constraint firstAttribute="width" constant="40" id="SpL-fb-o5n"/>
                                                                                     </constraints>
                                                                                     <state key="normal" title="Button"/>
                                                                                     <buttonConfiguration key="configuration" style="plain" image="minus" catalog="system" title="">
@@ -634,7 +630,6 @@
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="27.670000000000002" id="BBq-Dx-dub"/>
                                                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="f9m-Xp-CRz"/>
-                                                                                        <constraint firstAttribute="width" constant="39" id="jga-zf-0Tx"/>
                                                                                         <constraint firstAttribute="height" constant="27.670000000000002" id="yzE-Ji-K4c"/>
                                                                                     </constraints>
                                                                                     <state key="normal" title="Button"/>
@@ -652,7 +647,6 @@
                                                                                     <rect key="frame" x="99.666666666666686" y="0.0" width="105.33333333333331" height="27.666666666666668"/>
                                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                     <constraints>
-                                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="90.329999999999998" id="7er-8Y-W5V"/>
                                                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="105.33" id="t3y-bF-u2K"/>
                                                                                     </constraints>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
@@ -715,7 +709,6 @@
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="44" id="1MV-C7-8px"/>
                                                                         <constraint firstAttribute="height" constant="50.329999999999998" id="INr-b1-xS6"/>
-                                                                        <constraint firstAttribute="width" constant="49.670000000000002" id="Om1-6B-xK3"/>
                                                                     </constraints>
                                                                     <state key="normal" title="Button"/>
                                                                     <buttonConfiguration key="configuration" style="plain" image="plus.circle" catalog="system" title="">
@@ -776,38 +769,6 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rct-GL-Ae4">
-                                <rect key="frame" x="61" y="419" width="270" height="155"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Item Added" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQg-y4-FNk">
-                                        <rect key="frame" x="50" y="8" width="138" height="41"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Coca Cola has been added to the Fridge " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hXA-Aj-sbB">
-                                        <rect key="frame" x="8" y="50" width="262" height="55"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNi-Dt-9af">
-                                        <rect key="frame" x="0.0" y="105" width="254" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="OK">
-                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="21"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="okTapped:" destination="6sX-9W-6Vk" eventType="touchUpInside" id="lLv-Vl-bgJ"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WLg-Rl-81J"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -820,7 +781,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Quick Add" id="RcX-Zr-RGf"/>
                     <connections>
-                        <outlet property="popupView" destination="Rct-GL-Ae4" id="ben-6B-iuC"/>
                         <outlet property="quickAddTableView" destination="7P2-1Q-ug8" id="No3-gz-tAk"/>
                     </connections>
                 </viewController>
@@ -838,7 +798,7 @@
         <image name="coca_cola_image" width="45" height="45"/>
         <image name="house" catalog="system" width="128" height="104"/>
         <image name="minus" catalog="system" width="128" height="26"/>
-        <image name="pencil.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="pencil.circle.fill" catalog="system" width="32" height="32"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="plus.circle" catalog="system" width="128" height="123"/>
