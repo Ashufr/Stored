@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3F3875112BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */; };
+		3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */; };
+		3F462D4A2BE264B90077BD42 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D492BE264B90077BD42 /* AccountViewController.swift */; };
+		3F462D4C2BE271FA0077BD42 /* AccountSmallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */; };
 		3F4A51702BD944E200F5B930 /* InventoryStorageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */; };
 		3F4B87112BE24672007D77AF /* ExpiredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4B87102BE24672007D77AF /* ExpiredTableViewCell.swift */; };
 		3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */; };
@@ -42,6 +45,9 @@
 
 /* Begin PBXFileReference section */
 		3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredCollectionViewCell.swift; sourceTree = "<group>"; };
+		3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
+		3F462D492BE264B90077BD42 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSmallTableViewCell.swift; sourceTree = "<group>"; };
 		3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryStorageTableViewCell.swift; sourceTree = "<group>"; };
 		3F4B87102BE24672007D77AF /* ExpiredTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredTableViewCell.swift; sourceTree = "<group>"; };
 		3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertController.swift; sourceTree = "<group>"; };
@@ -129,6 +135,9 @@
 				3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */,
 				3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */,
 				3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */,
+				3F462D492BE264B90077BD42 /* AccountViewController.swift */,
+				3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */,
+				3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */,
 			);
 			path = Stored;
 			sourceTree = "<group>";
@@ -256,10 +265,12 @@
 			files = (
 				3FB635F02BDA4B1C00F75D29 /* InventoryNavigationController.swift in Sources */,
 				3F830C022BD8E9BD00E01E2C /* InventoryTableViewCell.swift in Sources */,
+				3F462D4A2BE264B90077BD42 /* AccountViewController.swift in Sources */,
 				3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */,
 				3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */,
 				3F993F4D2BD8B9EC006FE29E /* Item.swift in Sources */,
 				3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */,
+				3F462D4C2BE271FA0077BD42 /* AccountSmallTableViewCell.swift in Sources */,
 				3F7D21572BD14583003B3634 /* ExpiringViewController.swift in Sources */,
 				3FBE9A802BE1FE2E00676303 /* ExpiringCollectionViewCell.swift in Sources */,
 				3F830C042BD9018800E01E2C /* Storage.swift in Sources */,
@@ -267,6 +278,7 @@
 				3F4B87112BE24672007D77AF /* ExpiredTableViewCell.swift in Sources */,
 				3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */,
 				3FD3E32C2BE23C59002ED762 /* ExpiredViewController.swift in Sources */,
+				3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */,
 				3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */,
 				3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */,
