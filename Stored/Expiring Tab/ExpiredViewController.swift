@@ -1,10 +1,3 @@
-//
-//  ExpiredViewController.swift
-//  Stored
-//
-//  Created by student on 01/05/24.
-//
-
 import UIKit
 
 class ExpiredViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {

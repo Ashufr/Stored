@@ -5,6 +5,7 @@ struct Item {
     var quantity : Int
     var storage : String
     var expiryDate : Date
+    var expiryDays : Int?
     
     
     var isExpired : Bool {
@@ -33,6 +34,19 @@ struct Item {
         self.storage = storage
         self.expiryDate = expiryDate
     }
+    init(name: String, quantity: Int, storage: String, expiryDate: Date, expiryDays : Int) {
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.expiryDays = expiryDays
+    }
+    init(quickAddItem : Item) {
+        self.name = quickAddItem.name
+        self.quantity = quickAddItem.quantity
+        self.storage = quickAddItem.storage
+        self.expiryDate = Calendar.current.date(byAdding: .day, value: quickAddItem.expiryDays!, to: Date())!
+    }
     
 }
 
@@ -46,9 +60,15 @@ class ItemData{
     func calulateDateDifference(startDate : Date, endDate : Date) -> Int {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: startDate, to: endDate)
-//        print(components)
         return components.day!
     }
+    
+    let quickAddItems : [Item] = [
+        Item(name: "Milk", quantity: 1, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 0, to: Date())!, expiryDays: 3),
+        Item(name: "Bread", quantity: 1, storage: "Shelf", expiryDate: Calendar.current.date(byAdding: .day, value: 5, to: Date())!, expiryDays: 7),
+        Item(name: "Instant Noodles", quantity: 3, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .month, value: 6, to: Date())!, expiryDays: 180),
+        Item(name: "Rice", quantity: 1, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .year, value: 2, to: Date())!, expiryDays: 730)
+    ]
     
     let expiringItems: [Item] = [
         Item(name: "Milk", quantity: 1, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 0, to: Date())!),

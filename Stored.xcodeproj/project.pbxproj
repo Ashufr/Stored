@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCBF2BE2CB4F002A6425 /* InventoryNavigationController.swift */; };
+		3F29CCC42BE2CC02002A6425 /* QuickAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCC32BE2CC02002A6425 /* QuickAddViewController.swift */; };
+		3F29CCC62BE2CC21002A6425 /* QuickAddTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCC52BE2CC21002A6425 /* QuickAddTableViewCell.swift */; };
 		3F3875112BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */; };
 		3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */; };
 		3F462D4A2BE264B90077BD42 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D492BE264B90077BD42 /* AccountViewController.swift */; };
@@ -27,7 +30,6 @@
 		3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */; };
 		3F993F532BD8D270006FE29E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F993F522BD8D270006FE29E /* Assets.xcassets */; };
 		3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */; };
-		3FB635F02BDA4B1C00F75D29 /* InventoryNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */; };
 		3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */; };
 		3FBE9A802BE1FE2E00676303 /* ExpiringCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */; };
 		3FBF67F62BDA1C23005C58A9 /* SF-Pro-Rounded-Ultralight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67ED2BDA1C22005C58A9 /* SF-Pro-Rounded-Ultralight.otf */; };
@@ -44,6 +46,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F29CCBF2BE2CB4F002A6425 /* InventoryNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryNavigationController.swift; sourceTree = "<group>"; };
+		3F29CCC32BE2CC02002A6425 /* QuickAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddViewController.swift; sourceTree = "<group>"; };
+		3F29CCC52BE2CC21002A6425 /* QuickAddTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddTableViewCell.swift; sourceTree = "<group>"; };
 		3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		3F462D492BE264B90077BD42 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -66,7 +71,6 @@
 		3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F993F522BD8D270006FE29E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanItemButton.swift; sourceTree = "<group>"; };
-		3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InventoryNavigationController.swift; path = Stored/InventoryNavigationController.swift; sourceTree = SOURCE_ROOT; };
 		3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiringCollectionViewCell.swift; sourceTree = "<group>"; };
 		3FBF67ED2BDA1C22005C58A9 /* SF-Pro-Rounded-Ultralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Ultralight.otf"; sourceTree = "<group>"; };
@@ -93,6 +97,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F29CCBD2BE2CAC0002A6425 /* Expiring Tab */ = {
+			isa = PBXGroup;
+			children = (
+				3F7D21562BD14583003B3634 /* ExpiringViewController.swift */,
+				3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */,
+				3FDD7AEA2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift */,
+				3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */,
+				3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */,
+				3F4B87102BE24672007D77AF /* ExpiredTableViewCell.swift */,
+			);
+			path = "Expiring Tab";
+			sourceTree = "<group>";
+		};
+		3F29CCBE2BE2CAE9002A6425 /* Inventory Tab */ = {
+			isa = PBXGroup;
+			children = (
+				3F29CCBF2BE2CB4F002A6425 /* InventoryNavigationController.swift */,
+				3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */,
+				3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */,
+				3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */,
+				3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */,
+				3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */,
+				3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */,
+				3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */,
+			);
+			path = "Inventory Tab";
+			sourceTree = "<group>";
+		};
+		3F29CCC12BE2CB6F002A6425 /* Account Tab */ = {
+			isa = PBXGroup;
+			children = (
+				3F462D492BE264B90077BD42 /* AccountViewController.swift */,
+				3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */,
+				3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */,
+			);
+			path = "Account Tab";
+			sourceTree = "<group>";
+		};
+		3F29CCC22BE2CBE8002A6425 /* Quick Add Tab */ = {
+			isa = PBXGroup;
+			children = (
+				3F29CCC32BE2CC02002A6425 /* QuickAddViewController.swift */,
+				3F29CCC52BE2CC21002A6425 /* QuickAddTableViewCell.swift */,
+			);
+			path = "Quick Add Tab";
+			sourceTree = "<group>";
+		};
 		3F7D21462BD14583003B3634 = {
 			isa = PBXGroup;
 			children = (
@@ -117,27 +168,14 @@
 				3F7D215D2BD1458F003B3634 /* LaunchScreen.storyboard */,
 				3F7D21522BD14583003B3634 /* AppDelegate.swift */,
 				3F7D21542BD14583003B3634 /* SceneDelegate.swift */,
-				3F7D21562BD14583003B3634 /* ExpiringViewController.swift */,
-				3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */,
-				3FDD7AEA2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift */,
-				3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */,
-				3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */,
-				3F4B87102BE24672007D77AF /* ExpiredTableViewCell.swift */,
-				3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */,
-				3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */,
-				3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */,
-				3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */,
-				3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */,
+				3F29CCBD2BE2CAC0002A6425 /* Expiring Tab */,
+				3F29CCBE2BE2CAE9002A6425 /* Inventory Tab */,
+				3F29CCC22BE2CBE8002A6425 /* Quick Add Tab */,
+				3F29CCC12BE2CB6F002A6425 /* Account Tab */,
 				3F993F4B2BD8B9D3006FE29E /* Data Models */,
 				3FCFBDB12BDA450300ABB9BF /* Button */,
 				3F993F522BD8D270006FE29E /* Assets.xcassets */,
 				3F7D21602BD1458F003B3634 /* Info.plist */,
-				3FB635EF2BDA4B1C00F75D29 /* InventoryNavigationController.swift */,
-				3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */,
-				3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */,
-				3F462D492BE264B90077BD42 /* AccountViewController.swift */,
-				3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */,
-				3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */,
 			);
 			path = Stored;
 			sourceTree = "<group>";
@@ -263,7 +301,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FB635F02BDA4B1C00F75D29 /* InventoryNavigationController.swift in Sources */,
 				3F830C022BD8E9BD00E01E2C /* InventoryTableViewCell.swift in Sources */,
 				3F462D4A2BE264B90077BD42 /* AccountViewController.swift in Sources */,
 				3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */,
@@ -276,6 +313,7 @@
 				3F830C042BD9018800E01E2C /* Storage.swift in Sources */,
 				3F4A51702BD944E200F5B930 /* InventoryStorageTableViewCell.swift in Sources */,
 				3F4B87112BE24672007D77AF /* ExpiredTableViewCell.swift in Sources */,
+				3F29CCC42BE2CC02002A6425 /* QuickAddViewController.swift in Sources */,
 				3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */,
 				3FD3E32C2BE23C59002ED762 /* ExpiredViewController.swift in Sources */,
 				3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */,
@@ -283,8 +321,10 @@
 				3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
+				3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */,
 				3F3875112BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift in Sources */,
 				3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */,
+				3F29CCC62BE2CC21002A6425 /* QuickAddTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

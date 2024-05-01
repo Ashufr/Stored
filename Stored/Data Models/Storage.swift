@@ -103,18 +103,18 @@ class StorageData {
         return categorizedStorage
     }
 
-    
-    
-    func getExpiryCategory(for intValue: Int) -> ExpiryCategory {
-        switch intValue {
-        case 0:
-            return .expired
-        case 1:
-            return .today
-        case 2:
-            return .thisMonth
+    func getStorage(for storage : String) -> Storage {
+        switch storage {
+        case "Pantry":
+            return storages[0]
+        case "Fridge":
+            return storages[1]
+        case "Freezer":
+            return storages[2]
+        case "Shelf":
+            return storages[3]
         default:
-            return .later
+            return Storage(name: "", items: [])
         }
     }
     
