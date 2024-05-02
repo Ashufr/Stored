@@ -12,6 +12,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverLayerPopUp" customModule="Stored" customModuleProvider="target">
             <connections>
                 <outlet property="backView" destination="sqo-3p-eOJ" id="EcZ-l0-7LP"/>
+                <outlet property="descLabel" destination="20i-nn-L46" id="0yN-bt-m4M"/>
+                <outlet property="itemNameLabel" destination="fsx-mu-0Tf" id="8Bj-kp-qX3"/>
                 <outlet property="popUpView" destination="rlX-sO-Imh" id="blW-5t-lsl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -28,8 +30,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rlX-sO-Imh" userLabel="PopUpView">
                     <rect key="frame" x="61" y="349" width="271" height="154"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Added" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsx-mu-0Tf">
-                            <rect key="frame" x="50" y="8" width="138" height="40.666666666666664"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Item Added" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fsx-mu-0Tf">
+                            <rect key="frame" x="8" y="8" width="255" height="41"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>

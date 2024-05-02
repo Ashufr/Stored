@@ -1,6 +1,7 @@
 
 import UIKit
 
+
 class QuickAddTableViewCell: UITableViewCell {
     
     @IBOutlet var itemImage: UIImageView!
@@ -83,6 +84,10 @@ class QuickAddTableViewCell: UITableViewCell {
             contentView.backgroundColor = .white // Set the background color to white
         }
     }
+    
+
+    
+    
     
     private func updateUI() {
         let defaultBackgroundColor: UIColor = .white
