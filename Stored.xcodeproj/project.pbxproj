@@ -31,6 +31,7 @@
 		3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */; };
 		3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */; };
 		3F993F532BD8D270006FE29E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F993F522BD8D270006FE29E /* Assets.xcassets */; };
+		3FAAE16B2BE35042006E524A /* HouseholdTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */; };
 		3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */; };
 		3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */; };
 		3FBE9A802BE1FE2E00676303 /* ExpiringCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */; };
@@ -43,6 +44,8 @@
 		3FBF67FC2BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F32BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf */; };
 		3FBF67FD2BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F42BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf */; };
 		3FBF67FE2BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F52BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf */; };
+		3FC648622BE3458E000348A9 /* HouseHold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC648612BE3458E000348A9 /* HouseHold.swift */; };
+		3FC648642BE345CA000348A9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC648632BE345CA000348A9 /* User.swift */; };
 		3FD3E32C2BE23C59002ED762 /* ExpiredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */; };
 		3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDD7AEA2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -74,6 +77,7 @@
 		3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F993F522BD8D270006FE29E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdTableViewCell.swift; sourceTree = "<group>"; };
 		3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanItemButton.swift; sourceTree = "<group>"; };
 		3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiringCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -86,6 +90,8 @@
 		3FBF67F32BDA1C23005C58A9 /* SF-Pro-Rounded-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Thin.otf"; sourceTree = "<group>"; };
 		3FBF67F42BDA1C23005C58A9 /* SF-Pro-Rounded-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Semibold.otf"; sourceTree = "<group>"; };
 		3FBF67F52BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
+		3FC648612BE3458E000348A9 /* HouseHold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseHold.swift; sourceTree = "<group>"; };
+		3FC648632BE345CA000348A9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredViewController.swift; sourceTree = "<group>"; };
 		3FDD7AEA2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiringTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,6 +159,7 @@
 			children = (
 				3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */,
 				3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */,
+				3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */,
 			);
 			path = Household;
 			sourceTree = "<group>";
@@ -199,6 +206,8 @@
 			children = (
 				3F993F4C2BD8B9EC006FE29E /* Item.swift */,
 				3F830C032BD9018800E01E2C /* Storage.swift */,
+				3FC648612BE3458E000348A9 /* HouseHold.swift */,
+				3FC648632BE345CA000348A9 /* User.swift */,
 			);
 			path = "Data Models";
 			sourceTree = "<group>";
@@ -320,6 +329,7 @@
 				3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */,
 				3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */,
 				3F993F4D2BD8B9EC006FE29E /* Item.swift in Sources */,
+				3FAAE16B2BE35042006E524A /* HouseholdTableViewCell.swift in Sources */,
 				3F29CCC92BE2EAE6002A6425 /* HouseholdViewController.swift in Sources */,
 				3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */,
 				3F462D4C2BE271FA0077BD42 /* AccountSmallTableViewCell.swift in Sources */,
@@ -333,7 +343,9 @@
 				3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */,
 				3FD3E32C2BE23C59002ED762 /* ExpiredViewController.swift in Sources */,
 				3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */,
+				3FC648622BE3458E000348A9 /* HouseHold.swift in Sources */,
 				3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */,
+				3FC648642BE345CA000348A9 /* User.swift in Sources */,
 				3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
