@@ -71,7 +71,15 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         if sections[indexPath.section] == "Expired" {
             cell.itemExpiryLabel.textColor = .red
         }
-
+        ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
+            if let image = image {
+                cell.itemImage.image = image
+            } else {
+                // Handle case where image couldn't be loaded
+                print("Failed to load image")
+            }
+        }
+        cell.itemImage.layer.cornerRadius = 25
         return cell
     }
     

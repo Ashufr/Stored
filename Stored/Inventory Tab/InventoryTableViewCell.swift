@@ -5,7 +5,7 @@ class InventoryTableViewCell: UITableViewCell {
     @IBOutlet var itemNameLabel: UILabel!
     @IBOutlet var itemExpiryLabel: UILabel!
     @IBOutlet var itemStorageLabel: UILabel!
-    
+    @IBOutlet var itemImage: UIImageView!
     
     
 }

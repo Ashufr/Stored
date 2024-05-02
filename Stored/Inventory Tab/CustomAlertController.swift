@@ -17,10 +17,12 @@ class CustomAlertController: UIViewController {
     var inventoryCollectionDelegate: CustomAlertRefreshDelegate?
     
     var productTitle: String?
+    var productImageUrl: String?
     let storageLocations = ["Pantry", "Fridge", "Freezer", "Shelf"]
     
     // MARK: - Outlets
     
+    @IBOutlet weak var itemImage: UIImageView!
     @IBOutlet private weak var titleTextField: UITextField!
     @IBOutlet private weak var quantityLabel: UILabel!
     @IBOutlet private weak var quantityStepper: UIStepper!
@@ -77,7 +79,7 @@ class CustomAlertController: UIViewController {
         let selectedStorageIndex = pickerView.selectedRow(inComponent: 0)
         let itemStorage = storageLocations[selectedStorageIndex]
         
-        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate)
+        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: productImageUrl!)
         addItemToStorage(newItem, at: selectedStorageIndex)
     }
     

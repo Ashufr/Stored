@@ -12,6 +12,15 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.itemNameLabel.text = item.name
         cell.itemDescriptionLabel.text = item.expiryDescription
         cell.itemStorageLabel.text = item.storage
+        ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
+            if let image = image {
+                cell.itemImage.image = image
+            } else {
+                // Handle case where image couldn't be loaded
+                print("Failed to load image")
+            }
+        }
+        cell.itemImage.layer.cornerRadius = 25
         return cell
     }
     

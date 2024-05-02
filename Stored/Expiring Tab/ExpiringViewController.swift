@@ -14,6 +14,15 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
         cell.storageLabel.text = item.storage
+        ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
+            if let image = image {
+                cell.itemImage.image = image
+            } else {
+                // Handle case where image couldn't be loaded
+                print("Failed to load image")
+            }
+        }
+        cell.itemImage.layer.cornerRadius = 25
         return cell
     }
     func numberOfSections(in tableView: UITableView) -> Int {

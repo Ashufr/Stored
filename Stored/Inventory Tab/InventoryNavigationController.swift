@@ -290,7 +290,7 @@ extension InventoryNavigationController {
 // MARK: - CustomAlertController
 
 extension InventoryNavigationController {
-    func displayCustomAlert(productNameString: String) {
+    func displayCustomAlert(productNameString: String, productImageUrl : String) {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = scene.windows.first else {
             print("Unable to find window scene")
@@ -316,8 +316,17 @@ extension InventoryNavigationController {
                 customAlertController.inventoryStorageTableDelegate = inventoryStorageController
             }
         }
-        
+        customAlertController.productImageUrl = productImageUrl
         customAlertController.productTitle = productNameString
+        ItemData.getInstance().loadImageFrom(url: URL(string : productImageUrl)!){ image in
+            if let image = image {
+                customAlertController.itemImage.image = image
+            } else {
+                // Handle case where image couldn't be loaded
+                print("Failed to load image")
+            }
+        }
+//        customAlertController.itemImage.layer.cornerRadius = 20
         customAlertController.cameraDelegate = self
         
         customAlertController.modalPresentationStyle = .overFullScreen
@@ -366,8 +375,10 @@ extension InventoryNavigationController {
                 
                 if let product = json?["product"] as? [String: Any],
                    let productName = product["product_name"] as? String {
+                        let imageUrl = product["image_url"] as! String
+                    
                     DispatchQueue.main.async {
-                        self.displayCustomAlert(productNameString: productName)
+                        self.displayCustomAlert(productNameString: productName, productImageUrl: imageUrl)
                     }
                 } else {
                     self.itemNotFoundAlert()

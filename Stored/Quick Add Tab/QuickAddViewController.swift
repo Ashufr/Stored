@@ -20,6 +20,15 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
         cell.buttonImage.isUserInteractionEnabled = true
         cell.buttonImage.addGestureRecognizer(tapGesture)
         cell.item = item
+        ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
+            if let image = image {
+                cell.itemImage.image = image
+            } else {
+                // Handle case where image couldn't be loaded
+                print("Failed to load image")
+            }
+        }
+        cell.itemImage.layer.cornerRadius = 25
         return cell
     }
     
@@ -46,10 +55,8 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
             }
 
             let storage = StorageData.getInstance().getStorage(for: item.storage)
-            let newItem = Item(quickAddItem: item )
+            let newItem = Item(quickAddItem: item, quantity : Int(cell.itemStepper.value) )
             storage.items.append(newItem)
-            cell.itemStepper.value = 0
-            cell.itemStepperLabel.text = "0"
             
             let alertController = UIAlertController(title: "Item Added", message: "\(item.name) x\(Int(cell.itemStepper.value)) has been added to your \(item.storage)", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)

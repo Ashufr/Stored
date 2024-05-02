@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F02D9222BE3683F00655004 /* HouseholdProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F02D9212BE3683F00655004 /* HouseholdProfileViewController.swift */; };
+		3F02D9242BE376D200655004 /* HouseholdProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F02D9232BE376D200655004 /* HouseholdProfileCollectionViewCell.swift */; };
 		3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCBF2BE2CB4F002A6425 /* InventoryNavigationController.swift */; };
 		3F29CCC42BE2CC02002A6425 /* QuickAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCC32BE2CC02002A6425 /* QuickAddViewController.swift */; };
 		3F29CCC62BE2CC21002A6425 /* QuickAddTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCC52BE2CC21002A6425 /* QuickAddTableViewCell.swift */; };
@@ -51,6 +53,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F02D9212BE3683F00655004 /* HouseholdProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdProfileViewController.swift; sourceTree = "<group>"; };
+		3F02D9232BE376D200655004 /* HouseholdProfileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F29CCBF2BE2CB4F002A6425 /* InventoryNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryNavigationController.swift; sourceTree = "<group>"; };
 		3F29CCC32BE2CC02002A6425 /* QuickAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddViewController.swift; sourceTree = "<group>"; };
 		3F29CCC52BE2CC21002A6425 /* QuickAddTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddTableViewCell.swift; sourceTree = "<group>"; };
@@ -160,6 +164,8 @@
 				3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */,
 				3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */,
 				3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */,
+				3F02D9212BE3683F00655004 /* HouseholdProfileViewController.swift */,
+				3F02D9232BE376D200655004 /* HouseholdProfileCollectionViewCell.swift */,
 			);
 			path = Household;
 			sourceTree = "<group>";
@@ -338,6 +344,7 @@
 				3F830C042BD9018800E01E2C /* Storage.swift in Sources */,
 				3F4A51702BD944E200F5B930 /* InventoryStorageTableViewCell.swift in Sources */,
 				3F4B87112BE24672007D77AF /* ExpiredTableViewCell.swift in Sources */,
+				3F02D9222BE3683F00655004 /* HouseholdProfileViewController.swift in Sources */,
 				3F29CCC42BE2CC02002A6425 /* QuickAddViewController.swift in Sources */,
 				3F29CCCB2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift in Sources */,
 				3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */,
@@ -349,6 +356,7 @@
 				3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
+				3F02D9242BE376D200655004 /* HouseholdProfileCollectionViewCell.swift in Sources */,
 				3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */,
 				3F3875112BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift in Sources */,
 				3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */,

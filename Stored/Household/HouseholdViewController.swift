@@ -21,6 +21,8 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         cell.memberNameLabel.text = member.firstName
         cell.memberStreakLabel.text = "\(member.currentStreak) Days"
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        cell.addGestureRecognizer(tapGesture)
         return cell
     }
     
@@ -80,17 +82,27 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         cell.circleStack.layer.shadowOpacity = 0.2
         cell.circleStack.layer.shadowOffset = CGSize(width: 0, height: 4)
         cell.circleStack.layer.shadowRadius = 1
+        
+        
     
         return cell
         
     }
     
+    @objc func handleTap(_ sender: UITapGestureRecognizer){
+        print("MEMEM")
+        let member = sender.location(in: householdTableView)
+        if let indexPath = householdTableView.indexPathForRow(at: member){
+            performSegue(withIdentifier: "HouseholdProfileSegue", sender: indexPath)
+        }
+    }
+    
 
     @IBOutlet var householdCollectionView: UICollectionView!
     @IBOutlet var householdTableView: UITableView!
+    @IBOutlet var awardsView: UIView!
     
     let titles = ["Expired", "Current Streak", "Max Streak"]
-    let descriptions = ["8 Items", "7 Days", "7 Days"]
     let cellColors = ["#FFC6CD", "#EAFFB6", "#EFEFEF"]
     let circleColors = ["#D70015", "#43A40D", "#737373"]
     
@@ -106,6 +118,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         householdTableView.delegate = self
         householdTableView.isScrollEnabled = false
         
+        awardsView.layer.cornerRadius = 10
 
     }
  
@@ -131,6 +144,17 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         
         return UICollectionViewCompositionalLayout(section: section)
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "HouseholdProfileSegue" {
+            print("Segg")
+            if let householdProfileViewController = segue.destination as? HouseholdProfileViewController, let indexPath = sender as? IndexPath{
+                let member = UserData.getInstance().users[indexPath.row + 1]
+                householdProfileViewController.member = member
+                
+            }
+        }
     }
 
 }

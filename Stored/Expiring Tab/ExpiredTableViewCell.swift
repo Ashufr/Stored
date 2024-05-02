@@ -12,4 +12,5 @@ class ExpiredTableViewCell: UITableViewCell {
     @IBOutlet var itemNameLabel: UILabel!
     @IBOutlet var itemDescriptionLabel: UILabel!
     @IBOutlet var itemStorageLabel: UILabel!
+    @IBOutlet var itemImage: UIImageView!
 }
