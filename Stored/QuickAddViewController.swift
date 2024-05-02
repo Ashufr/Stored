@@ -57,30 +57,7 @@ class QuickAddViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBAction func rightEndTickButtonTapped(_ sender: UIButton) {
         print(sender.currentImage!)
-//        if let image = sender.currentImage {
-//            if(image == UIImage(systemName: "plus.circle")) {
-//                // isPopupVisible.toggle()
-//             
-//                
-//                // If the pop-up view is visible, center it above the table
-//                
-//            }
-//            if(image == UIImage(systemName: "checkmark.circle.fill")) {
-//                if(shouldPopUpShow == 0) { shouldPopUpShow = 1 }
-//                else if shouldPopUpShow == 1 {
-//                    shouldPopUpShow = 0
-//                    
-//                    let overLayer = OverLayerPopUp()
-//                    overLayer.appear(sender: self)
-//                    
-//                    if let cell = sender.superview?.superview as? QuickAddTableViewCell {
-//                                       // Update the quantity label text to "0"
-//                                       cell.quantityLabel.text = "0"
-//                                   }
-//          
-//                }
-//            }
-//        } 
+
         if let image = sender.currentImage {
                 if image == UIImage(systemName: "checkmark.circle.fill") {
                     if shouldPopUpShow == 0 {
