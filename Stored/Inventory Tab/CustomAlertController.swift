@@ -24,7 +24,7 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
     // MARK: - Outlets
     
     @IBOutlet private weak var alertView: UIView!
-    @IBOutlet private weak var itemImage: UIImageView!
+    @IBOutlet private weak var itemImageView: UIImageView!
     @IBOutlet private weak var titleTextField: UITextField!
     @IBOutlet private weak var quantityLabel: UILabel!
     @IBOutlet private weak var quantityStepper: UIStepper!
@@ -75,8 +75,8 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
             titleTextField.text = productTitle
         }
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleImageTap))
-        itemImage.isUserInteractionEnabled = true
-        itemImage.addGestureRecognizer(tapGestureRecognizer)
+        itemImageView.isUserInteractionEnabled = true
+        itemImageView.addGestureRecognizer(tapGestureRecognizer)
         let color = buttonStack.backgroundColor
         
         let borderLayer = CALayer()
@@ -84,14 +84,16 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
         borderLayer.frame = CGRect(x: 0, y: 0, width: buttonStack.frame.width, height: 1)
         buttonStack.layer.addSublayer(borderLayer)
         
-        ItemData.getInstance().loadImageFrom(url: URL(string : productImageUrl!)!){ image in
-            if let image = image {
-                self.itemImage.image = image
-            } else {
-                print("Failed to load image")
+        if let productImageUrl = productImageUrl, let url = URL(string :productImageUrl) {
+            ItemData.getInstance().loadImageFrom(url: url){ image in
+                if let image = image {
+                    self.itemImageView.image = image
+                } else {
+                    print("Failed to load image")
+                }
             }
         }
-        itemImage.layer.cornerRadius = 20
+        itemImageView.layer.cornerRadius = 20
         
     }
     
@@ -128,9 +130,9 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let editedImage = info[.editedImage] as? UIImage {
-                itemImage.image = editedImage
+                itemImageView.image = editedImage
             } else if let originalImage = info[.originalImage] as? UIImage {
-                itemImage.image = originalImage
+                itemImageView.image = originalImage
             }
             
             picker.dismiss(animated: true, completion: nil)
@@ -143,15 +145,33 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
     private func handleAddButtonTapped() {
         
         
-        guard let itemName = titleTextField.text else { return }
+        guard titleTextField.text != "" else { return }
+        guard (itemImageView.image?.isSymbolImage) == false else {
+            print("Image Not found")
+            return}
+        let itemImage = itemImageView.image!
+        let itemName = titleTextField.text!
         let itemQuantity = Int(quantityLabel.text ?? "0") ?? 1
         let itemExpiryDate = datePicker.date
         let selectedStorageIndex = pickerView.selectedRow(inComponent: 0)
         let itemStorage = storageLocations[selectedStorageIndex]
         
-        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: "", image: (itemImage.image ?? UIImage(systemName: "photo"))!)
+        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: "", image: itemImage)
         addItemToStorage(newItem, at: selectedStorageIndex)
     }
+    
+    func isSystemPhotoImage(_ image: UIImage?) -> Bool {
+        let systemImageName = "photo"
+        guard let image = image else { return false }
+        print("image is herer")
+        // Extract the system name from the image's description
+        let imageName = image.description.components(separatedBy: " ").last ?? ""
+        print(image.isSymbolImage)
+        // Compare against the known system image name
+        return imageName == systemImageName
+    }
+
+
     
     private func addItemToStorage(_ item: Item, at index: Int) {
         let storage = StorageData.getInstance().storages[index]

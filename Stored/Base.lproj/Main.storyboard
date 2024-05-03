@@ -1461,7 +1461,7 @@
                         <outlet property="buttonStack" destination="EGD-T4-Gvt" id="qal-CB-wnL"/>
                         <outlet property="cancelButton" destination="VLJ-iQ-4E0" id="gZe-qS-tjG"/>
                         <outlet property="datePicker" destination="sag-R5-eBd" id="8Ff-N5-eN6"/>
-                        <outlet property="itemImage" destination="92f-Fr-Xpd" id="B0C-dH-yjD"/>
+                        <outlet property="itemImageView" destination="92f-Fr-Xpd" id="B0C-dH-yjD"/>
                         <outlet property="pickerView" destination="rYH-yE-nCM" id="g13-OY-9rV"/>
                         <outlet property="quantityLabel" destination="aFa-KZ-qv8" id="BWT-RM-KEl"/>
                         <outlet property="quantityStepper" destination="tSq-na-is9" id="kF7-1A-DqT"/>

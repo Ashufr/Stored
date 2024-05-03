@@ -47,6 +47,7 @@ class InventoryNavigationController: UINavigationController {
         
         setupCaptureSession()
         setupBackButton(on: cameraViewController.view)
+        setupManualyAddButton(on: cameraViewController.view)
         setupRectangularFrame(on: cameraViewController.view)
         
         present(cameraViewController, animated: true, completion: nil)
@@ -112,6 +113,32 @@ class InventoryNavigationController: UINavigationController {
     
     @objc private func backButtonTapped() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Manually Add Button
+    
+    private func setupManualyAddButton(on view: UIView) {
+        let backButton = UIButton(type: .system)
+        backButton.backgroundColor = .white
+        backButton.setTitle("Add Manually", for: .normal)
+        backButton.titleLabel?.font = UIFont.systemFont(ofSize: 16) // Adjust font size as needed
+        backButton.setTitleColor(.black, for: .normal) // Adjust color as needed
+        backButton.layer.cornerRadius = 8 // Adjust corner radius as needed
+        backButton.addTarget(self, action: #selector(manuallyAddButtonTapped), for: .touchUpInside)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(backButton)
+
+        NSLayoutConstraint.activate([
+            backButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            backButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 120), // Adjust vertical position as needed
+            backButton.widthAnchor.constraint(equalToConstant: 200), // Adjust width as needed
+            backButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    @objc private func manuallyAddButtonTapped() {
+        displayCustomAlert(productNameString: "", productImageUrl: "")
     }
     
     // MARK: - Frame Setup
