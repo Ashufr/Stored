@@ -32,7 +32,7 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
     @IBOutlet private weak var pickerView: UIPickerView!
     @IBOutlet private weak var addButton: UIButton!
     @IBOutlet private weak var cancelButton: UIButton!
-    @IBOutlet var buttonStack: UIStackView!
+    @IBOutlet private weak var buttonStack: UIStackView!
     
     // MARK: - View Lifecycle
     
@@ -94,7 +94,7 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
             }
         }
         itemImageView.layer.cornerRadius = 20
-        
+        datePicker.minimumDate = Date()
     }
     
     @objc private func handleImageTap() {
@@ -195,13 +195,11 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
                 if let window = scene.windows.first {
                     if let topViewController = window.rootViewController {
                         var currentViewController = topViewController
-                        
-                        // Traverse the view controller hierarchy to find the topmost view controller
+                    
                         while let presentedViewController = currentViewController.presentedViewController {
                             currentViewController = presentedViewController
                         }
                         
-                        // Present the UIAlertController from the topmost view controller
                         currentViewController.present(alertController, animated: true, completion: nil)
                     }
                 }

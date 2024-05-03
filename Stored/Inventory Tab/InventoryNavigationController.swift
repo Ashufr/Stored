@@ -131,13 +131,14 @@ class InventoryNavigationController: UINavigationController {
 
         NSLayoutConstraint.activate([
             backButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            backButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 120), // Adjust vertical position as needed
+            backButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -180), // Adjust vertical position as needed
             backButton.widthAnchor.constraint(equalToConstant: 200), // Adjust width as needed
             backButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
     @objc private func manuallyAddButtonTapped() {
+        captureSession?.stopRunning()
         displayCustomAlert(productNameString: "", productImageUrl: "")
     }
     
@@ -287,21 +288,19 @@ extension InventoryNavigationController {
             }
 
             let alertController = UIAlertController(title: "Item Not Found", message: "The item was not found.", preferredStyle: .alert)
+
             let scanAgainAction = UIAlertAction(title: "Scan Again", style: .default) { _ in
                 self.captureSession?.startRunning()
             }
+
             let enterManuallyAction = UIAlertAction(title: "Enter Manually", style: .default) { _ in
                 self.displayCustomAlert(productNameString: "", productImageUrl: "")
             }
+
             alertController.addAction(scanAgainAction)
             alertController.addAction(enterManuallyAction)
-            if let scanButton = alertController.actions.first {
-                scanButton.setValue(UIColor.red, forKey: "titleTextColor")
-            }
 
-            if let enterButton = alertController.actions.last {
-                enterButton.setValue(UIColor.red, forKey: "titleTextColor")
-            }
+           
 
             // Present the alert on the topmost view controller
             topViewController?.present(alertController, animated: true) {
