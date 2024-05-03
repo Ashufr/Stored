@@ -22,7 +22,6 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
                     cell.itemImage.image = image
                     item.image = image
                 } else {
-                    // Handle case where image couldn't be loaded
                     print("Failed to load image")
                 }
             }

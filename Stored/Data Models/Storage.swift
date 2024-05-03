@@ -17,7 +17,7 @@ class Storage {
         // Aggregate items from all storage instances
         for storageInstance in allInstances {
             for item in storageInstance.items {
-                // Check if the item identifier has already been added
+                // Check if the item identifier has alrea   dy been added
                 if !itemIdentifierSet.contains(item.name) {
                     allItems.append(item)
                     itemIdentifierSet.insert(item.name)

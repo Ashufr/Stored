@@ -12,12 +12,12 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     @IBOutlet var inventoryTableView: UITableView!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        ItemData.getInstance().recentlyAddedItems.count
+        3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InventoryRecentlyCell", for: indexPath) as! InventoryTableViewCell
-        let item = ItemData.getInstance().recentlyAddedItems[indexPath.row]
+        let item = recentlyAddedItems[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
         if item.isExpired {
@@ -68,6 +68,12 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
             performSegue(withIdentifier: "StorageSegue", sender: indexPath)
         }
         
+    }
+    
+    var recentlyAddedItems : [Item] {
+        let sortedItems = Storage.all.items.sorted(by: { $0.dateAdded > $1.dateAdded })
+        let firstThreeItems = Array(sortedItems.prefix(3))
+        return firstThreeItems
     }
 
     override func viewDidLoad() {

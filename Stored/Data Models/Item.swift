@@ -5,6 +5,7 @@ class Item {
     var name : String
     var quantity : Int
     var storage : String
+    var dateAdded : Date
     var expiryDate : Date
     var expiryDays : Int?
     var imageURL : URL
@@ -36,6 +37,7 @@ class Item {
         self.quantity = quantity
         self.storage = storage
         self.expiryDate = expiryDate
+        self.dateAdded = Date()
         self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
     }
     init(name: String, quantity: Int, storage: String, expiryDate: Date, imageUrl : String, image : UIImage) {
@@ -43,6 +45,7 @@ class Item {
         self.quantity = quantity
         self.storage = storage
         self.expiryDate = expiryDate
+        self.dateAdded = Date()
         self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
         self.image = image
     }
@@ -52,6 +55,7 @@ class Item {
         self.storage = storage
         self.expiryDate = expiryDate
         self.expiryDays = expiryDays
+        self.dateAdded = Date()
         self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
     }
     init(quickAddItem : Item, quantity : Int) {
@@ -60,6 +64,7 @@ class Item {
         self.storage = quickAddItem.storage
         self.expiryDate = Calendar.current.date(byAdding: .day, value: quickAddItem.expiryDays!, to: Date())!
         self.imageURL = quickAddItem.imageURL
+        self.dateAdded = Date()
     }
     
 }

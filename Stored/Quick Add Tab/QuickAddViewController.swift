@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol QuickAddDelegate : AnyObject {
+    func itemAdded()
+}
+
 class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+    
+    var inventoryDelegate : QuickAddDelegate?
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         ItemData.getInstance().quickAddItems.count
     }
