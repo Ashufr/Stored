@@ -64,7 +64,7 @@ class StorageData {
     }
     
     
-    func categorizeStorage(_ items: [Item]) -> [ExpiryCategory: [Item]] {
+    func categorizeStorageItems(_ items: [Item]) -> [ExpiryCategory: [Item]] {
         let calendar = Calendar.current
         let currentDate = Date()
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: currentDate)!
@@ -72,8 +72,6 @@ class StorageData {
         var categorizedStorage: [ExpiryCategory: [Item]] = [
             .expired: [],
             .today: [],
-            .tomorrow: [],
-            .thisWeek: [],
             .thisMonth: [],
             .later: []
         ]
@@ -86,14 +84,39 @@ class StorageData {
                 categorizedStorage[.expired]?.append(item)
             } else if calendar.isDate(expiryDate, inSameDayAs: currentDate) {
                 categorizedStorage[.today]?.append(item)
-            } else if calendar.isDate(expiryDate, inSameDayAs: tomorrow) {
-                categorizedStorage[.tomorrow]?.append(item)
-            } else if calendar.component(.weekOfYear, from: expiryDate) == calendar.component(.weekOfYear, from: currentDate) && calendar.component(.month, from: expiryDate) == calendar.component(.month, from: currentDate) && calendar.component(.year, from: expiryDate) == calendar.component(.year, from: currentDate){
-                categorizedStorage[.thisWeek]?.append(item)
             } else if calendar.component(.month, from: expiryDate) == calendar.component(.month, from: currentDate) && calendar.component(.year, from: expiryDate) == calendar.component(.year, from: currentDate){
                 categorizedStorage[.thisMonth]?.append(item)
             } else {
                 categorizedStorage[.later]?.append(item)
+            }
+        }
+        
+        for (category, items) in categorizedStorage {
+            categorizedStorage[category] = items.sorted(by: { $0.expiryDate < $1.expiryDate })
+        }
+        return categorizedStorage
+    }
+    
+    func categorizeExpiringItems(_ items: [Item]) -> [ExpiryCategory: [Item]] {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        
+        var categorizedStorage: [ExpiryCategory: [Item]] = [
+            .today: [],
+            .tomorrow: [],
+            .thisWeek: [],
+        ]
+        
+        for item in items {
+            let expiryDate = item.expiryDate
+            
+            if calendar.isDate(expiryDate, inSameDayAs: currentDate) {
+                categorizedStorage[.today]?.append(item)
+            } else if calendar.isDate(expiryDate, inSameDayAs: tomorrow) {
+                categorizedStorage[.tomorrow]?.append(item)
+            } else if calendar.component(.weekOfYear, from: expiryDate) <= calendar.component(.weekOfYear, from: currentDate) {
+                categorizedStorage[.thisWeek]?.append(item)
             }
         }
         

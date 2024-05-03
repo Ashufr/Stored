@@ -8,7 +8,7 @@ protocol CustomAlertRefreshDelegate: AnyObject {
     func finishedAddingItem()
 }
 
-class CustomAlertController: UIViewController {
+class CustomAlertController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     // MARK: - Properties
     
@@ -17,12 +17,14 @@ class CustomAlertController: UIViewController {
     var inventoryCollectionDelegate: CustomAlertRefreshDelegate?
     
     var productTitle: String?
+    var productImage : String?
     var productImageUrl: String?
     let storageLocations = ["Pantry", "Fridge", "Freezer", "Shelf"]
     
     // MARK: - Outlets
     
-    @IBOutlet weak var itemImage: UIImageView!
+    @IBOutlet private weak var alertView: UIView!
+    @IBOutlet private weak var itemImage: UIImageView!
     @IBOutlet private weak var titleTextField: UITextField!
     @IBOutlet private weak var quantityLabel: UILabel!
     @IBOutlet private weak var quantityStepper: UIStepper!
@@ -30,12 +32,14 @@ class CustomAlertController: UIViewController {
     @IBOutlet private weak var pickerView: UIPickerView!
     @IBOutlet private weak var addButton: UIButton!
     @IBOutlet private weak var cancelButton: UIButton!
+    @IBOutlet var buttonStack: UIStackView!
     
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        
     }
     
     // MARK: - Actions
@@ -63,13 +67,78 @@ class CustomAlertController: UIViewController {
     
     private func setupView() {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        alertView.layer.cornerRadius = 20
         pickerView.dataSource = self
         pickerView.delegate = self
         titleTextField.delegate = self
         if let productTitle = productTitle {
             titleTextField.text = productTitle
         }
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleImageTap))
+        itemImage.isUserInteractionEnabled = true
+        itemImage.addGestureRecognizer(tapGestureRecognizer)
+        let color = buttonStack.backgroundColor
+        
+        let borderLayer = CALayer()
+        borderLayer.backgroundColor = color?.cgColor
+        borderLayer.frame = CGRect(x: 0, y: 0, width: buttonStack.frame.width, height: 1)
+        buttonStack.layer.addSublayer(borderLayer)
+        
+        ItemData.getInstance().loadImageFrom(url: URL(string : productImageUrl!)!){ image in
+            if let image = image {
+                self.itemImage.image = image
+            } else {
+                print("Failed to load image")
+            }
+        }
+        itemImage.layer.cornerRadius = 20
+        
     }
+    
+    @objc private func handleImageTap() {
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.allowsEditing = true
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            let takePhotoAction = UIAlertAction(title: "Take Photo", style: .default) { _ in
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    imagePickerController.sourceType = .camera
+                    self.present(imagePickerController, animated: true, completion: nil)
+                } else {
+                    print("Camera is not available.")
+                }
+            }
+            alertController.addAction(takePhotoAction)
+            
+            let chooseFromLibraryAction = UIAlertAction(title: "Choose from Library", style: .default) { _ in
+                imagePickerController.sourceType = .photoLibrary
+                self.present(imagePickerController, animated: true, completion: nil)
+            }
+            alertController.addAction(chooseFromLibraryAction)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            
+            present(alertController, animated: true, completion: nil)
+        }
+        
+        // UIImagePickerControllerDelegate methods
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let editedImage = info[.editedImage] as? UIImage {
+                itemImage.image = editedImage
+            } else if let originalImage = info[.originalImage] as? UIImage {
+                itemImage.image = originalImage
+            }
+            
+            picker.dismiss(animated: true, completion: nil)
+        }
+        
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            picker.dismiss(animated: true, completion: nil)
+        }
     
     private func handleAddButtonTapped() {
         
@@ -80,7 +149,7 @@ class CustomAlertController: UIViewController {
         let selectedStorageIndex = pickerView.selectedRow(inComponent: 0)
         let itemStorage = storageLocations[selectedStorageIndex]
         
-        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: productImageUrl!)
+        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: "", image: (itemImage.image ?? UIImage(systemName: "photo"))!)
         addItemToStorage(newItem, at: selectedStorageIndex)
     }
     

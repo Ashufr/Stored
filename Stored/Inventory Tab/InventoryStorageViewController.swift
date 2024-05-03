@@ -3,7 +3,7 @@ import UIKit
 class InventoryStorageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomAlertRefreshDelegate {
     func finishedAddingItem() {
         print("Finalalal")
-        categorizedItems = StorageData.getInstance().categorizeStorage(storage?.items ?? [])
+        categorizedItems = StorageData.getInstance().categorizeStorageItems(storage?.items ?? [])
         inventoryStorageTableView.reloadData()
     }
     
@@ -71,12 +71,19 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         if sections[indexPath.section] == "Expired" {
             cell.itemExpiryLabel.textColor = .red
         }
-        ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
-            if let image = image {
-                cell.itemImage.image = image
-            } else {
-                // Handle case where image couldn't be loaded
-                print("Failed to load image")
+        if let image = item.image{
+            cell.itemImage.image = image
+            print("Image Found")
+        }else{
+            ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
+                if let image = image {
+                    cell.itemImage.image = image
+                    item.image = image
+                    print("Image Sett")
+                } else {
+                    // Handle case where image couldn't be loaded
+                    print("Failed to load image")
+                }
             }
         }
         cell.itemImage.layer.cornerRadius = 25
@@ -121,7 +128,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         super.viewDidLoad()
         
         if let storage = storage {
-            categorizedItems = StorageData.getInstance().categorizeStorage(storage.items)
+            categorizedItems = StorageData.getInstance().categorizeStorageItems(storage.items)
         }
         
         inventoryStorageTableView.dataSource = self

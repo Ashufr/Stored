@@ -260,10 +260,21 @@ extension InventoryNavigationController {
             }
 
             let alertController = UIAlertController(title: "Item Not Found", message: "The item was not found.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            let scanAgainAction = UIAlertAction(title: "Scan Again", style: .default) { _ in
                 self.captureSession?.startRunning()
             }
-            alertController.addAction(okAction)
+            let enterManuallyAction = UIAlertAction(title: "Enter Manually", style: .default) { _ in
+                self.displayCustomAlert(productNameString: "", productImageUrl: "")
+            }
+            alertController.addAction(scanAgainAction)
+            alertController.addAction(enterManuallyAction)
+            if let scanButton = alertController.actions.first {
+                scanButton.setValue(UIColor.red, forKey: "titleTextColor")
+            }
+
+            if let enterButton = alertController.actions.last {
+                enterButton.setValue(UIColor.red, forKey: "titleTextColor")
+            }
 
             // Present the alert on the topmost view controller
             topViewController?.present(alertController, animated: true) {
@@ -318,15 +329,6 @@ extension InventoryNavigationController {
         }
         customAlertController.productImageUrl = productImageUrl
         customAlertController.productTitle = productNameString
-        ItemData.getInstance().loadImageFrom(url: URL(string : productImageUrl)!){ image in
-            if let image = image {
-                customAlertController.itemImage.image = image
-            } else {
-                // Handle case where image couldn't be loaded
-                print("Failed to load image")
-            }
-        }
-//        customAlertController.itemImage.layer.cornerRadius = 20
         customAlertController.cameraDelegate = self
         
         customAlertController.modalPresentationStyle = .overFullScreen

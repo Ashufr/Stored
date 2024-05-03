@@ -1,13 +1,14 @@
 import Foundation
 import UIKit
 
-struct Item {
+class Item {
     var name : String
     var quantity : Int
     var storage : String
     var expiryDate : Date
     var expiryDays : Int?
     var imageURL : URL
+    var image : UIImage?
     
     
     var isExpired : Bool {
@@ -35,7 +36,15 @@ struct Item {
         self.quantity = quantity
         self.storage = storage
         self.expiryDate = expiryDate
-        self.imageURL = URL(string: imageUrl)!
+        self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
+    }
+    init(name: String, quantity: Int, storage: String, expiryDate: Date, imageUrl : String, image : UIImage) {
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
+        self.image = image
     }
     init(name: String, quantity: Int, storage: String, expiryDate: Date, expiryDays : Int, imageUrl : String) {
         self.name = name
@@ -43,7 +52,7 @@ struct Item {
         self.storage = storage
         self.expiryDate = expiryDate
         self.expiryDays = expiryDays
-        self.imageURL = URL(string: imageUrl)!
+        self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
     }
     init(quickAddItem : Item, quantity : Int) {
         self.name = quickAddItem.name
@@ -62,10 +71,8 @@ class ItemData{
         instance
     }
     func loadImageFrom(url: URL, completion: @escaping (UIImage?) -> Void) {
-        // Create a background queue to perform network request asynchronously
         DispatchQueue.global().async {
             do {
-                // Fetch image data from the URL
                 let imageData = try Data(contentsOf: url)
                 
                 // Initialize UIImage from the image data
@@ -106,7 +113,7 @@ class ItemData{
         Item(name: "Bonn Bread", quantity: 1, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 0, to: Date())!, imageUrl: "https://bonn.in/wp-content/uploads/2019/10/brown-dummy-with-sandwich-only-1.png"),
         Item(name: "Greek Yogurt", quantity: 1, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 1, to: Date())!, imageUrl: "https://i0.wp.com/img.paisawapas.com/ovz3vew9pw/2023/03/30142428/greek-yogurt-brands-in-india.jpg?resize=1000%2C1000&ssl=1"),
         Item(name: "Apples pie", quantity: 3, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 2, to: Date())!, imageUrl: "https://images.freshop.com/00032100047210/36caed5c08ba0db51f616558b10d5493_large.png"),
-        Item(name: "Eggs", quantity: 6, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 3, to: Date())!, imageUrl: "https://m.media-amazon.com/images/I/71imQYH-YFL.jpg"),
+        Item(name: "Eggs", quantity: 6, storage: "Fridge", expiryDate: Calendar.current.date(byAdding: .day, value: 2, to: Date())!, imageUrl: "https://m.media-amazon.com/images/I/71imQYH-YFL.jpg"),
         Item(name: "Potatoe Chips", quantity: 5, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 3, to: Date())!, imageUrl: "https://hips.hearstapps.com/hmg-prod/images/screen-shot-2022-10-13-at-9-35-04-am-1665668122.png"),
         Item(name: "Frozen Pizza", quantity: 2, storage: "Freezer", expiryDate: Calendar.current.date(byAdding: .day, value: 3, to: Date())!, imageUrl: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1552331318-celeste-pepperoni-1552331297.jpg?crop=1xw:1xh;center,top&resize=980:*")
     ]
@@ -123,10 +130,10 @@ class ItemData{
         Item(name: "Dawat Rice", quantity: 7, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: -3, to: Date())!, imageUrl: "https://images1.zeebiz.com/images/ZB-EN/900x1600/2023/6/12/1686555826739_1.jpg"), // expiring in 3 days
         Item(name: "Pasta", quantity: 4, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 0, to: Date())!, imageUrl: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1580140712-barilla-1580140703.png?crop=1xw:1xh;center,top&resize=980:*"), // expiring in 5 days
         Item(name: "Canned Beans", quantity: 2, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 1, to: Date())!, imageUrl: "https://5.imimg.com/data5/OY/CG/MY-9378464/heinz-baked-beans-500x500.jpg"), // expiring in 7 days
-        Item(name: "Cereal", quantity: 1, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 10, to: Date())!, imageUrl: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1682445551-cocoa-puffs-644814e84bc6d.jpg?crop=1xw:1xh;center,top&resize=980:*"), // expiring in 10 days
-        Item(name: "Flour", quantity: 6, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 15, to: Date())!, imageUrl: "https://assetscdn1.paytm.com/images/catalog/product/F/FA/FASAASHIRVAAD-SBIGB9858321E98F92E/1561493103862_0.jpg"), // expiring in 15 days
-        Item(name: "Sugar", quantity: 9, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 20, to: Date())!, imageUrl: "https://asset20.ckassets.com/blog/wp-content/uploads/sites/5/2022/01/1-14-1024x512.jpg"), // expiring in 20 days
-        Item(name: "Salt", quantity: 8, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 25, to: Date())!, imageUrl: "https://asset20.ckassets.com/blog/wp-content/uploads/sites/5/2021/12/2-6-1024x512.jpg"), // expiring in 25 days
+        Item(name: "Cereal", quantity: 1, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 2, to: Date())!, imageUrl: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1682445551-cocoa-puffs-644814e84bc6d.jpg?crop=1xw:1xh;center,top&resize=980:*"), // expiring in 10 days
+        Item(name: "Flour", quantity: 6, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 2, to: Date())!, imageUrl: "https://assetscdn1.paytm.com/images/catalog/product/F/FA/FASAASHIRVAAD-SBIGB9858321E98F92E/1561493103862_0.jpg"), // expiring in 15 days
+        Item(name: "Sugar", quantity: 9, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 10, to: Date())!, imageUrl: "https://asset20.ckassets.com/blog/wp-content/uploads/sites/5/2022/01/1-14-1024x512.jpg"), // expiring in 20 days
+        Item(name: "Salt", quantity: 8, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 12, to: Date())!, imageUrl: "https://asset20.ckassets.com/blog/wp-content/uploads/sites/5/2021/12/2-6-1024x512.jpg"), // expiring in 25 days
         Item(name: "Olive Oil", quantity: 3, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 30, to: Date())!, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBO4woU7lejkXRTU-6M3MtVVQKXzIBxLhsw&usqp=CAU"), // expiring in 30 days
         Item(name: "Canned Soup", quantity: 1, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 35, to: Date())!, imageUrl: "https://www.eatthis.com/wp-content/uploads/sites/4/2019/01/wolfgang-puck-organic-minestrone-soup.jpg"), // expiring in 35 days
         Item(name: "Dried Beans", quantity: 5, storage: "Pantry", expiryDate: Calendar.current.date(byAdding: .day, value: 60, to: Date())!, imageUrl: "https://i5.walmartimages.com/asr/833cfd65-1dc5-4c19-9ad6-8e8d9b702e0d.ee6348c349840730d61b3e86b7a3a1cb.jpeg?odnHeight=320&odnWidth=320&odnBg=FFFFFF"), // expiring in 40 days

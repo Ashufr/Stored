@@ -20,12 +20,17 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
         cell.buttonImage.isUserInteractionEnabled = true
         cell.buttonImage.addGestureRecognizer(tapGesture)
         cell.item = item
-        ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
-            if let image = image {
-                cell.itemImage.image = image
-            } else {
-                // Handle case where image couldn't be loaded
-                print("Failed to load image")
+        if let image = item.image{
+            cell.itemImage.image = image
+        }else{
+            ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
+                if let image = image {
+                    cell.itemImage.image = image
+                    item.image = image
+                } else {
+                    // Handle case where image couldn't be loaded
+                    print("Failed to load image")
+                }
             }
         }
         cell.itemImage.layer.cornerRadius = 25
