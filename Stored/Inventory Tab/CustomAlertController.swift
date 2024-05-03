@@ -52,6 +52,7 @@ class CustomAlertController: UIViewController {
     @IBAction private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
         cameraDelegate?.alertDismissed()
+        
     }
     
     @IBAction private func datePickerValueChanged() {
@@ -71,7 +72,7 @@ class CustomAlertController: UIViewController {
     }
     
     private func handleAddButtonTapped() {
-        dismiss(animated: true)
+        
         
         guard let itemName = titleTextField.text else { return }
         let itemQuantity = Int(quantityLabel.text ?? "0") ?? 1
@@ -93,8 +94,29 @@ class CustomAlertController: UIViewController {
         if let inventoryCollectionDelegate = inventoryCollectionDelegate {
             inventoryCollectionDelegate.finishedAddingItem()
         }
-        if let cameraDelegate = cameraDelegate {
-            cameraDelegate.alertDismissed()
+        dismiss(animated: true){
+            let alertController = UIAlertController(title: "\(item.name) Added", message: "\(item.name) x\(item.quantity) has been added to your \(item.storage)", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default) { _ in
+                self.cameraDelegate?.alertDismissed()
+            }
+            
+            alertController.addAction(action)
+            
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                if let window = scene.windows.first {
+                    if let topViewController = window.rootViewController {
+                        var currentViewController = topViewController
+                        
+                        // Traverse the view controller hierarchy to find the topmost view controller
+                        while let presentedViewController = currentViewController.presentedViewController {
+                            currentViewController = presentedViewController
+                        }
+                        
+                        // Present the UIAlertController from the topmost view controller
+                        currentViewController.present(alertController, animated: true, completion: nil)
+                    }
+                }
+            }
         }
     }
     
