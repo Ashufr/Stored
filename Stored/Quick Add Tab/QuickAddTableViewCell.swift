@@ -7,8 +7,11 @@
 
 import UIKit
 
+
+
 class QuickAddTableViewCell: UITableViewCell {
 
+    var quickAddViewController : QuickAddViewController?
     var item : Item?
     
     @IBOutlet var itemImage: UIImageView!
@@ -23,6 +26,11 @@ class QuickAddTableViewCell: UITableViewCell {
     @IBOutlet var imageStack: UIStackView!
     
     @IBAction func stepperTapped(_ sender: UIStepper, forEvent event: UIEvent) {
+        if itemStepper.value == 0 {
+            itemStepper.value = 1
+            itemStepperLabel.text = "1"
+            quickAddViewController?.dismissAdding(cell: self)
+        }
         itemStepperLabel.text = "\(Int(itemStepper.value))"
     }
 }

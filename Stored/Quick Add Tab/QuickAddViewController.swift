@@ -41,6 +41,7 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
             }
         }
         cell.itemImage.layer.cornerRadius = 25
+        cell.quickAddViewController = self
         return cell
     }
     
@@ -73,8 +74,8 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
             let alertController = UIAlertController(title: "Item Added", message: "\(item.name) x\(Int(cell.itemStepper.value)) has been added to your \(item.storage)", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(okAction)
-            cell.itemStepper.value = 0
-            cell.itemStepperLabel.text = "0"
+            cell.itemStepper.value = 1
+            cell.itemStepperLabel.text = "1"
             // Get the topmost view controller to present the alert
             if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                 if let window = scene.windows.first(where: { $0.isKeyWindow }) {
@@ -92,6 +93,15 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
         }
         
         
+    }
+    
+    func dismissAdding(cell : QuickAddTableViewCell){
+        if let image = UIImage(systemName: "plus.circle") {
+            cell.buttonImage.image = image
+        }else{
+            print("No image")
+        }
+        cell.itemStack.isHidden = true
     }
     
 
