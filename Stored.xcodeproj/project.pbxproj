@@ -29,6 +29,7 @@
 		3F7D215F2BD1458F003B3634 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3F7D215E2BD1458F003B3634 /* Base */; };
 		3F830C022BD8E9BD00E01E2C /* InventoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */; };
 		3F830C042BD9018800E01E2C /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F830C032BD9018800E01E2C /* Storage.swift */; };
+		3F8A8C372BE67901006A285D /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8A8C362BE67901006A285D /* Badge.swift */; };
 		3F993F4D2BD8B9EC006FE29E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F4C2BD8B9EC006FE29E /* Item.swift */; };
 		3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */; };
 		3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */; };
@@ -77,6 +78,7 @@
 		3F7D21602BD1458F003B3634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryTableViewCell.swift; sourceTree = "<group>"; };
 		3F830C032BD9018800E01E2C /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		3F8A8C362BE67901006A285D /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		3F993F4C2BD8B9EC006FE29E /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				3F830C032BD9018800E01E2C /* Storage.swift */,
 				3FC648612BE3458E000348A9 /* HouseHold.swift */,
 				3FC648632BE345CA000348A9 /* User.swift */,
+				3F8A8C362BE67901006A285D /* Badge.swift */,
 			);
 			path = "Data Models";
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				3FC648642BE345CA000348A9 /* User.swift in Sources */,
 				3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */,
+				3F8A8C372BE67901006A285D /* Badge.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
 				3F02D9242BE376D200655004 /* HouseholdProfileCollectionViewCell.swift in Sources */,
 				3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */,

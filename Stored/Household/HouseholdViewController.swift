@@ -48,42 +48,15 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = householdCollectionView.dequeueReusableCell(withReuseIdentifier: "HouseholdCollectionViewCell", for: indexPath) as! HouseholdCollectionViewCell
-        cell.circleStack.layer.cornerRadius = 33
-        cell.layer.cornerRadius = 10
-        cell.backgroundColor = UIColor(hex: cellColors[indexPath.row])
-        cell.circleStack.backgroundColor = UIColor(hex: circleColors[indexPath.row])
-        
-        cell.titleLabel.text = titles[indexPath.row]
-        cell.descLabel.textColor = .white
-        if indexPath.row == 0{
-            cell.descLabel.text = "\(UserData.getInstance().users[0].expiredItems) Items"
-        }else if indexPath.row == 1 {
-            cell.descLabel.text = "\(UserData.getInstance().users[0].currentStreak) Days"
-        }else {
-            cell.descLabel.text = "\(UserData.getInstance().users[0].maxStreak) Days"
-        }
+    
         
         
-        
-        cell.layer.cornerRadius = 10
-        
-        cell.layer.shadowColor = UIColor.black.cgColor
-        cell.layer.shadowOpacity = 0.5
-        cell.layer.shadowOffset = CGSize(width: 1, height: 1)
-        cell.layer.shadowRadius = 1
-        cell.layer.masksToBounds = false
-        
-        cell.circleStack.layer.shadowColor = UIColor.black.cgColor
-        cell.circleStack.layer.shadowOpacity = 0.2
-        cell.circleStack.layer.shadowOffset = CGSize(width: 0, height: 4)
-        cell.circleStack.layer.shadowRadius = 1
-        
-        
+    
     
         return cell
         
@@ -97,10 +70,26 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         }
     }
     
-
+    @IBOutlet var outerStackView: UIStackView!
+    
+    @IBOutlet var expiredStackView: UIStackView!
+    @IBOutlet var expiredCircleStackView: UIStackView!
+    @IBOutlet var expiredLabel: UILabel!
+    @IBOutlet var expiredView: UIView!
+    
+    @IBOutlet var currentStreakStack: UIStackView!
+    @IBOutlet var currentCircleStack: UIStackView!
+    @IBOutlet var currentLabel: UILabel!
+    @IBOutlet var currentView: UIView!
+    
+    @IBOutlet var maxStreakStack: UIStackView!
+    @IBOutlet var maxCircleStack: UIStackView!
+    @IBOutlet var maxLabel: UILabel!
+    
+    @IBOutlet var maxView: UIView!
+    
     @IBOutlet var householdCollectionView: UICollectionView!
     @IBOutlet var householdTableView: UITableView!
-    @IBOutlet var awardsView: UIView!
     
     let titles = ["Expired", "Current Streak", "Max Streak"]
     let cellColors = ["#FFC6CD", "#EAFFB6", "#EFEFEF"]
@@ -110,7 +99,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         super.viewDidLoad()
         householdCollectionView.dataSource = self
         householdCollectionView.delegate = self
-        householdCollectionView.isScrollEnabled = false
+//        householdCollectionView.isScrollEnabled = false
         householdCollectionView.collectionViewLayout = generateGridLayout()
         householdCollectionView.layer.cornerRadius = 10
         
@@ -118,33 +107,115 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         householdTableView.delegate = self
         householdTableView.isScrollEnabled = false
         
-        awardsView.layer.cornerRadius = 10
+        outerStackView.layer.cornerRadius = 20
+        
+        expiredStackView.layer.cornerRadius = 10
+        expiredView.layer.cornerRadius = 10
+        
+        expiredStackView.layer.shadowColor = UIColor.black.cgColor
+        expiredStackView.layer.shadowOpacity = 0.5
+        expiredStackView.layer.shadowOffset = CGSize(width: 1, height: 1)
+        expiredStackView.layer.shadowRadius = 1
+        expiredStackView.layer.masksToBounds = false
+        
+        expiredCircleStackView.layer.shadowColor = UIColor.black.cgColor
+        expiredCircleStackView.layer.shadowOpacity = 0.2
+        expiredCircleStackView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        expiredCircleStackView.layer.shadowRadius = 1
+        expiredCircleStackView.applyGradient(colors: [
+            UIColor(red: 255/255, green: 110/255, blue: 127/255, alpha: 1.0), // 0% color
+            UIColor(red: 231/255, green: 59/255, blue: 77/255, alpha: 1.0),   // 36% color
+            UIColor(red: 215/255, green: 0/255, blue: 21/255, alpha: 1.0)     // 100% color
+        ],locations: [0.0, 0.36, 1.0])
+        
+        currentStreakStack.layer.cornerRadius = 10
+        currentView.layer.cornerRadius = 10
+        
+        currentStreakStack.layer.shadowColor = UIColor.black.cgColor
+        currentStreakStack.layer.shadowOpacity = 0.5
+        currentStreakStack.layer.shadowOffset = CGSize(width: 1, height: 1)
+        currentStreakStack.layer.shadowRadius = 1
+        currentStreakStack.layer.masksToBounds = false
+        
+        currentCircleStack.layer.shadowColor = UIColor.black.cgColor
+        currentCircleStack.layer.shadowOpacity = 0.2
+        currentCircleStack.layer.shadowOffset = CGSize(width: 0, height: 4)
+        currentCircleStack.layer.shadowRadius = 1
+        currentCircleStack.applyGradient(colors: [
+            UIColor(red: 155/255, green: 255/255, blue: 99/255, alpha: 1.0), // 0% color
+            UIColor(red: 67/255, green: 164/255, blue: 13/255, alpha: 1.0),   // 69% color
+            UIColor(red: 45/255, green: 123/255, blue: 1/255, alpha: 1.0)     // 100% color
+        ],locations: [0.0, 0.69, 1.0])
+        
+        
+        maxStreakStack.layer.cornerRadius = 10
+        maxView.layer.cornerRadius = 10
+        
+        maxStreakStack.layer.shadowColor = UIColor.black.cgColor
+        maxStreakStack.layer.shadowOpacity = 0.5
+        maxStreakStack.layer.shadowOffset = CGSize(width: 1, height: 1)
+        maxStreakStack.layer.shadowRadius = 1
+        maxStreakStack.layer.masksToBounds = false
+        
+        maxCircleStack.layer.shadowColor = UIColor.black.cgColor
+        maxCircleStack.layer.shadowOpacity = 0.2
+        maxCircleStack.layer.shadowOffset = CGSize(width: 0, height: 4)
+        maxCircleStack.layer.shadowRadius = 1
+        maxCircleStack.applyGradient(colors: [
+            UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0), // 13% color
+            UIColor(red: 166/255, green: 166/255, blue: 166/255, alpha: 1.0), // 32% color
+            UIColor(red: 115/255, green: 115/255, blue: 115/255, alpha: 1.0)  // 100% color
+        ], locations: [0, 0.32, 1.0])
+        
+        
+        
 
     }
  
 
     func generateGridLayout() -> UICollectionViewLayout {
+        let padding: CGFloat = 10
         
-        let padding : CGFloat = 10
-        // Items dimension will be equal to group dimension
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
+        // Item size is equal to group size
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .fractionalHeight(1.0)
+            )
+        )
         
-        // Group dimension will have 1/4th of the section
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1)), subitem: item, count: 3)
+        // Group dimension will have 1/3th of the section
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1/3),
+                heightDimension: .fractionalHeight(1.0)
+            ),
+            subitem: item,
+            count: 1
+        )
         
         group.interItemSpacing = .fixed(padding)
-
-        group.contentInsets = NSDirectionalEdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding)
+        group.contentInsets = NSDirectionalEdgeInsets(
+            top: padding,
+            leading: padding,
+            bottom: padding,
+            trailing: padding
+        )
 
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = padding
+        section.orthogonalScrollingBehavior = .continuous
         
-                
-//        section.boundarySupplementaryItems = [generateHeader()]
+        
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
+        )
         
         return UICollectionViewCompositionalLayout(section: section)
-        
     }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "HouseholdProfileSegue" {
@@ -157,4 +228,20 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         }
     }
 
+}
+
+extension UIView {
+    func applyGradient(colors: [UIColor], locations: [NSNumber]) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bounds
+        gradientLayer.colors = colors.map { $0.cgColor }
+        gradientLayer.locations = locations // Adjust as needed
+        
+        let maskLayer = CAShapeLayer()
+        let path = UIBezierPath(roundedRect: bounds, cornerRadius: min(bounds.width, bounds.height) / 2)
+        maskLayer.path = path.cgPath
+        gradientLayer.mask = maskLayer
+        
+        layer.insertSublayer(gradientLayer, at: 0)
+    }
 }

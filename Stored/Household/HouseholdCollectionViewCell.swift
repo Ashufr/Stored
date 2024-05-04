@@ -9,8 +9,4 @@ import UIKit
 
 class HouseholdCollectionViewCell: UICollectionViewCell {
     
-    
-    @IBOutlet var descLabel: UILabel!
-    @IBOutlet var circleStack: UIStackView!
-    @IBOutlet var titleLabel: UILabel!
 }
