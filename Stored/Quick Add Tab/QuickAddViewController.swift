@@ -13,7 +13,9 @@ protocol QuickAddDelegate : AnyObject {
 
 class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
     
+    var expiringDelegate : QuickAddDelegate?
     var inventoryDelegate : QuickAddDelegate?
+    var quickAddNavigationController : QuickAddNavigationViewController?
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         ItemData.getInstance().quickAddItems.count
@@ -82,6 +84,8 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
                     window.rootViewController?.present(alertController, animated: true, completion: nil)
                 }
             }
+            inventoryDelegate?.itemAdded()
+            expiringDelegate?.itemAdded()
             
         }else{
             if let image = UIImage(systemName: "checkmark.circle.fill") {
@@ -92,7 +96,8 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
             cell.itemStack.isHidden = false
         }
         
-        
+        inventoryDelegate = quickAddNavigationController!.storedTabBarController?.inventoryNavigationController?.inventoryViewController
+        expiringDelegate = quickAddNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController
     }
     
     func dismissAdding(cell : QuickAddTableViewCell){
@@ -113,6 +118,12 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
         quickAddTableView.allowsSelection = false
         quickAddTableView.isScrollEnabled = false
         // Do any additional setup after loading the view.
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(quickAddNavigationController)
     }
     
 

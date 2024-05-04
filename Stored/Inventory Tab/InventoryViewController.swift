@@ -1,12 +1,18 @@
 import UIKit
 
-class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, CustomAlertRefreshDelegate {
+class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
+    func itemAdded() {
+        inventoryTableView.reloadData()
+        inventoryCollectionView.reloadData()
+    }
+    
     func finishedAddingItem() {
         inventoryTableView.reloadData()
         inventoryCollectionView.reloadData()
     }
     
     var inventoryStorageViewController : InventoryStorageViewController?
+    var inventoryNavigationController : InventoryNavigationController?
     
     @IBOutlet var inventoryCollectionView: UICollectionView!
     @IBOutlet var inventoryTableView: UITableView!
@@ -79,6 +85,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(navigationController?.tabBarController?.viewControllers)
         inventoryTableView.dataSource = self
         inventoryTableView.delegate = self
         inventoryTableView.isScrollEnabled = false

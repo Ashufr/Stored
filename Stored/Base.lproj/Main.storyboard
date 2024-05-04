@@ -1589,10 +1589,10 @@
             </objects>
             <point key="canvasLocation" x="1116.793893129771" y="2267.605633802817"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Stored Tab Bar Controller-->
         <scene sceneID="v3o-PR-VS2">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Zbe-Md-LJS" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Zbe-Md-LJS" customClass="StoredTabBarController" customModule="Stored" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="G6s-0A-EId">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -1615,7 +1615,7 @@
         <!--Expiring-->
         <scene sceneID="yQC-1E-Zxt">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qF2-kG-Dpk" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qF2-kG-Dpk" customClass="ExpiringNavigationViewController" customModule="Stored" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Expiring" image="bell" catalog="system" id="bys-kZ-zPE"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="USf-PS-LFW">
@@ -1694,7 +1694,7 @@
         <!--Quick Add-->
         <scene sceneID="6BA-PW-0qT">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0J6-Mv-jEN" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0J6-Mv-jEN" customClass="QuickAddNavigationViewController" customModule="Stored" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Quick Add" image="bolt.circle" catalog="system" id="FpY-zU-kdk"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="0R9-dZ-i2Q">

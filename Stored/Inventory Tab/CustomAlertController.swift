@@ -15,9 +15,9 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
     var cameraDelegate: CustomAlertDismissalDelegate?
     var inventoryStorageTableDelegate: CustomAlertRefreshDelegate?
     var inventoryCollectionDelegate: CustomAlertRefreshDelegate?
+    var expiringDelegate : CustomAlertRefreshDelegate?
     
     var productTitle: String?
-    var productImage : String?
     var productImageUrl: String?
     let storageLocations = ["Pantry", "Fridge", "Freezer", "Shelf"]
     
@@ -156,8 +156,14 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
         let selectedStorageIndex = pickerView.selectedRow(inComponent: 0)
         let itemStorage = storageLocations[selectedStorageIndex]
         
-        let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: "", image: itemImage)
-        addItemToStorage(newItem, at: selectedStorageIndex)
+        if let url = productImageUrl {
+            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: url, image: itemImage)
+            addItemToStorage(newItem, at: selectedStorageIndex)
+        }else {
+            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, image: itemImage)
+            addItemToStorage(newItem, at: selectedStorageIndex)
+        }
+        
     }
     
     func isSystemPhotoImage(_ image: UIImage?) -> Bool {

@@ -8,7 +8,7 @@ class Item {
     var dateAdded : Date
     var expiryDate : Date
     var expiryDays : Int?
-    var imageURL : URL
+    var imageURL : URL?
     var image : UIImage?
     
     
@@ -38,7 +38,7 @@ class Item {
         self.storage = storage
         self.expiryDate = expiryDate
         self.dateAdded = Date()
-        self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
+        self.imageURL = URL(string: imageUrl)
     }
     init(name: String, quantity: Int, storage: String, expiryDate: Date, imageUrl : String, image : UIImage) {
         self.name = name
@@ -46,7 +46,15 @@ class Item {
         self.storage = storage
         self.expiryDate = expiryDate
         self.dateAdded = Date()
-        self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
+        self.imageURL = URL(string: imageUrl)
+        self.image = image
+    }
+    init(name: String, quantity: Int, storage: String, expiryDate: Date, image : UIImage) {
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.dateAdded = Date()
         self.image = image
     }
     init(name: String, quantity: Int, storage: String, expiryDate: Date, expiryDays : Int, imageUrl : String) {
@@ -56,7 +64,7 @@ class Item {
         self.expiryDate = expiryDate
         self.expiryDays = expiryDays
         self.dateAdded = Date()
-        self.imageURL = URL(string: imageUrl) ?? URL(string : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/298px-Picture_icon_BLACK.svg.png?20180309172929")!
+        self.imageURL = URL(string: imageUrl)
     }
     init(quickAddItem : Item, quantity : Int) {
         self.name = quickAddItem.name
@@ -75,7 +83,8 @@ class ItemData{
     static func getInstance() -> ItemData{
         instance
     }
-    func loadImageFrom(url: URL, completion: @escaping (UIImage?) -> Void) {
+    func loadImageFrom(url: URL?, completion: @escaping (UIImage?) -> Void) {
+        guard let url = url else {return}
         DispatchQueue.global().async {
             do {
                 let imageData = try Data(contentsOf: url)

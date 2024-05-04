@@ -6,6 +6,8 @@ class InventoryNavigationController: UINavigationController {
     // MARK: - Properties
     
     var cameraViewController: CameraViewController?
+    var inventoryViewController : InventoryViewController?
+    var storedTabBarController : StoredTabBarController?
     var backgroundView: UIView?
     var loadingIndicator: UIActivityIndicatorView?
     
@@ -17,6 +19,18 @@ class InventoryNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addScanButton()
+        findInventoryViewController()
+    }
+    
+    // MARK: - Setting Inventory View Controler
+    
+    private func findInventoryViewController() {
+        print("Hellooooodosodfo")
+        guard let lastViewController = viewControllers.last as? InventoryViewController else {
+            return // No ExpiringViewController found
+        }
+        inventoryViewController = lastViewController
+        lastViewController.inventoryNavigationController = self
     }
     
     // MARK: - Button Actions
@@ -353,9 +367,12 @@ extension InventoryNavigationController {
                 customAlertController.inventoryStorageTableDelegate = inventoryStorageController
             }
         }
-        customAlertController.productImageUrl = productImageUrl
+        if productImageUrl != "" {
+            customAlertController.productImageUrl = productImageUrl
+        }
         customAlertController.productTitle = productNameString
         customAlertController.cameraDelegate = self
+        customAlertController.expiringDelegate = storedTabBarController?.expiringNavigationController?.expiringViewController
         
         customAlertController.modalPresentationStyle = .overFullScreen
         customAlertController.modalTransitionStyle = .crossDissolve

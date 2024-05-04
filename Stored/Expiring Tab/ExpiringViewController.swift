@@ -1,6 +1,18 @@
 import UIKit
 
-class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource {
+class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
+    func itemAdded() {
+        print("Tabel refefefe")
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(Storage.all.items)
+        expiringTableView.reloadData()
+    }
+    
+    func finishedAddingItem() {
+        print("Custom refreshs")
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(Storage.all.items)
+        expiringTableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         expiringCategorizedItems[StorageData.getInstance().getExpiryCategory(forString: sections[section])]?.count ?? 0
     }
@@ -55,6 +67,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         return 30
     }
     
+    var expiringNavigationController : ExpiringNavigationViewController?
     var expiringCategorizedItems : [ExpiryCategory: [Item]] = [:]
     var sections : [String]{
         var tempSections = [String]()
