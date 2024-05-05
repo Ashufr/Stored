@@ -18,7 +18,38 @@ class HouseholdProfileViewController: UIViewController, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        return UICollectionViewCell()
         let cell = householdProfileCollectionView.dequeueReusableCell(withReuseIdentifier: "HouseholdProfileCollectionViewCell", for: indexPath) as! HouseholdProfileCollectionViewCell
-    
+        guard let badge = member?.badges[indexPath.row] else {return cell}
+        
+        cell.badgeImage.image = badge.image
+        cell.badgeName.text = badge.name
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        cell.badgeDate.text = dateFormatter.string(from: badge.dateEarned)
+        
+        cell.tapAction = {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else {
+                print("Unable to find window scene")
+                return
+            }
+            
+            var topViewController = window.rootViewController
+            while let presentedViewController = topViewController?.presentedViewController {
+                topViewController = presentedViewController
+            }
+            
+            guard let badgeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "BadgeVC") as? BadgeViewController else {
+                return
+            }
+            
+            badgeController.badge = badge
+            badgeController.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+            badgeController.modalTransitionStyle = .crossDissolve
+            badgeController.modalPresentationStyle = .overFullScreen
+            badgeController.innerView.layer.cornerRadius = 10
+            topViewController?.present(badgeController, animated: true, completion: nil)
+        }
+        
         return cell
     }
     
@@ -54,6 +85,7 @@ class HouseholdProfileViewController: UIViewController, UICollectionViewDelegate
         householdProfileCollectionView.dataSource = self
         householdProfileCollectionView.delegate = self
 //        householdProfileCollectionView.isScrollEnabled = false 
+        householdProfileCollectionView.alwaysBounceVertical = false
         householdProfileCollectionView.collectionViewLayout = generateGridLayout()
         householdProfileCollectionView.layer.cornerRadius = 10
         memberImage.layer.cornerRadius = 75

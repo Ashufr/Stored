@@ -320,6 +320,7 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <sections/>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nHE-Gg-CPz"/>
@@ -338,7 +339,39 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0eg-2G-ACA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7545.801526717557" y="800.70422535211276"/>
+            <point key="canvasLocation" x="6694" y="801"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="CYF-zq-XPk">
+            <objects>
+                <viewController id="aUB-7l-DoA" customClass="ViewController" customModule="Stored" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DVb-jd-IYU">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jq0-lq-hPU">
+                                <rect key="frame" x="179" y="222" width="214" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UaT-LE-g2l" customClass="FSCalendar">
+                                <rect key="frame" x="76" y="298" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="MZ2-sa-veJ"/>
+                        <color key="backgroundColor" systemColor="systemGray2Color"/>
+                    </view>
+                    <connections>
+                        <outlet property="calender" destination="UaT-LE-g2l" id="HYH-qp-L9n"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6rk-VZ-Ytv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9002.2900763358775" y="690.84507042253529"/>
         </scene>
         <!--Household-->
         <scene sceneID="56D-qZ-Uwf">
@@ -634,6 +667,11 @@
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="128" height="140"/>
+                                        <connections>
+                                            <outlet property="badgeDate" destination="tut-vH-sp0" id="mNs-0M-mps"/>
+                                            <outlet property="badgeImage" destination="cHC-69-Kpd" id="c5J-up-CF0"/>
+                                            <outlet property="badgeName" destination="4h4-RN-jum" id="1E8-ha-lFk"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -1054,7 +1092,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YZm-RU-4z0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1116.793893129771" y="766.19718309859161"/>
+            <point key="canvasLocation" x="1117" y="801"/>
         </scene>
         <!--Expired-->
         <scene sceneID="Cns-tM-TwT">
@@ -1396,7 +1434,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fzT-hW-eTW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1116.793893129771" y="1511.9718309859156"/>
+            <point key="canvasLocation" x="1117" y="1568"/>
         </scene>
         <!--Custom Alert Controller-->
         <scene sceneID="vDh-zJ-rER">
@@ -1587,7 +1625,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="60E-ME-aLv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1116.793893129771" y="2267.605633802817"/>
+            <point key="canvasLocation" x="1117" y="2320"/>
         </scene>
         <!--Stored Tab Bar Controller-->
         <scene sceneID="v3o-PR-VS2">
@@ -1689,7 +1727,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4g-d2-iPR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8472.519083969466" y="2.8169014084507045"/>
+            <point key="canvasLocation" x="6694" y="3"/>
         </scene>
         <!--Quick Add-->
         <scene sceneID="6BA-PW-0qT">
@@ -1963,6 +2001,11 @@
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="128" height="140"/>
+                                        <connections>
+                                            <outlet property="badgeDate" destination="lTy-GW-8gs" id="ycf-pY-Mxz"/>
+                                            <outlet property="badgeImage" destination="Lp6-I8-D00" id="iEo-l8-qzO"/>
+                                            <outlet property="badgeName" destination="pX7-Yb-S8s" id="V1C-sc-4vK"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -2009,7 +2052,77 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sqV-bF-pdp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4681.679389312977" y="1548.5915492957747"/>
+            <point key="canvasLocation" x="4682" y="1568"/>
+        </scene>
+        <!--Badge View Controller-->
+        <scene sceneID="Rar-7K-qRG">
+            <objects>
+                <viewController storyboardIdentifier="BadgeVC" id="NEN-Pw-00J" customClass="BadgeViewController" customModule="Stored" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="io7-ci-7gi">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rkh-cj-ZtV">
+                                <rect key="frame" x="96.666666666666686" y="306" width="200" height="240"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100 Days Badge" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aXG-5z-4gb">
+                                        <rect key="frame" x="16" y="152" width="168" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="BwR-l3-lve"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <color key="textColor" name="Text Color"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.3.layers.3d.top.filled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="LQz-dF-jaV">
+                                        <rect key="frame" x="39.999999999999986" y="24" width="120.00000000000001" height="120.33333333333334"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="120" id="gk2-bF-SFr"/>
+                                            <constraint firstAttribute="height" constant="120" id="z39-zn-60r"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11-04-2024" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wit-JP-gWz">
+                                        <rect key="frame" x="16" y="187" width="168" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="qxO-Og-NNJ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" name="Description Color"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="aXG-5z-4gb" firstAttribute="top" secondItem="LQz-dF-jaV" secondAttribute="bottom" constant="8" symbolic="YES" id="4Sl-CQ-voO"/>
+                                    <constraint firstAttribute="width" constant="200" id="7T9-fe-NE5"/>
+                                    <constraint firstAttribute="trailing" secondItem="Wit-JP-gWz" secondAttribute="trailing" constant="16" id="T72-ks-CTi"/>
+                                    <constraint firstItem="Wit-JP-gWz" firstAttribute="leading" secondItem="rkh-cj-ZtV" secondAttribute="leading" constant="16" id="XnQ-QU-Gy2"/>
+                                    <constraint firstItem="LQz-dF-jaV" firstAttribute="centerX" secondItem="rkh-cj-ZtV" secondAttribute="centerX" id="esd-te-ar1"/>
+                                    <constraint firstItem="aXG-5z-4gb" firstAttribute="centerX" secondItem="rkh-cj-ZtV" secondAttribute="centerX" id="fyq-7D-LbV"/>
+                                    <constraint firstItem="aXG-5z-4gb" firstAttribute="leading" secondItem="rkh-cj-ZtV" secondAttribute="leading" constant="16" id="fzB-L5-hM1"/>
+                                    <constraint firstItem="LQz-dF-jaV" firstAttribute="top" secondItem="rkh-cj-ZtV" secondAttribute="top" constant="24" id="i6j-KY-ybn"/>
+                                    <constraint firstItem="Wit-JP-gWz" firstAttribute="top" secondItem="aXG-5z-4gb" secondAttribute="bottom" id="iu1-oW-pmZ"/>
+                                    <constraint firstAttribute="height" constant="240" id="peb-tQ-PNT"/>
+                                    <constraint firstAttribute="trailing" secondItem="aXG-5z-4gb" secondAttribute="trailing" constant="16" id="xEG-Pa-CIN"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="fCQ-RB-LPH"/>
+                        <constraints>
+                            <constraint firstItem="rkh-cj-ZtV" firstAttribute="centerX" secondItem="io7-ci-7gi" secondAttribute="centerX" id="eEo-kN-CjA"/>
+                            <constraint firstItem="rkh-cj-ZtV" firstAttribute="centerY" secondItem="io7-ci-7gi" secondAttribute="centerY" id="pWf-Kx-84c"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="badgeDate" destination="Wit-JP-gWz" id="0jR-6p-Nac"/>
+                        <outlet property="badgeImage" destination="LQz-dF-jaV" id="W1r-ax-Tpn"/>
+                        <outlet property="badgeName" destination="aXG-5z-4gb" id="8Kx-eQ-zi7"/>
+                        <outlet property="innerView" destination="rkh-cj-ZtV" id="kU2-k9-pBh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bl0-48-T8i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4681.679389312977" y="2295.7746478873241"/>
         </scene>
     </scenes>
     <resources>
@@ -2020,12 +2133,12 @@
         <image name="bell" catalog="system" width="125" height="128"/>
         <image name="bolt.circle" catalog="system" width="128" height="123"/>
         <image name="house" catalog="system" width="128" height="104"/>
-        <image name="pencil.circle.fill" catalog="system" width="32" height="32"/>
+        <image name="pencil.circle.fill" catalog="system" width="128" height="123"/>
         <image name="person" catalog="system" width="128" height="121"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="plus.circle" catalog="system" width="128" height="123"/>
         <image name="square.3.layers.3d.top.filled" catalog="system" width="128" height="125"/>
-        <image name="square.and.arrow.up.circle.fill" catalog="system" width="32" height="32"/>
+        <image name="square.and.arrow.up.circle.fill" catalog="system" width="128" height="123"/>
         <image name="user" width="54" height="54"/>
         <namedColor name="Background Color">
             <color red="0.94900000095367432" green="0.94900000095367432" blue="0.96899998188018799" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -2041,6 +2154,9 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -15,6 +15,9 @@
 		3F29CCC92BE2EAE6002A6425 /* HouseholdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */; };
 		3F29CCCB2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */; };
 		3F3875112BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */; };
+		3F39B7AD2BE750B70010D3CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39B7AC2BE750B70010D3CB /* ViewController.swift */; };
+		3F39B7B02BE755670010D3CB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 3F39B7AF2BE755670010D3CB /* FSCalendar */; };
+		3F39B7B22BE764CB0010D3CB /* BadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39B7B12BE764CB0010D3CB /* BadgeViewController.swift */; };
 		3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */; };
 		3F462D4A2BE264B90077BD42 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D492BE264B90077BD42 /* AccountViewController.swift */; };
 		3F462D4C2BE271FA0077BD42 /* AccountSmallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */; };
@@ -65,6 +68,8 @@
 		3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdViewController.swift; sourceTree = "<group>"; };
 		3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredCollectionViewCell.swift; sourceTree = "<group>"; };
+		3F39B7AC2BE750B70010D3CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3F39B7B12BE764CB0010D3CB /* BadgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeViewController.swift; sourceTree = "<group>"; };
 		3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		3F462D492BE264B90077BD42 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSmallTableViewCell.swift; sourceTree = "<group>"; };
@@ -113,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F39B7B02BE755670010D3CB /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +182,7 @@
 				3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */,
 				3F02D9212BE3683F00655004 /* HouseholdProfileViewController.swift */,
 				3F02D9232BE376D200655004 /* HouseholdProfileCollectionViewCell.swift */,
+				3F39B7B12BE764CB0010D3CB /* BadgeViewController.swift */,
 			);
 			path = Household;
 			sourceTree = "<group>";
@@ -200,6 +207,7 @@
 		3F7D21512BD14583003B3634 /* Stored */ = {
 			isa = PBXGroup;
 			children = (
+				3F39B7AC2BE750B70010D3CB /* ViewController.swift */,
 				3F7D21582BD14583003B3634 /* Main.storyboard */,
 				3F7D215D2BD1458F003B3634 /* LaunchScreen.storyboard */,
 				3F7D21522BD14583003B3634 /* AppDelegate.swift */,
@@ -278,6 +286,9 @@
 			dependencies = (
 			);
 			name = Stored;
+			packageProductDependencies = (
+				3F39B7AF2BE755670010D3CB /* FSCalendar */,
+			);
 			productName = Stored;
 			productReference = 3F7D214F2BD14583003B3634 /* Stored.app */;
 			productType = "com.apple.product-type.application";
@@ -306,6 +317,9 @@
 				Base,
 			);
 			mainGroup = 3F7D21462BD14583003B3634;
+			packageReferences = (
+				3F39B7AE2BE755670010D3CB /* XCRemoteSwiftPackageReference "FSCalendar" */,
+			);
 			productRefGroup = 3F7D21502BD14583003B3634 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -372,7 +386,9 @@
 				3F8A8C372BE67901006A285D /* Badge.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
 				3F02D9242BE376D200655004 /* HouseholdProfileCollectionViewCell.swift in Sources */,
+				3F39B7AD2BE750B70010D3CB /* ViewController.swift in Sources */,
 				3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */,
+				3F39B7B22BE764CB0010D3CB /* BadgeViewController.swift in Sources */,
 				3F8A8C392BE67C9E006A285D /* ExpiringNavigationViewController.swift in Sources */,
 				3F3875112BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift in Sources */,
 				3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */,
@@ -609,6 +625,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3F39B7AE2BE755670010D3CB /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3F39B7AF2BE755670010D3CB /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F39B7AE2BE755670010D3CB /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3F7D21472BD14583003B3634 /* Project object */;
 }

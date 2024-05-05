@@ -48,15 +48,44 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        5
+        UserData.getInstance().users[0].badges.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = householdCollectionView.dequeueReusableCell(withReuseIdentifier: "HouseholdCollectionViewCell", for: indexPath) as! HouseholdCollectionViewCell
-    
+        let user = UserData.getInstance().users[0]
+        let badge = user.badges[indexPath.row]
         
-        
-    
+        cell.badgeImage.image = badge.image
+        cell.badgeName.text = badge.name
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        cell.badgeDate.text = dateFormatter.string(from: badge.dateEarned)
+        cell.tapAction = {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = scene.windows.first else {
+                print("Unable to find window scene")
+                return
+            }
+            
+            var topViewController = window.rootViewController
+            while let presentedViewController = topViewController?.presentedViewController {
+                topViewController = presentedViewController
+            }
+            
+            guard let badgeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "BadgeVC") as? BadgeViewController else {
+                return
+            }
+            
+            badgeController.badge = badge
+            badgeController.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+            badgeController.modalTransitionStyle = .crossDissolve
+            badgeController.modalPresentationStyle = .overFullScreen
+            
+            badgeController.innerView.layer.cornerRadius = 10
+            topViewController?.present(badgeController, animated: true, completion: nil)
+        }
+//    
     
         return cell
         
@@ -69,6 +98,9 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
             performSegue(withIdentifier: "HouseholdProfileSegue", sender: indexPath)
         }
     }
+    
+    
+    
     
     @IBOutlet var outerStackView: UIStackView!
     
@@ -100,6 +132,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         householdCollectionView.dataSource = self
         householdCollectionView.delegate = self
 //        householdCollectionView.isScrollEnabled = false
+        householdCollectionView.alwaysBounceVertical = false
         householdCollectionView.collectionViewLayout = generateGridLayout()
         householdCollectionView.layer.cornerRadius = 10
         
