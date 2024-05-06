@@ -10,6 +10,7 @@ import Foundation
 class Household {
     var name: String
     var code: String
+    var storages : [Storage]
     
     // Static set to store generated IDs
     private static var generatedIDs: Set<String> = Set<String>()
@@ -17,6 +18,7 @@ class Household {
     init(name: String) {
         self.name = name
         self.code = ""
+        self.storages = []
         self.code = generateUniqueID()
     }
     

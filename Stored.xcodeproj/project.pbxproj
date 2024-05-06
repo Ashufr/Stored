@@ -15,7 +15,6 @@
 		3F29CCC92BE2EAE6002A6425 /* HouseholdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */; };
 		3F29CCCB2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */; };
 		3F3875112BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */; };
-		3F39B7AD2BE750B70010D3CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39B7AC2BE750B70010D3CB /* ViewController.swift */; };
 		3F39B7B02BE755670010D3CB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 3F39B7AF2BE755670010D3CB /* FSCalendar */; };
 		3F39B7B22BE764CB0010D3CB /* BadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F39B7B12BE764CB0010D3CB /* BadgeViewController.swift */; };
 		3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */; };
@@ -74,7 +73,6 @@
 		3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdViewController.swift; sourceTree = "<group>"; };
 		3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredCollectionViewCell.swift; sourceTree = "<group>"; };
-		3F39B7AC2BE750B70010D3CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3F39B7B12BE764CB0010D3CB /* BadgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeViewController.swift; sourceTree = "<group>"; };
 		3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		3F462D492BE264B90077BD42 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -225,7 +223,6 @@
 		3F7D21512BD14583003B3634 /* Stored */ = {
 			isa = PBXGroup;
 			children = (
-				3F39B7AC2BE750B70010D3CB /* ViewController.swift */,
 				3F7D21582BD14583003B3634 /* Main.storyboard */,
 				3F7D215D2BD1458F003B3634 /* LaunchScreen.storyboard */,
 				3F7D21522BD14583003B3634 /* AppDelegate.swift */,
@@ -410,7 +407,6 @@
 				3F02D9242BE376D200655004 /* HouseholdProfileCollectionViewCell.swift in Sources */,
 				3FE6A9142BE8B54C00D576A9 /* AccountNavigationController.swift in Sources */,
 				3FCD0AE02BE89F78004F6A70 /* AccountHouseholdTextFieldTableViewCell.swift in Sources */,
-				3F39B7AD2BE750B70010D3CB /* ViewController.swift in Sources */,
 				3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */,
 				3F39B7B22BE764CB0010D3CB /* BadgeViewController.swift in Sources */,
 				3F8A8C392BE67C9E006A285D /* ExpiringNavigationViewController.swift in Sources */,

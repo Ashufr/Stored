@@ -1,30 +1,15 @@
 import Foundation
 
 class User {
+    var mid : String?
     var firstName: String
     var lastName: String
     var email: String
     var household: Household
-    
     var expiredItems: Int
     var currentStreak: Int
     var maxStreak: Int
     var badges : [Badge]
-    var streak : [Date : Bool]{
-        var dummyData: [Date: Bool] = [:]
-            
-            // Get the current date
-            var currentDate = Date()
-            
-            // Generate data for 90 days (3 months)
-            for _ in 0..<90 {
-                dummyData[currentDate] = Bool.random() // Assign random boolean value
-                // Move to the next day
-                currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
-            }
-            
-            return dummyData
-    }
     
     init(firstName: String, lastName: String, email: String, household: Household, expiredItems: Int = 0, currentStreak: Int = 0, maxStreak: Int = 0) {
         self.firstName = firstName
