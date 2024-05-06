@@ -106,7 +106,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = expiringCollectionView.dequeueReusableCell(withReuseIdentifier: "ExpiringCollectionCell", for: indexPath) as! ExpiringCollectionViewCell
         if indexPath.row == 0 {
             let upperStackHexcode = "#78D444"
-            let bottomContainerHexcode = "#E6F6CE"
+            let bottomContainerHexcode = "#E2F9A1"
             let upperStackColor = UIColor(hex: upperStackHexcode)
             let bottomContainerColor = UIColor(hex: bottomContainerHexcode)
             cell.topLabel.text = "6 Weeks"
@@ -115,7 +115,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             cell.bottomView.backgroundColor = bottomContainerColor
         }else{
             let upperStackHexcode = "#D70015"
-            let bottomContainerHexcode = "#F4C1CA"
+            let bottomContainerHexcode = "#F4B7BD"
             let upperStackColor = UIColor(hex: upperStackHexcode)
             let bottomContainerColor = UIColor(hex: bottomContainerHexcode)
             let expiredItemsCount = Storage.all.items.filter { $0.isExpired }.count

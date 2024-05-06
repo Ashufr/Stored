@@ -1,6 +1,6 @@
 import Foundation
 
-struct User {
+class User {
     var firstName: String
     var lastName: String
     var email: String
@@ -35,10 +35,10 @@ struct User {
         self.currentStreak = currentStreak
         self.maxStreak = maxStreak
         self.badges = []
-        household.members.append(self)
+        
     }
     
-    mutating func addBadge(badge : Badge){
+    func addBadge(badge : Badge){
         self.badges.append(badge)
         self.badges.sort { $0.name < $1.name }
     }
@@ -70,7 +70,7 @@ class UserData {
         users[2].addBadge(badge: BadgeData.getInstance().januaryBadge)
         users[2].addBadge(badge: BadgeData.getInstance().days50Badge)
         users[2].addBadge(badge: BadgeData.getInstance().novemberBadge)
-
+        
     }
     static func getInstance() -> UserData {
         instance

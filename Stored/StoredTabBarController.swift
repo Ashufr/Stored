@@ -12,6 +12,8 @@ class StoredTabBarController: UITabBarController {
     var expiringNavigationController : ExpiringNavigationViewController?
     var inventoryNavigationController : InventoryNavigationController?
     var quickAddNavigationController : QuickAddNavigationViewController?
+    var householdNavigationController : HouseholdNavigationController?
+    var accountNavigationController : AccountNavigationController?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,6 +31,16 @@ class StoredTabBarController: UITabBarController {
             quickAddNavigationController = viewController
             viewController.storedTabBarController = self
             print("3 DOne")
+        }
+        if let viewController = viewControllers?[3] as? HouseholdNavigationController {
+            householdNavigationController = viewController
+            viewController.storedTabBarController = self
+            print("4 DOne")
+        }
+        if let viewController = viewControllers?[4] as? AccountNavigationController {
+            accountNavigationController = viewController
+            viewController.storedTabBarController = self
+            print("5 DOne")
         }
     }
     

@@ -54,9 +54,15 @@
 		3FBF67FE2BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3FBF67F52BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf */; };
 		3FC648622BE3458E000348A9 /* HouseHold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC648612BE3458E000348A9 /* HouseHold.swift */; };
 		3FC648642BE345CA000348A9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC648632BE345CA000348A9 /* User.swift */; };
+		3FCD0ADE2BE89F6F004F6A70 /* AccountHouseholdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCD0ADD2BE89F6F004F6A70 /* AccountHouseholdViewController.swift */; };
+		3FCD0AE02BE89F78004F6A70 /* AccountHouseholdTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCD0ADF2BE89F78004F6A70 /* AccountHouseholdTextFieldTableViewCell.swift */; };
 		3FD0CA932BE61EE0001CA6C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FD0CA922BE61EE0001CA6C5 /* Assets.xcassets */; };
 		3FD3E32C2BE23C59002ED762 /* ExpiredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */; };
 		3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDD7AEA2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift */; };
+		3FE6A9122BE8B53A00D576A9 /* HouseholdNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE6A9112BE8B53A00D576A9 /* HouseholdNavigationController.swift */; };
+		3FE6A9142BE8B54C00D576A9 /* AccountNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE6A9132BE8B54C00D576A9 /* AccountNavigationController.swift */; };
+		3FE6A9162BE8BB7400D576A9 /* AccountHouseholdUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE6A9152BE8BB7400D576A9 /* AccountHouseholdUserTableViewCell.swift */; };
+		3FE6A9182BE8C2C500D576A9 /* AccountHouseholdCodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE6A9172BE8C2C500D576A9 /* AccountHouseholdCodeTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,9 +114,15 @@
 		3FBF67F52BDA1C23005C58A9 /* SF-Pro-Rounded-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Rounded-Light.otf"; sourceTree = "<group>"; };
 		3FC648612BE3458E000348A9 /* HouseHold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseHold.swift; sourceTree = "<group>"; };
 		3FC648632BE345CA000348A9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3FCD0ADD2BE89F6F004F6A70 /* AccountHouseholdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHouseholdViewController.swift; sourceTree = "<group>"; };
+		3FCD0ADF2BE89F78004F6A70 /* AccountHouseholdTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHouseholdTextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		3FD0CA922BE61EE0001CA6C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiredViewController.swift; sourceTree = "<group>"; };
 		3FDD7AEA2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiringTableViewCell.swift; sourceTree = "<group>"; };
+		3FE6A9112BE8B53A00D576A9 /* HouseholdNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdNavigationController.swift; sourceTree = "<group>"; };
+		3FE6A9132BE8B54C00D576A9 /* AccountNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNavigationController.swift; sourceTree = "<group>"; };
+		3FE6A9152BE8BB7400D576A9 /* AccountHouseholdUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHouseholdUserTableViewCell.swift; sourceTree = "<group>"; };
+		3FE6A9172BE8C2C500D576A9 /* AccountHouseholdCodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountHouseholdCodeTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,9 +169,14 @@
 		3F29CCC12BE2CB6F002A6425 /* Account Tab */ = {
 			isa = PBXGroup;
 			children = (
+				3FE6A9132BE8B54C00D576A9 /* AccountNavigationController.swift */,
 				3F462D492BE264B90077BD42 /* AccountViewController.swift */,
 				3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */,
 				3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */,
+				3FCD0ADD2BE89F6F004F6A70 /* AccountHouseholdViewController.swift */,
+				3FCD0ADF2BE89F78004F6A70 /* AccountHouseholdTextFieldTableViewCell.swift */,
+				3FE6A9152BE8BB7400D576A9 /* AccountHouseholdUserTableViewCell.swift */,
+				3FE6A9172BE8C2C500D576A9 /* AccountHouseholdCodeTableViewCell.swift */,
 			);
 			path = "Account Tab";
 			sourceTree = "<group>";
@@ -177,6 +194,7 @@
 		3F29CCC72BE2EAB5002A6425 /* Household */ = {
 			isa = PBXGroup;
 			children = (
+				3FE6A9112BE8B53A00D576A9 /* HouseholdNavigationController.swift */,
 				3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */,
 				3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */,
 				3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */,
@@ -361,6 +379,7 @@
 				3F8A8C3B2BE67D79006A285D /* QuickAddNavigationViewController.swift in Sources */,
 				3F7BF50B2BD97EA30098FD33 /* InventoryStorageViewController.swift in Sources */,
 				3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */,
+				3FE6A9122BE8B53A00D576A9 /* HouseholdNavigationController.swift in Sources */,
 				3F993F4D2BD8B9EC006FE29E /* Item.swift in Sources */,
 				3FAAE16B2BE35042006E524A /* HouseholdTableViewCell.swift in Sources */,
 				3F29CCC92BE2EAE6002A6425 /* HouseholdViewController.swift in Sources */,
@@ -376,16 +395,21 @@
 				3F8A8C3D2BE68015006A285D /* StoredTabBarController.swift in Sources */,
 				3F29CCCB2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift in Sources */,
 				3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */,
+				3FCD0ADE2BE89F6F004F6A70 /* AccountHouseholdViewController.swift in Sources */,
 				3FD3E32C2BE23C59002ED762 /* ExpiredViewController.swift in Sources */,
 				3F462D482BE264A80077BD42 /* AccountTableViewCell.swift in Sources */,
 				3FC648622BE3458E000348A9 /* HouseHold.swift in Sources */,
+				3FE6A9182BE8C2C500D576A9 /* AccountHouseholdCodeTableViewCell.swift in Sources */,
 				3F7D21532BD14583003B3634 /* AppDelegate.swift in Sources */,
 				3FC648642BE345CA000348A9 /* User.swift in Sources */,
 				3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */,
 				3FDD7AEB2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift in Sources */,
 				3F8A8C372BE67901006A285D /* Badge.swift in Sources */,
+				3FE6A9162BE8BB7400D576A9 /* AccountHouseholdUserTableViewCell.swift in Sources */,
 				3F7D21552BD14583003B3634 /* SceneDelegate.swift in Sources */,
 				3F02D9242BE376D200655004 /* HouseholdProfileCollectionViewCell.swift in Sources */,
+				3FE6A9142BE8B54C00D576A9 /* AccountNavigationController.swift in Sources */,
+				3FCD0AE02BE89F78004F6A70 /* AccountHouseholdTextFieldTableViewCell.swift in Sources */,
 				3F39B7AD2BE750B70010D3CB /* ViewController.swift in Sources */,
 				3F29CCC02BE2CB50002A6425 /* InventoryNavigationController.swift in Sources */,
 				3F39B7B22BE764CB0010D3CB /* BadgeViewController.swift in Sources */,

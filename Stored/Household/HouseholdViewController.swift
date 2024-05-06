@@ -7,7 +7,12 @@
 
 import UIKit
 
-class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
+class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, HouseholdDelegate {
+    func nameChanged() {
+        print("see")
+        householdTableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         UserData.getInstance().users.count - 1
     }
@@ -100,7 +105,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     
-    
+    var householdNavigationController : HouseholdNavigationController?
     
     @IBOutlet var outerStackView: UIStackView!
     
