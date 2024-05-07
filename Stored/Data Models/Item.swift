@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 class Item {
+    var mid : String?
     var name : String
     var quantity : Int
     var storage : String
@@ -11,6 +12,13 @@ class Item {
     var imageURL : URL?
     var image : UIImage?
     
+    
+    
+    var expiryNumber : Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        return Int(dateFormatter.string(from: self.expiryDate))!
+    }
     
     var isExpired : Bool {
         return ItemData.getInstance().calulateDateDifference(startDate: Date(), endDate: expiryDate) < 0
@@ -73,6 +81,16 @@ class Item {
         self.expiryDate = Calendar.current.date(byAdding: .day, value: quickAddItem.expiryDays!, to: Date())!
         self.imageURL = quickAddItem.imageURL
         self.dateAdded = Date()
+    }
+    
+    init(mid: String, name: String, quantity: Int, storage: String, expiryDate: Date, imageUrl : String) {
+        self.mid = mid
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.dateAdded = Date()
+        self.imageURL = URL(string: imageUrl)
     }
     
 }

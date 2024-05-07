@@ -8,6 +8,7 @@
 import Foundation
 
 class Household {
+    var mid : String?
     var name: String
     var code: String
     var storages : [Storage]
@@ -19,6 +20,20 @@ class Household {
         self.name = name
         self.code = ""
         self.storages = []
+        self.code = generateUniqueID()
+    }
+    init(mid: String , name: String) {
+        self.mid = mid
+        self.name = name
+        self.code = ""
+        self.storages = []
+        self.code = generateUniqueID()
+    }
+    init(mid: String , name: String, storages : [Storage]) {
+        self.mid = mid
+        self.name = name
+        self.code = ""
+        self.storages = storages
         self.code = generateUniqueID()
     }
     
@@ -56,4 +71,11 @@ class HouseholdData{
     }
     
     var household = Household(name: "Ashu's House")
+    
+    var house : Household?
+    
+    var members : [User]?
+    
+    
+    
 }

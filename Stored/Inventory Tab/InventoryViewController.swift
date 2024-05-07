@@ -49,12 +49,12 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        StorageData.getInstance().storages.count + 1
+        HouseholdData.getInstance().house?.storages.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InventoryCollectionCell", for: indexPath) as! InventoryCollectionViewCell
-        let storage = indexPath.row < StorageData.getInstance().storages.count ? StorageData.getInstance().storages[indexPath.row] : Storage.all
+        let storage = HouseholdData.getInstance().house!.storages[indexPath.row]
         cell.storageImage.image  = UIImage(named: storage.name)
         cell.storageName.text = storage.name
         cell.storageItemsCount.text = "\(storage.count)"
@@ -106,7 +106,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         
         if segue.identifier == "StorageSegue" {
             if let indexPath = sender as? IndexPath{
-                let storage = indexPath.row < StorageData.getInstance().storages.count ? StorageData.getInstance().storages[indexPath.row] : Storage.all
+                let storage = HouseholdData.getInstance().house!.storages[indexPath.row]
                 if let destinationVC = segue.destination as? InventoryStorageViewController {
 //                    print(storage)
                     destinationVC.storage = storage

@@ -42,6 +42,9 @@ class StoredTabBarController: UITabBarController {
             viewController.storedTabBarController = self
             print("5 DOne")
         }
+        UserData.getInstance().fetchDataFromURL(storedTabBarController: self)
+        
+        
     }
     
 }

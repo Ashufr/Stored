@@ -3,13 +3,20 @@ import UIKit
 class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
     func itemAdded() {
         print("Tabel refefefe")
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(Storage.all.items)
+        let items = HouseholdData.getInstance().house!.storages[4].items
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items)
+        for (category, items) in expiringCategorizedItems {
+            print(category)
+            print(items)
+        }
         expiringTableView.reloadData()
+        expiringCollectionView.reloadData()
     }
     
     func finishedAddingItem() {
         print("Custom refreshs")
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(Storage.all.items)
+        guard let items = HouseholdData.getInstance().house?.storages[4].items  else {return}
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items)
         expiringTableView.reloadData()
     }
     
@@ -74,10 +81,6 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         let todayItemsCount = expiringCategorizedItems[.today]?.count ?? 0
         let tomorrowItemsCount = expiringCategorizedItems[.tomorrow]?.count ?? 0
         let thisWeekItemsCount = expiringCategorizedItems[.thisWeek]?.count ?? 0
-//        print(expiredItemsCount)
-//        print(todayItemsCount)
-//        print(thisMonthItemsCount)
-//        print(laterItemsCount)
         
         if todayItemsCount > 0 {
             tempSections.append("Today")
@@ -118,7 +121,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             let bottomContainerHexcode = "#F4B7BD"
             let upperStackColor = UIColor(hex: upperStackHexcode)
             let bottomContainerColor = UIColor(hex: bottomContainerHexcode)
-            let expiredItemsCount = Storage.all.items.filter { $0.isExpired }.count
+            let expiredItemsCount = HouseholdData.getInstance().house?.storages[4].items.filter { $0.isExpired }.count ?? 0
             cell.topLabel.text = "\(expiredItemsCount) Items"
             cell.bottomLabel.text = "Expired Items"
             cell.upperStackView.backgroundColor = upperStackColor
@@ -128,12 +131,28 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         }
         cell.layer.cornerRadius = 10
         cell.layer.masksToBounds = true
+        print("cell \(indexPath.row)")
         return cell
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         // Perform the segue programmatically
-        performSegue(withIdentifier: "ExpiredSegue", sender: nil)
+        let location = sender.location(in: expiringCollectionView)
+        if let indexPath = expiringCollectionView.indexPathForItem(at: location){
+            performSegue(withIdentifier: "ExpiredSegue", sender: indexPath)
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let indexPath = sender as? IndexPath{
+            let storage = HouseholdData.getInstance().house?.storages[indexPath.row]
+            if let destinationVC = segue.destination as? ExpiredViewController {
+                destinationVC.expiringViewController = self
+                self.expiredViewController = destinationVC
+            }
+        }
+        
+        
     }
     
 //    @IBOutlet var homeTableView: UITableView!
@@ -142,11 +161,13 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet var expiringTableView: UITableView!
 
+    var expiredViewController : ExpiredViewController?
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(Storage.all.items)
+        let items = HouseholdData.getInstance().house?.storages[4].items ?? []
+       
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items)
         expiringTableView.dataSource = self
         expiringTableView.delegate = self
         let layout = generateGridLayout()

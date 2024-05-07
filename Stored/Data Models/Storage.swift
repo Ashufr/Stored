@@ -102,6 +102,12 @@ class StorageData {
         let currentDate = Date()
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         
+        let weekdayComponent = calendar.component(.weekday, from: currentDate)
+            
+            let daysToSubtract = (7 - weekdayComponent)
+            var dateComponents = DateComponents()
+            dateComponents.day = daysToSubtract
+
         var categorizedStorage: [ExpiryCategory: [Item]] = [
             .today: [],
             .tomorrow: [],
@@ -110,19 +116,26 @@ class StorageData {
         
         for item in items {
             let expiryDate = item.expiryDate
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyyMMdd"
+            let expiryNumber = Int(dateFormatter.string(from: expiryDate))!
+            let currentNumber = Int(dateFormatter.string(from: currentDate))!
+            let tomorroNumber = currentNumber + 1
+            let weekNumber = Int(dateFormatter.string(from: calendar.date(byAdding: dateComponents, to: currentDate)!))!
             
-            if calendar.isDate(expiryDate, inSameDayAs: currentDate) {
+            if expiryNumber == currentNumber {
                 categorizedStorage[.today]?.append(item)
-            } else if calendar.isDate(expiryDate, inSameDayAs: tomorrow) {
+            } else if expiryNumber == tomorroNumber {
                 categorizedStorage[.tomorrow]?.append(item)
-            } else if calendar.component(.weekOfYear, from: expiryDate) <= calendar.component(.weekOfYear, from: currentDate) {
+            } else if expiryNumber <= weekNumber && expiryNumber > tomorroNumber{
                 categorizedStorage[.thisWeek]?.append(item)
             }
         }
         
         for (category, items) in categorizedStorage {
-            categorizedStorage[category] = items.sorted(by: { $0.expiryDate < $1.expiryDate })
+            categorizedStorage[category] = items.sorted(by: { $0.expiryNumber < $1.expiryNumber })
         }
+        print(categorizedStorage[.thisWeek])
         return categorizedStorage
     }
 

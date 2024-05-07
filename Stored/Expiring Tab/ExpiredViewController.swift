@@ -2,12 +2,12 @@ import UIKit
 
 class ExpiredViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        Storage.all.items.filter({$0.isExpired}).count
+        HouseholdData.getInstance().house?.storages[4].items.filter({$0.isExpired}).count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = expiredTableView.dequeueReusableCell(withIdentifier: "ExpiredTableViewCell", for: indexPath) as! ExpiredTableViewCell
-        let items = Storage.all.items.filter({$0.isExpired})
+        guard let items = HouseholdData.getInstance().house?.storages[4].items.filter({$0.isExpired}) else {return UITableViewCell()}
         let item = items[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemDescriptionLabel.text = item.expiryDescription
@@ -51,6 +51,7 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet var expiredCollectionView: UICollectionView!
     @IBOutlet var expiredTableView: UITableView!
     
+    var expiringViewController : ExpiringViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
