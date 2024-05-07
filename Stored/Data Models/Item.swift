@@ -57,14 +57,7 @@ class Item {
         self.imageURL = URL(string: imageUrl)
         self.image = image
     }
-    init(name: String, quantity: Int, storage: String, expiryDate: Date, image : UIImage) {
-        self.name = name
-        self.quantity = quantity
-        self.storage = storage
-        self.expiryDate = expiryDate
-        self.dateAdded = Date()
-        self.image = image
-    }
+
     init(name: String, quantity: Int, storage: String, expiryDate: Date, expiryDays : Int, imageUrl : String) {
         self.name = name
         self.quantity = quantity

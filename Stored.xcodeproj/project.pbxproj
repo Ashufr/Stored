@@ -39,6 +39,8 @@
 		3F993F4F2BD8C0AA006FE29E /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */; };
 		3F993F512BD8CBDA006FE29E /* InventoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */; };
 		3FAAE16B2BE35042006E524A /* HouseholdTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */; };
+		3FB2AA072BEAB41E000BCFD2 /* CloudinarySetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB2AA062BEAB41D000BCFD2 /* CloudinarySetup.swift */; };
+		3FB2AA0A2BEAB6B7000BCFD2 /* Cloudinary in Frameworks */ = {isa = PBXBuildFile; productRef = 3FB2AA092BEAB6B7000BCFD2 /* Cloudinary */; };
 		3FB635EE2BDA45D700F75D29 /* ScanItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */; };
 		3FB8D74D2BDFC40200A5ADB9 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */; };
 		3FBE9A802BE1FE2E00676303 /* ExpiringCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */; };
@@ -98,6 +100,7 @@
 		3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseholdTableViewCell.swift; sourceTree = "<group>"; };
+		3FB2AA062BEAB41D000BCFD2 /* CloudinarySetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudinarySetup.swift; sourceTree = "<group>"; };
 		3FB635ED2BDA45D700F75D29 /* ScanItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanItemButton.swift; sourceTree = "<group>"; };
 		3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiringCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -128,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FB2AA0A2BEAB6B7000BCFD2 /* Cloudinary in Frameworks */,
 				3F39B7B02BE755670010D3CB /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,6 +232,7 @@
 				3F7D21522BD14583003B3634 /* AppDelegate.swift */,
 				3F7D21542BD14583003B3634 /* SceneDelegate.swift */,
 				3F8A8C3C2BE68015006A285D /* StoredTabBarController.swift */,
+				3FB2AA052BEAB3FA000BCFD2 /* Cloudinary */,
 				3F29CCBD2BE2CAC0002A6425 /* Expiring Tab */,
 				3F29CCBE2BE2CAE9002A6425 /* Inventory Tab */,
 				3F29CCC22BE2CBE8002A6425 /* Quick Add Tab */,
@@ -251,6 +256,14 @@
 				3F8A8C362BE67901006A285D /* Badge.swift */,
 			);
 			path = "Data Models";
+			sourceTree = "<group>";
+		};
+		3FB2AA052BEAB3FA000BCFD2 /* Cloudinary */ = {
+			isa = PBXGroup;
+			children = (
+				3FB2AA062BEAB41D000BCFD2 /* CloudinarySetup.swift */,
+			);
+			path = Cloudinary;
 			sourceTree = "<group>";
 		};
 		3FBF67EC2BDA1BFE005C58A9 /* Fonts */ = {
@@ -303,6 +316,7 @@
 			name = Stored;
 			packageProductDependencies = (
 				3F39B7AF2BE755670010D3CB /* FSCalendar */,
+				3FB2AA092BEAB6B7000BCFD2 /* Cloudinary */,
 			);
 			productName = Stored;
 			productReference = 3F7D214F2BD14583003B3634 /* Stored.app */;
@@ -334,6 +348,7 @@
 			mainGroup = 3F7D21462BD14583003B3634;
 			packageReferences = (
 				3F39B7AE2BE755670010D3CB /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				3FB2AA082BEAB6B7000BCFD2 /* XCRemoteSwiftPackageReference "cloudinary_ios" */,
 			);
 			productRefGroup = 3F7D21502BD14583003B3634 /* Products */;
 			projectDirPath = "";
@@ -390,6 +405,7 @@
 				3F02D9222BE3683F00655004 /* HouseholdProfileViewController.swift in Sources */,
 				3F29CCC42BE2CC02002A6425 /* QuickAddViewController.swift in Sources */,
 				3F8A8C3D2BE68015006A285D /* StoredTabBarController.swift in Sources */,
+				3FB2AA072BEAB41E000BCFD2 /* CloudinarySetup.swift in Sources */,
 				3F29CCCB2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift in Sources */,
 				3F5618EC2BDAE56300CC6B8F /* CustomAlertController.swift in Sources */,
 				3FCD0ADE2BE89F6F004F6A70 /* AccountHouseholdViewController.swift in Sources */,
@@ -655,6 +671,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		3FB2AA082BEAB6B7000BCFD2 /* XCRemoteSwiftPackageReference "cloudinary_ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cloudinary/cloudinary_ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -662,6 +686,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F39B7AE2BE755670010D3CB /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		3FB2AA092BEAB6B7000BCFD2 /* Cloudinary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3FB2AA082BEAB6B7000BCFD2 /* XCRemoteSwiftPackageReference "cloudinary_ios" */;
+			productName = Cloudinary;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -255,21 +255,15 @@ extension InventoryNavigationController: AVCaptureMetadataOutputObjectsDelegate 
            let stringValue = readableObject.stringValue {
             captureSession!.stopRunning()
             
-            backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
-            guard let backgroundView = backgroundView else { return }
-            backgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
-            backgroundView.layer.cornerRadius = 10
-            
             loadingIndicator = UIActivityIndicatorView(style: .large)
-            loadingIndicator?.startAnimating()
-            loadingIndicator?.center = CGPoint(x: backgroundView.bounds.midX, y: backgroundView.bounds.midY)
-            backgroundView.addSubview(loadingIndicator!)
-            
-            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let topWindow = scene.windows.first {
-                backgroundView.center = topWindow.center
-                topWindow.addSubview(backgroundView)
-            }
+            loadingIndicator?.color = UIColor.black
+            loadingIndicator?.layer.backgroundColor = UIColor.white.withAlphaComponent(0.8).cgColor
+            loadingIndicator?.layer.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
+            loadingIndicator?.layer.cornerRadius = 10
+            loadingIndicator!.center = view.center
+            loadingIndicator!.startAnimating()
+            cameraViewController?.view.addSubview(loadingIndicator!)
+           
             found(code: stringValue)
         } else {
             print("Not able to read")

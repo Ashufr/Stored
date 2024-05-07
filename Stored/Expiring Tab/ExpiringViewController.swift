@@ -3,8 +3,8 @@ import UIKit
 class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
     func itemAdded() {
         print("Tabel refefefe")
-        let items = HouseholdData.getInstance().house!.storages[4].items
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items)
+        let items = HouseholdData.getInstance().house?.storages[4].items
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items ?? [])
         for (category, items) in expiringCategorizedItems {
             print(category)
             print(items)
@@ -145,7 +145,6 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let indexPath = sender as? IndexPath{
-            let storage = HouseholdData.getInstance().house?.storages[indexPath.row]
             if let destinationVC = segue.destination as? ExpiredViewController {
                 destinationVC.expiringViewController = self
                 self.expiredViewController = destinationVC

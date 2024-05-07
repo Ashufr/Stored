@@ -132,9 +132,7 @@ class UserData {
                         // Update members with users from the same household
                         DispatchQueue.main.async {
                             HouseholdData.getInstance().members = usersWithSameHousehold
-                            print(HouseholdData.getInstance().members)
                             storedTabBarController.accountNavigationController?.accountViewController?.accountHouseholdController?.accountHouseholdTableView.reloadData()
-                            // Do any other handling or UI updates here
                         }
                         
                     }
@@ -200,7 +198,6 @@ class UserData {
                                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
                                     for storage in storages {
                                         var itemsArray = [Item]()
-                                        print(storage["name"])
                                         if let items = storage["items"] as? [[String: Any]]{
                                             for item in items {
                                                 let itemMid = item["_id"] as? String ?? ""
@@ -216,8 +213,9 @@ class UserData {
                                                 itemsArray.append(item)
                                                 
                                             }
-                                            let newStorage = Storage(name: storage["name"] as! String, items: itemsArray)
+                                            let newStorage = Storage(mid : storage["_id"] as? String ?? "", name: storage["name"] as! String, items: itemsArray)
                                             storagesArray.append(newStorage)
+                                            print(newStorage.mid)
                                         }
                                     }
                                 }else{
@@ -287,7 +285,8 @@ class UserData {
         // Start user data task
         userTask.resume()
     }
-
+    
+    
 
     
 

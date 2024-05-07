@@ -1,6 +1,7 @@
 import Foundation
 
 class Storage {
+    var mid : String?
     var name : String
     var items : [Item]
     
@@ -10,25 +11,31 @@ class Storage {
     
     private static var allInstances = [Storage]()
     
-    static var all: Storage {
-        var allItems = [Item]()
-        var itemIdentifierSet = Set<String>()
-        
-        // Aggregate items from all storage instances
-        for storageInstance in allInstances {
-            for item in storageInstance.items {
-                // Check if the item identifier has alrea   dy been added
-                if !itemIdentifierSet.contains(item.name) {
-                    allItems.append(item)
-                    itemIdentifierSet.insert(item.name)
-                }
-            }
-        }
-        
-        return Storage(name: "All", items: allItems)
-    }
+//    static var all: Storage {
+//        var allItems = [Item]()
+//        var itemIdentifierSet = Set<String>()
+//        
+//        // Aggregate items from all storage instances
+//        for storageInstance in allInstances {
+//            for item in storageInstance.items {
+//                // Check if the item identifier has alrea   dy been added
+//                if !itemIdentifierSet.contains(item.name) {
+//                    allItems.append(item)
+//                    itemIdentifierSet.insert(item.name)
+//                }
+//            }
+//        }
+//        
+//        return Storage(name: "All", items: allItems)
+//    }
     
     init(name: String, items: [Item]) {
+        self.name = name
+        self.items = items
+        Storage.allInstances.append(self)
+    }
+    init(mid: String, name: String, items: [Item]) {
+        self.mid = mid
         self.name = name
         self.items = items
         Storage.allInstances.append(self)
@@ -49,10 +56,11 @@ enum ExpiryCategory {
 class StorageData {
     
     var storages: [Storage] = [
-        Storage(name: "Pantry", items: ItemData.getInstance().pantryItems),
-        Storage(name: "Fridge", items: ItemData.getInstance().fridgeItems),
-        Storage(name: "Freezer", items: ItemData.getInstance().freezerItems),
-        Storage(name: "Shelf", items: ItemData.getInstance().shelfItems)
+        Storage(name: "Pantry", items: []),
+        Storage(name: "Fridge", items: []),
+        Storage(name: "Freezer", items: []),
+        Storage(name: "Shelf", items: []),
+        Storage(name: "All", items: [])
     ]
     
     private static var instance: StorageData = StorageData()
@@ -67,7 +75,6 @@ class StorageData {
     func categorizeStorageItems(_ items: [Item]) -> [ExpiryCategory: [Item]] {
         let calendar = Calendar.current
         let currentDate = Date()
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         
         var categorizedStorage: [ExpiryCategory: [Item]] = [
             .expired: [],
@@ -100,7 +107,6 @@ class StorageData {
     func categorizeExpiringItems(_ items: [Item]) -> [ExpiryCategory: [Item]] {
         let calendar = Calendar.current
         let currentDate = Date()
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         
         let weekdayComponent = calendar.component(.weekday, from: currentDate)
             
@@ -135,7 +141,6 @@ class StorageData {
         for (category, items) in categorizedStorage {
             categorizedStorage[category] = items.sorted(by: { $0.expiryNumber < $1.expiryNumber })
         }
-        print(categorizedStorage[.thisWeek])
         return categorizedStorage
     }
 
@@ -171,5 +176,62 @@ class StorageData {
         }
     }
     
+    
+    func createItem(item: Item, storageId: String, allStorageId: String, completion: @escaping (Error?) -> Void) {
+        guard let url = URL(string: "https://ios-backend.vercel.app/api/households/6638d09be5879d3285847710/storage/add") else {
+            completion(nil) // Provide appropriate error handling
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let requestBody: [String: Any] = [
+            "storageId": storageId,
+            "allStorageId": allStorageId,
+            "item": [
+                "name": item.name,
+                "quantity": item.quantity,
+                "storage": item.storage,
+                "expiryDate": ISO8601DateFormatter().string(from: item.expiryDate),
+                "imageUrl": item.imageURL?.absoluteString ?? ""
+            ]
+        ]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: requestBody)
+            request.httpBody = jsonData
+        } catch {
+            completion(error)
+            return
+        }
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            // Handle response data if needed
+            
+            completion(nil) // Completion without error if everything succeeds
+        }
+        
+        let timeoutInterval: TimeInterval = 5
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        
+        task.resume()
+        
+        // Wait for the specified timeout interval
+        let timeoutResult = dispatchGroup.wait(timeout: DispatchTime.now() + timeoutInterval)
+        if timeoutResult == .timedOut {
+            task.cancel()
+            let timeoutError = NSError(domain: "TimeoutError", code: -1, userInfo: [NSLocalizedDescriptionKey: "The request timed out"])
+            completion(timeoutError)
+        }
+    }
+
     
 }

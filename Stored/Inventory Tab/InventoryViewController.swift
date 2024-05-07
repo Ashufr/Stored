@@ -18,7 +18,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     @IBOutlet var inventoryTableView: UITableView!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        recentlyAddedItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -49,12 +49,13 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        HouseholdData.getInstance().house?.storages.count ?? 0
+        5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InventoryCollectionCell", for: indexPath) as! InventoryCollectionViewCell
-        let storage = HouseholdData.getInstance().house!.storages[indexPath.row]
+        let storage = HouseholdData.getInstance().house?.storages[indexPath.row] ?? StorageData.getInstance().storages[indexPath.row]
+        
         cell.storageImage.image  = UIImage(named: storage.name)
         cell.storageName.text = storage.name
         cell.storageItemsCount.text = "\(storage.count)"
@@ -77,15 +78,14 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     var recentlyAddedItems : [Item] {
-        let sortedItems = Storage.all.items.sorted(by: { $0.dateAdded > $1.dateAdded })
-        let firstThreeItems = Array(sortedItems.prefix(3))
+        let sortedItems = HouseholdData.getInstance().house?.storages[4].items.sorted(by: { $0.dateAdded > $1.dateAdded })
+        let firstThreeItems = Array(sortedItems?.prefix(3) ?? [])
         return firstThreeItems
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(navigationController?.tabBarController?.viewControllers)
         inventoryTableView.dataSource = self
         inventoryTableView.delegate = self
         inventoryTableView.isScrollEnabled = false
