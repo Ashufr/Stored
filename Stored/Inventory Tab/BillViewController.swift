@@ -1,6 +1,6 @@
 import UIKit
 
-class CameraViewController: UIViewController {
+class BillViewController: UIViewController {
     
     // MARK: - Properties
     

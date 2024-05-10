@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class StoredTabBarController: UITabBarController {
 
@@ -16,7 +17,10 @@ class StoredTabBarController: UITabBarController {
     var accountNavigationController : AccountNavigationController?
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+//        validateAuth()
+        DatabaseManager.shared.storedTabBarController  = self
+        
         if let viewController = viewControllers?[0] as? ExpiringNavigationViewController {
             expiringNavigationController = viewController
             viewController.storedTabBarController = self
@@ -42,9 +46,8 @@ class StoredTabBarController: UITabBarController {
             viewController.storedTabBarController = self
             print("5 DOne")
         }
-        UserData.getInstance().fetchDataFromURL(storedTabBarController: self)
-        
-        
     }
+    
+    
     
 }

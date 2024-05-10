@@ -1,11 +1,13 @@
 import UIKit
+import Vision
 import AVFoundation
 
-class InventoryNavigationController: UINavigationController {
+class InventoryNavigationController: UINavigationController, AVCapturePhotoCaptureDelegate {
     
     // MARK: - Properties
     
     var cameraViewController: CameraViewController?
+    var billViewController : BillViewController?
     var inventoryViewController : InventoryViewController?
     var storedTabBarController : StoredTabBarController?
     var backgroundView: UIView?
@@ -13,12 +15,14 @@ class InventoryNavigationController: UINavigationController {
     
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer!
+    var photoOutput : AVCapturePhotoOutput?
     
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addScanButton()
+        addBillScanButton()
         findInventoryViewController()
     }
     
@@ -43,29 +47,101 @@ class InventoryNavigationController: UINavigationController {
         scanButton.tag = 999
         scanButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         scanButton.setupUI(in: view)
+        
+//        guard view.viewWithTag(998) == nil else { return }
+//        
+//        let billButton = ScanItemButton(type: .system)
+//        billButton.translatesAutoresizingMaskIntoConstraints = false
+//        billButton.tag = 998
+//        billButton.addTarget(self, action: #selector(billButtonTapped(_:)), for: .touchUpInside)
+//        billButton.setupUI(in: view)
+    }
+    
+    private func addBillScanButton() {
+        guard view.viewWithTag(998) == nil else { return }
+        
+        let billButton = BillButton(type: .system)
+        billButton.translatesAutoresizingMaskIntoConstraints = false
+        billButton.tag = 998
+        billButton.addTarget(self, action: #selector(billButtonTapped(_:)), for: .touchUpInside)
+        billButton.setupUI(in: view)
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
         print("Button tapped!")
         presentCameraViewController()
+//        presentBillViewController()
     }
     
+    @objc private func billButtonTapped(_ sender: UIButton) {
+        print("Bill Button tapped!")
+//        presentCameraViewController()
+        presentBillViewController()
+    }
     // MARK: - Camera Handling
+    
+    private func presentBillViewController() {
+//        cameraViewController = CameraViewController()
+        billViewController = BillViewController()
+        guard let billViewController = billViewController else { return }
+        
+        billViewController.parentNavigationController = self
+        billViewController.modalPresentationStyle = .popover
+        
+        setupBillCaptureSession()
+        setupCaptureButton(on : billViewController.view)
+        setupBackButton(on: billViewController.view)
+//        setupManualyAddButton(on: billViewController.view)
+        setupRectangularFrame(on: billViewController.view)
+        
+        present(billViewController, animated: true, completion: nil)
+    }
     
     private func presentCameraViewController() {
         cameraViewController = CameraViewController()
+//        cameraViewController = BillViewController()
         guard let cameraViewController = cameraViewController else { return }
         
         cameraViewController.parentNavigationController = self
         cameraViewController.modalPresentationStyle = .popover
         
         setupCaptureSession()
+//        setupCaptureButton(on : cameraViewController.view)
         setupBackButton(on: cameraViewController.view)
         setupManualyAddButton(on: cameraViewController.view)
         setupRectangularFrame(on: cameraViewController.view)
         
         present(cameraViewController, animated: true, completion: nil)
     }
+    
+    
+    
+    private func setupBillCaptureSession() {
+        captureSession = AVCaptureSession()
+        guard let captureSession = captureSession else { return }
+        
+        
+        do {
+            guard let camera = AVCaptureDevice.default(for: .video) else {return}
+            let input = try AVCaptureDeviceInput(device: camera)
+            captureSession.addInput(input)
+            
+            photoOutput = AVCapturePhotoOutput()
+            if let photoOutput = photoOutput {
+                captureSession.addOutput(photoOutput)
+            }
+            previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+            guard let previewLayer = previewLayer else { return }
+            previewLayer.frame = billViewController!.view.layer.bounds
+            previewLayer.videoGravity = .resizeAspectFill
+            billViewController!.view.layer.addSublayer(previewLayer)
+            captureSession.startRunning()
+        } catch {
+            print("Error setting up capture session: \(error.localizedDescription)")
+        }
+        
+    }
+    
     
     private func setupCaptureSession() {
         captureSession = AVCaptureSession()
@@ -83,6 +159,7 @@ class InventoryNavigationController: UINavigationController {
             print("Could not add video input to capture session")
             return
         }
+//
         
         let metaDataOutput = AVCaptureMetadataOutput()
         if captureSession.canAddOutput(metaDataOutput) {
@@ -102,6 +179,145 @@ class InventoryNavigationController: UINavigationController {
         
         captureSession.startRunning()
     }
+    
+    private func setupCaptureButton(on view : UIView) {
+        let captureButton = UIButton(type: .system)
+        captureButton.setTitle("Scan Bill", for: .normal)
+//        captureButton.layer.frame = CGRect(x: 0, y: 0, width: 90, height: 20)
+        captureButton.tintColor = UIColor.black
+        captureButton.layer.backgroundColor = UIColor.white.cgColor
+        captureButton.layer.cornerRadius = 10
+        captureButton.addTarget(self, action: #selector(captureButtonTapped), for: .touchUpInside)
+        captureButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(captureButton)
+        
+        NSLayoutConstraint.activate([
+            captureButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            captureButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 120), // Align vertically with the center
+            captureButton.widthAnchor.constraint(equalToConstant: 200), // Adjust width as needed
+            captureButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    @objc private func captureButtonTapped() {
+        
+        guard let photoOutput = photoOutput else {
+            print("No photo output available")
+            return
+        }
+        
+        let photoSettings = AVCapturePhotoSettings()
+        photoOutput.capturePhoto(with: photoSettings, delegate: self)
+        
+        guard let capturedImage = cameraViewController?.captureImage() else {
+            print("Failed to capture image")
+            return
+        }
+        
+        
+//        extractText(from: capturedImage)
+    }
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?){
+        guard let imageData = photo.fileDataRepresentation() else {
+            print("Failed to capture photo")
+            return
+        }
+        
+        let capturedImage = UIImage(data: imageData)!
+        captureSession?.stopRunning()
+        //            showCapturedImage(capturedImage!)
+        extractText(from: capturedImage)
+    }
+    
+    private func showCapturedImage(_ image: UIImage) {
+        // Create a new view controller to display the captured image
+        let imageViewController = UIViewController()
+        imageViewController.view.backgroundColor = .black // Set background color as needed
+        
+        // Create a UIImageView to display the captured image
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the image view to the imageViewController's view
+        imageViewController.view.addSubview(imageView)
+        
+        // Add constraints to center the image view in the imageViewController's view
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: imageViewController.view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: imageViewController.view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalTo: imageViewController.view.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: imageViewController.view.heightAnchor)
+        ])
+        
+        // Present the imageViewController
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = scene.windows.first else {
+            print("Unable to find window scene")
+            return
+        }
+        var topViewController = window.rootViewController
+        while let presentedViewController = topViewController?.presentedViewController {
+            topViewController = presentedViewController
+        }
+        topViewController?.present(imageViewController, animated: true, completion: nil)
+    }
+
+    
+    private func extractText(from image: UIImage) {
+        guard let ciImage = CIImage(image: image) else {
+            print("Failed to convert UIImage to CIImage")
+            return
+        }
+        
+        let request = VNRecognizeTextRequest { request, error in
+            guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
+            
+            var detectedText = ""
+            for observation in observations {
+                guard let topCandidate = observation.topCandidates(1).first else { continue }
+                detectedText += topCandidate.string + "\n"
+            }
+            
+            DispatchQueue.main.async {
+                self.displayExtractedText(detectedText)
+            }
+        }
+        
+        let requestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try requestHandler.perform([request])
+        } catch {
+            print("OCR request failed with error: \(error)")
+        }
+    }
+
+    private func displayExtractedText(_ text: String) {
+        let string = "BELL PEPPER\n CILANTRO\n CHAR\n RED ONION\n BROC CROWNS\n ORG CELERY\n BULK PEARS\n CILANTRO\n"
+        let alertController = UIAlertController(title: "Extracted Text", message: string, preferredStyle: .alert)
+//        print(text)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            self.captureSession?.startRunning()
+        }
+        alertController.addAction(okAction)
+        
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = scene.windows.first else {
+            print("Unable to find window scene")
+            return
+        }
+        
+        var topViewController = window.rootViewController
+        while let presentedViewController = topViewController?.presentedViewController {
+            topViewController = presentedViewController
+        }
+        
+        topViewController?.present(alertController, animated: true, completion: nil)
+    }
+
+    
+    
     
     // MARK: - Back Button
     
@@ -145,8 +361,8 @@ class InventoryNavigationController: UINavigationController {
 
         NSLayoutConstraint.activate([
             backButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            backButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -180), // Adjust vertical position as needed
-            backButton.widthAnchor.constraint(equalToConstant: 200), // Adjust width as needed
+            backButton.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 110), // Align vertically with the center
+            backButton.widthAnchor.constraint(equalToConstant: 250), // Adjust width as needed
             backButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
@@ -255,15 +471,21 @@ extension InventoryNavigationController: AVCaptureMetadataOutputObjectsDelegate 
            let stringValue = readableObject.stringValue {
             captureSession!.stopRunning()
             
+            backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+            guard let backgroundView = backgroundView else { return }
+            backgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+            backgroundView.layer.cornerRadius = 10
+            
             loadingIndicator = UIActivityIndicatorView(style: .large)
-            loadingIndicator?.color = UIColor.black
-            loadingIndicator?.layer.backgroundColor = UIColor.white.withAlphaComponent(0.8).cgColor
-            loadingIndicator?.layer.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
-            loadingIndicator?.layer.cornerRadius = 10
-            loadingIndicator!.center = view.center
-            loadingIndicator!.startAnimating()
-            cameraViewController?.view.addSubview(loadingIndicator!)
-           
+            loadingIndicator?.startAnimating()
+            loadingIndicator?.center = CGPoint(x: backgroundView.bounds.midX, y: backgroundView.bounds.midY)
+            backgroundView.addSubview(loadingIndicator!)
+            
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let topWindow = scene.windows.first {
+                backgroundView.center = topWindow.center
+                topWindow.addSubview(backgroundView)
+            }
             found(code: stringValue)
         } else {
             print("Not able to read")

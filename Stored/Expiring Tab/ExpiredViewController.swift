@@ -2,12 +2,12 @@ import UIKit
 
 class ExpiredViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        HouseholdData.getInstance().house?.storages[4].items.filter({$0.isExpired}).count ?? 0
+        StorageData.getInstance().storages[4].items.filter({$0.isExpired}).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = expiredTableView.dequeueReusableCell(withIdentifier: "ExpiredTableViewCell", for: indexPath) as! ExpiredTableViewCell
-        guard let items = HouseholdData.getInstance().house?.storages[4].items.filter({$0.isExpired}) else {return UITableViewCell()}
+        let items = StorageData.getInstance().storages[4].items.filter({$0.isExpired})
         let item = items[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemDescriptionLabel.text = item.expiryDescription
@@ -29,6 +29,8 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
         return cell
     }
     
+    @IBOutlet var deleteImage: UIImageView!
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         2
     }
@@ -36,10 +38,10 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = expiredCollectionView.dequeueReusableCell(withReuseIdentifier: "ExpiredCollectionViewCell", for: indexPath) as! ExpiredCollectionViewCell
         if indexPath.row == 0 {
-            cell.topLabel.text = "1kg"
+            cell.topLabel.text = "\(StorageData.getInstance().storages[4].items.filter({$0.isExpired}).count)kg"
             cell.bottomLabel.text = "Of food wasted"
         }else{
-            cell.topLabel.text = "₹935"
+            cell.topLabel.text = "₹\(StorageData.getInstance().storages[4].items.filter({$0.isExpired}).count * Int.random(in: 500...1000))"
             cell.bottomLabel.text = "Money wasted"
         }
         cell.layer.cornerRadius = 10
@@ -51,7 +53,6 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
     @IBOutlet var expiredCollectionView: UICollectionView!
     @IBOutlet var expiredTableView: UITableView!
     
-    var expiringViewController : ExpiringViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,8 +62,32 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
         expiredCollectionView.isScrollEnabled = false
         expiredTableView.dataSource = self
         expiredTableView.delegate = self
-        // Do any additional setup after loading the view.
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+            deleteImage.isUserInteractionEnabled = true
+            deleteImage.addGestureRecognizer(tapGesture)
+        
     }
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        // Perform deletion action here
+        print("Delete image tapped")
+      
+        let storage5 = StorageData.getInstance().storages[4].items.filter({$0.isExpired})
+        
+        for item in storage5 {
+            let storage = StorageData.getInstance().getStorage(for: item.storage)
+            if let index = storage.items.firstIndex(where: { $0 === item }) {
+                storage.items.remove(at: index)
+            }
+            
+            if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+                StorageData.getInstance().storages[4].items.remove(at: index)
+            }
+        }
+        expiredCollectionView.reloadData()
+        expiredTableView.reloadData()
+    }
+    
     
     func generateGridLayout() -> UICollectionViewLayout {
         

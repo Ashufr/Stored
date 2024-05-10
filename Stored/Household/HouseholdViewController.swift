@@ -32,7 +32,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        HouseholdData.getInstance().household.name
+        UserData.getInstance().user?.household?.name
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -97,7 +97,6 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer){
-        print("MEMEM")
         let member = sender.location(in: householdTableView)
         if let indexPath = householdTableView.indexPathForRow(at: member){
             performSegue(withIdentifier: "HouseholdProfileSegue", sender: indexPath)

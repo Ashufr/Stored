@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 
 class Item {
-    var mid : String?
     var name : String
     var quantity : Int
     var storage : String
@@ -12,13 +11,6 @@ class Item {
     var imageURL : URL?
     var image : UIImage?
     
-    
-    
-    var expiryNumber : Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        return Int(dateFormatter.string(from: self.expiryDate))!
-    }
     
     var isExpired : Bool {
         return ItemData.getInstance().calulateDateDifference(startDate: Date(), endDate: expiryDate) < 0
@@ -40,6 +32,15 @@ class Item {
         }
     }
     
+    init(name: String, quantity: Int, storage: String, expiryDate: Date, dateAdded : Date, imageUrl : URL) {
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.dateAdded = dateAdded
+        self.imageURL = imageUrl
+    }
+    
     init(name: String, quantity: Int, storage: String, expiryDate: Date, imageUrl : String) {
         self.name = name
         self.quantity = quantity
@@ -57,7 +58,36 @@ class Item {
         self.imageURL = URL(string: imageUrl)
         self.image = image
     }
-
+    init(name: String, quantity: Int, storage: String, expiryDate: Date, image : UIImage) {
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.dateAdded = Date()
+        self.image = image
+    }
+    
+    
+    
+    init(name: String, quantity: Int, storage: String, expiryDate: Date, imageUrl : String, image : UIImage, dateAdded : Date) {
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.dateAdded = dateAdded
+        self.imageURL = URL(string: imageUrl)
+        self.image = image
+    }
+    init(name: String, quantity: Int, storage: String, expiryDate: Date, image : UIImage, dateAdded : Date) {
+        self.name = name
+        self.quantity = quantity
+        self.storage = storage
+        self.expiryDate = expiryDate
+        self.dateAdded = dateAdded
+        self.image = image
+    }
+    
+    
     init(name: String, quantity: Int, storage: String, expiryDate: Date, expiryDays : Int, imageUrl : String) {
         self.name = name
         self.quantity = quantity
@@ -74,16 +104,6 @@ class Item {
         self.expiryDate = Calendar.current.date(byAdding: .day, value: quickAddItem.expiryDays!, to: Date())!
         self.imageURL = quickAddItem.imageURL
         self.dateAdded = Date()
-    }
-    
-    init(mid: String, name: String, quantity: Int, storage: String, expiryDate: Date, imageUrl : String) {
-        self.mid = mid
-        self.name = name
-        self.quantity = quantity
-        self.storage = storage
-        self.expiryDate = expiryDate
-        self.dateAdded = Date()
-        self.imageURL = URL(string: imageUrl)
     }
     
 }

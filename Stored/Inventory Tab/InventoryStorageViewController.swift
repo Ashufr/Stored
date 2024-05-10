@@ -1,6 +1,9 @@
 import UIKit
 
-class InventoryStorageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomAlertRefreshDelegate, QuickAddDelegate {
+class InventoryStorageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomAlertRefreshDelegate, QuickAddDelegate, UIContextMenuInteractionDelegate {
+  
+    
+    
     func itemAdded() {
         categorizedItems = StorageData.getInstance().categorizeStorageItems(storage?.items ?? [])
         inventoryStorageTableView.reloadData()
@@ -16,9 +19,11 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     var inventoryViewController : InventoryViewController?
     
     
-    var storage : Storage?
+    var storage : StorageLocation?
     var categorizedItems = [ExpiryCategory : [Item]]()
-    var sections : [String]{
+    var sections : [String] = []
+    
+    func getSections() -> [String]{
         var tempSections = [String]()
         let expiredItemsCount = categorizedItems[.expired]?.count ?? 0
         let todayItemsCount = categorizedItems[.today]?.count ?? 0
@@ -91,9 +96,32 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
                 }
             }
         }
+        cell.inventoryStorageController = self
         cell.itemImage.layer.cornerRadius = 25
+        let contextMenuInteraction = UIContextMenuInteraction(delegate: self)
+            cell.addInteraction(contextMenuInteraction)
+        
         return cell
     }
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+            guard let cell = interaction.view as? InventoryStorageTableViewCell else { return nil }
+            guard let indexPath = inventoryStorageTableView.indexPath(for: cell) else { return nil }
+
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                self.deleteItem(at: indexPath)
+            }
+            let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+                // Handle edit action
+                // For example, you can call a method to present an edit view controller
+                self.editItem(at: indexPath)
+            }
+
+            // Create and return the context menu configuration
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+                UIMenu(title: "", children: [deleteAction, editAction])
+            }
+        }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
@@ -125,8 +153,116 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+            if editingStyle == .delete {
+                // Perform the deletion here
+                let section = indexPath.section
+                let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+                guard var items = categorizedItems[expiryCategory] else { return }
+                
+                
+                let item = items[indexPath.row]
+                
+                // Remove the item from storage.items
+                if let index = storage?.items.firstIndex(where: { $0 === item }) {
+                    storage?.items.remove(at: index)
+                }
+                if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+                    StorageData.getInstance().storages[4].items.remove(at: index)
+                }
+                inventoryViewController?.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
+                inventoryViewController?.inventoryCollectionView.reloadData()
+                
+                // Remove the item from the categorizedItems dictionary
+                items.remove(at: indexPath.row)
+                categorizedItems[expiryCategory] = items
+                
+                // Delete the row from the table view
+                
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                if (items.isEmpty){
+                    self.sections = getSections()
+                    tableView.reloadData()
+                }
+                // Perform any additional deletion operations here, such as updating the backend
+                
+                // For demonstration purposes, you can print the deleted item
+//                tableView.reloadData()
+                print("Deleted item: \(item)")
+            }
+        }
+    
+    func editItem(at indexPath : IndexPath){
+        guard let customAlertController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CustomAlertVC") as? CustomAlertController else {
+            return
+        }
+            
+        let section = indexPath.section
+        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+        guard var items = categorizedItems[expiryCategory] else { return }
+        
+        
+        let item = items[indexPath.row]
+        
+        // Remove the item from storage.items
+        if let index = storage?.items.firstIndex(where: { $0 === item }) {
+            storage?.items.remove(at: index)
+        }
+        if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+            StorageData.getInstance().storages[4].items.remove(at: index)
+        }
+
+        customAlertController.productTitle = item.name
+        customAlertController.productImageUrl = item.imageURL?.absoluteString
+        customAlertController.productImage = item.image
+        customAlertController.productExpiry = item.expiryDate
+        let index = StorageData.getInstance().getStorageIndex(for: item.storage)
+        print(index)
+        customAlertController.productStorageIndex = index
+        customAlertController.productQuanity = item.quantity
+        customAlertController.productDateAdded = item.dateAdded
+        customAlertController.modalTransitionStyle = .crossDissolve
+        customAlertController.modalPresentationStyle = .overFullScreen
+        customAlertController.inventoryStorageTableDelegate = self
+        customAlertController.inventoryCollectionDelegate = inventoryViewController
+        
+        customAlertController.expiringDelegate = self
+            
+        present(customAlertController, animated: true, completion: nil)
+    }
+    
+    func deleteItem(at indexPath: IndexPath) {
+        print("dekete")
+        let section = indexPath.section
+        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+        guard var items = categorizedItems[expiryCategory] else { return }
+        
+        let item = items[indexPath.row]
+        
+        // Remove the item from storage.items
+        if let index = storage?.items.firstIndex(where: { $0 === item }) {
+            storage?.items.remove(at: index)
+        }
+        if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+            StorageData.getInstance().storages[4].items.remove(at: index)
+        }
+        inventoryViewController?.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
+        inventoryViewController?.inventoryCollectionView.reloadData()
+        
+        // Remove the item from the categorizedItems dictionary
+        items.remove(at: indexPath.row)
+        categorizedItems[expiryCategory] = items
+        inventoryStorageTableView.deleteRows(at: [indexPath], with: .fade)
+        // Perform any additional deletion operations here, such as updating the backend
+        
+        // For demonstration purposes, you can print the deleted item
+        print("Deleted item: \(item)")
+    }
+
 
     @IBOutlet var inventoryStorageTableView: UITableView!
+    
+
     
     override func viewDidLoad() {
 
@@ -135,6 +271,8 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         if let storage = storage {
             categorizedItems = StorageData.getInstance().categorizeStorageItems(storage.items)
         }
+        sections = getSections()
+        
         
         inventoryStorageTableView.dataSource = self
         inventoryStorageTableView.delegate = self

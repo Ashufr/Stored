@@ -16,27 +16,29 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
     var inventoryStorageTableDelegate: CustomAlertRefreshDelegate?
     var inventoryCollectionDelegate: CustomAlertRefreshDelegate?
     var expiringDelegate : CustomAlertRefreshDelegate?
-    var inventoryNavigationController : InventoryNavigationController?
-    
-    var backgroundView : UIView?
-    var loadingIndicator : UIActivityIndicatorView?
+    var inventoryNavigationController :InventoryNavigationController?
     
     var productTitle: String?
     var productImageUrl: String?
+    var productImage : UIImage?
     let storageLocations = ["Pantry", "Fridge", "Freezer", "Shelf"]
+    var productQuanity : Int?
+    var productExpiry : Date?
+    var productStorageIndex : Int?
+    var productDateAdded : Date?
     
     // MARK: - Outlets
     
-    @IBOutlet private weak var alertView: UIView!
-    @IBOutlet private weak var itemImageView: UIImageView!
-    @IBOutlet private weak var titleTextField: UITextField!
-    @IBOutlet private weak var quantityLabel: UILabel!
-    @IBOutlet private weak var quantityStepper: UIStepper!
-    @IBOutlet private weak var datePicker: UIDatePicker!
-    @IBOutlet private weak var pickerView: UIPickerView!
-    @IBOutlet private weak var addButton: UIButton!
-    @IBOutlet private weak var cancelButton: UIButton!
-    @IBOutlet private weak var buttonStack: UIStackView!
+    @IBOutlet var alertView: UIView!
+    @IBOutlet var itemImageView: UIImageView!
+    @IBOutlet var titleTextField: UITextField!
+    @IBOutlet var quantityLabel: UILabel!
+    @IBOutlet var quantityStepper: UIStepper!
+    @IBOutlet var datePicker: UIDatePicker!
+    @IBOutlet var pickerView: UIPickerView!
+    @IBOutlet var addButton: UIButton!
+    @IBOutlet var cancelButton: UIButton!
+    @IBOutlet var buttonStack: UIStackView!
     
     // MARK: - View Lifecycle
     
@@ -78,6 +80,29 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
         if let productTitle = productTitle {
             titleTextField.text = productTitle
         }
+        if let productImage = productImage {
+            itemImageView.image = productImage
+        }
+        if let productImageUrl = productImageUrl, let url = URL(string :productImageUrl) {
+            ItemData.getInstance().loadImageFrom(url: url){ image in
+                if let image = image {
+                    self.itemImageView.image = image
+                } else {
+                    print("Failed to load image")
+                }
+            }
+        }
+        if let productQuanity = productQuanity {
+            quantityStepper.value = Double(productQuanity)
+            quantityLabel.text = "\(productQuanity)"
+        }
+        if let productExpiry = productExpiry {
+            datePicker.date = productExpiry
+        }
+        
+        if let productStorageIndex = productStorageIndex {
+            pickerView.selectRow(productStorageIndex, inComponent: 0, animated: true)
+        }
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleImageTap))
         itemImageView.isUserInteractionEnabled = true
         itemImageView.addGestureRecognizer(tapGestureRecognizer)
@@ -88,63 +113,55 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
         borderLayer.frame = CGRect(x: 0, y: 0, width: buttonStack.frame.width, height: 1)
         buttonStack.layer.addSublayer(borderLayer)
         
-        if let productImageUrl = productImageUrl, let url = URL(string :productImageUrl) {
-            ItemData.getInstance().loadImageFrom(url: url){ image in
-                if let image = image {
-                    self.itemImageView.image = image
-                } else {
-                    print("Failed to load image")
-                }
-            }
-        }
+       
         itemImageView.layer.cornerRadius = 20
         datePicker.minimumDate = Date()
     }
     
     @objc private func handleImageTap() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.allowsEditing = true
-        
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                imagePickerController.sourceType = .camera
-                self.present(imagePickerController, animated: true, completion: nil)
-            } else {
-                print("Camera is not available.")
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.delegate = self
+            imagePickerController.allowsEditing = true
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            let takePhotoAction = UIAlertAction(title: "Take Photo", style: .default) { _ in
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    imagePickerController.sourceType = .camera
+                    self.present(imagePickerController, animated: true, completion: nil)
+                } else {
+                    print("Camera is not available.")
+                }
             }
-        }
-        alertController.addAction(takePhotoAction)
-        
-        let chooseFromLibraryAction = UIAlertAction(title: "Choose from Library", style: .default) { _ in
-            imagePickerController.sourceType = .photoLibrary
-            self.present(imagePickerController, animated: true, completion: nil)
-        }
-        alertController.addAction(chooseFromLibraryAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true, completion: nil)
-    }
-    
-    // UIImagePickerControllerDelegate methods
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let editedImage = info[.editedImage] as? UIImage {
-            itemImageView.image = editedImage
-        } else if let originalImage = info[.originalImage] as? UIImage {
-            itemImageView.image = originalImage
+            alertController.addAction(takePhotoAction)
+            
+            let chooseFromLibraryAction = UIAlertAction(title: "Choose from Library", style: .default) { _ in
+                imagePickerController.sourceType = .photoLibrary
+                self.present(imagePickerController, animated: true, completion: nil)
+            }
+            alertController.addAction(chooseFromLibraryAction)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            
+            present(alertController, animated: true, completion: nil)
         }
         
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
+        // UIImagePickerControllerDelegate methods
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let editedImage = info[.editedImage] as? UIImage {
+                itemImageView.image = editedImage
+            } else if let originalImage = info[.originalImage] as? UIImage {
+                itemImageView.image = originalImage
+            }
+            
+            picker.dismiss(animated: true, completion: nil)
+        }
+        
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            picker.dismiss(animated: true, completion: nil)
+        }
     
     private func handleAddButtonTapped() {
         
@@ -161,146 +178,84 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
         let itemStorage = storageLocations[selectedStorageIndex]
         
         if let url = productImageUrl {
-            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: url, image: itemImage)
+            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: url, image: itemImage, dateAdded : productDateAdded ?? Date())
             addItemToStorage(newItem, at: selectedStorageIndex)
         }else {
-            loadingIndicator = UIActivityIndicatorView(style: .large)
-            loadingIndicator?.color = UIColor.black
-            loadingIndicator?.layer.backgroundColor = UIColor.white.withAlphaComponent(0.8).cgColor
-            loadingIndicator?.layer.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
-            loadingIndicator?.layer.cornerRadius = 10
-            loadingIndicator!.center = view.center
-            loadingIndicator!.startAnimating()
-            view.addSubview(loadingIndicator!)
-            CloudinarySetup.getInstnce().uploadImageToCloudinary(image: itemImage) { imageURL, error in
-                if let error = error {
-                    print("Error uploading image: \(error)")
-                    self.loadingIndicator!.stopAnimating()
-                    self.loadingIndicator?.removeFromSuperview()
-                    let alertController = UIAlertController(title: "Image not uploaded", message: "Couldn't Upload the image on the server", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "OK", style: .default) { _ in
-                        alertController.dismiss(animated: true, completion: nil)
-                    }
-                    
-                    alertController.addAction(action)
-                    
-                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                        if let window = scene.windows.first {
-                            if let topViewController = window.rootViewController {
-                                var currentViewController = topViewController
-                                
-                                while let presentedViewController = currentViewController.presentedViewController {
-                                    currentViewController = presentedViewController
-                                }
-                                
-                                currentViewController.present(alertController, animated: true, completion: nil)
-                            }
-                        }
-                    }
-                } else if let imageURL = imageURL {
-                    let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: imageURL, image: itemImage)
-                    self.addItemToStorage(newItem, at: selectedStorageIndex)
-                }else{
-                    print("NO urururuur")
-                }
-            }
-            
+            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, image: itemImage, dateAdded : productDateAdded ?? Date())
+            addItemToStorage(newItem, at: selectedStorageIndex)
         }
         
     }
     
+    func isSystemPhotoImage(_ image: UIImage?) -> Bool {
+        let systemImageName = "photo"
+        guard let image = image else { return false }
+        print("image is herer")
+        // Extract the system name from the image's description
+        let imageName = image.description.components(separatedBy: " ").last ?? ""
+        print(image.isSymbolImage)
+        // Compare against the known system image name
+        return imageName == systemImageName
+    }
+
+    
     
     private func addItemToStorage(_ item: Item, at index: Int) {
-        
-        var storage : Storage?
-        guard let storages = HouseholdData.getInstance().house?.storages else {return}
-        for str in storages {
-            if str.name == item.storage{
-                storage = str
-            }
+        let storage = StorageData.getInstance().storages[index]
+        storage.items.append(item)
+        StorageData.getInstance().storages[4].items.append(item)
+        if let inventoryStorageTableDelegate = inventoryStorageTableDelegate {
+            inventoryStorageTableDelegate.finishedAddingItem()
         }
-        guard let storage = storage else {return}
-        let allStorage = HouseholdData.getInstance().house!.storages[4]
+        if let inventoryCollectionDelegate = inventoryCollectionDelegate {
+            inventoryCollectionDelegate.finishedAddingItem()
+        }
         
-        loadingIndicator = UIActivityIndicatorView(style: .large)
-        loadingIndicator?.color = UIColor.black
-        loadingIndicator?.layer.backgroundColor = UIColor.white.withAlphaComponent(0.8).cgColor
-        loadingIndicator?.layer.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
-        loadingIndicator?.layer.cornerRadius = 10
-        loadingIndicator!.center = view.center
-        loadingIndicator!.startAnimating()
-        view.addSubview(loadingIndicator!)
-        
-        StorageData.getInstance().createItem(item: item, storageId: storage.mid!, allStorageId: allStorage.mid!) { error in
-            
-            DispatchQueue.main.async {
-                // Stop the loading indicator
-                self.loadingIndicator!.stopAnimating()
-                self.loadingIndicator?.removeFromSuperview()
+        dismiss(animated: true){
+            if self.productStorageIndex != nil {
+                let alertController = UIAlertController(title: "\(item.name) Updated", message: "\(item.name) has been updaeted", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.cameraDelegate?.alertDismissed()
+                }
                 
-                if let error = error {
-                    print("Error creating item: \(error)")
-                    let alertController = UIAlertController(title: "Couldn't add \(item.name)", message: "\(item.name) wasn't added to your inventory ", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "OK", style: .default) { _ in
-                        alertController.dismiss(animated: true)
-                    }
-                    
-                    alertController.addAction(action)
-                    
-                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                        if let window = scene.windows.first {
-                            if let topViewController = window.rootViewController {
-                                var currentViewController = topViewController
-                                
-                                while let presentedViewController = currentViewController.presentedViewController {
-                                    currentViewController = presentedViewController
-                                }
-                                
-                                currentViewController.present(alertController, animated: true, completion: nil)
+                alertController.addAction(action)
+                
+                if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                    if let window = scene.windows.first {
+                        if let topViewController = window.rootViewController {
+                            var currentViewController = topViewController
+                            
+                            while let presentedViewController = currentViewController.presentedViewController {
+                                currentViewController = presentedViewController
                             }
+                            
+                            currentViewController.present(alertController, animated: true, completion: nil)
                         }
-                        
                     }
-                } else {
-                    print("Item created successfully")
-                    storage.items.append(item)
-                    allStorage.items.append(item)
-                    if let inventoryStorageTableDelegate = self.inventoryStorageTableDelegate {
-                        inventoryStorageTableDelegate.finishedAddingItem()
-                    }
-                    if let inventoryCollectionDelegate = self.inventoryCollectionDelegate {
-                        inventoryCollectionDelegate.finishedAddingItem()
-                    }
-                    
-                    self.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.itemAdded()
-                    
-                    self.dismiss(animated: true){
-                        let alertController = UIAlertController(title: "\(item.name) Added", message: "\(item.name) x\(item.quantity) has been added to your \(item.storage)", preferredStyle: .alert)
-                        let action = UIAlertAction(title: "OK", style: .default) { _ in
-                            self.cameraDelegate?.alertDismissed()
-                        }
-                        
-                        alertController.addAction(action)
-                        
-                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                            if let window = scene.windows.first {
-                                if let topViewController = window.rootViewController {
-                                    var currentViewController = topViewController
-                                    
-                                    while let presentedViewController = currentViewController.presentedViewController {
-                                        currentViewController = presentedViewController
-                                    }
-                                    
-                                    currentViewController.present(alertController, animated: true, completion: nil)
-                                }
+                }
+            }else{
+                let alertController = UIAlertController(title: "\(item.name) Added", message: "\(item.name) x\(item.quantity) has been added to your \(item.storage)", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.cameraDelegate?.alertDismissed()
+                }
+                
+                alertController.addAction(action)
+                
+                if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                    if let window = scene.windows.first {
+                        if let topViewController = window.rootViewController {
+                            var currentViewController = topViewController
+                            
+                            while let presentedViewController = currentViewController.presentedViewController {
+                                currentViewController = presentedViewController
                             }
+                            
+                            currentViewController.present(alertController, animated: true, completion: nil)
                         }
                     }
                 }
             }
         }
-        
-        
     }
     
     private func handleDatePickerValueChanged() {

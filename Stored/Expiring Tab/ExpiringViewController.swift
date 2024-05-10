@@ -1,22 +1,16 @@
 import UIKit
+import FirebaseAuth
 
 class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
     func itemAdded() {
         print("Tabel refefefe")
-        let items = HouseholdData.getInstance().house?.storages[4].items
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items ?? [])
-        for (category, items) in expiringCategorizedItems {
-            print(category)
-            print(items)
-        }
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
         expiringTableView.reloadData()
-        expiringCollectionView.reloadData()
     }
     
     func finishedAddingItem() {
         print("Custom refreshs")
-        guard let items = HouseholdData.getInstance().house?.storages[4].items  else {return}
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items)
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
         expiringTableView.reloadData()
     }
     
@@ -29,7 +23,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
         guard let items = expiringCategorizedItems[expiryCategory] else {return UITableViewCell()}
         let item = items[indexPath.row]
-    
+        
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
         cell.storageLabel.text = item.storage
@@ -45,8 +39,18 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
         }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleItemTap(_:)))
+        cell.addGestureRecognizer(tap)
         cell.itemImage.layer.cornerRadius = 25
         return cell
+    }
+    
+    @objc func handleItemTap(_ sender: UITapGestureRecognizer){
+//        let location = sender.location(in: expiringTableView)
+//                if let tabBarController = self.tabBarController {
+//                tabBarController.selectedIndex = 1 
+//                    // Set desired tab index here
+//            }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -59,14 +63,14 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-            
+        
         let titleLabel = UILabel()
         titleLabel.frame = CGRect(x: 5, y: 0, width: tableView.frame.width - 30, height: 30)
-     
+        
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         titleLabel.text = sections[section]
         headerView.addSubview(titleLabel)
-            
+        
         return headerView
     }
     
@@ -74,29 +78,76 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         return 30
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Perform the deletion here
+         
+            let section = indexPath.section
+            let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+            guard var items = expiringCategorizedItems[expiryCategory] else { return }
+            
+            
+            let item = items[indexPath.row]
+            let storage = StorageData.getInstance().getStorage(for: item.storage)
+            // Remove the item from storage.items
+            if let index = storage.items.firstIndex(where: { $0 === item }) {
+                storage.items.remove(at: index)
+            }
+            
+            if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+                StorageData.getInstance().storages[4].items.remove(at: index)
+            }
+
+            
+            expiringNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
+            // Remove the item from the categorizedItems dictionary
+            items.remove(at: indexPath.row)
+            expiringCategorizedItems[expiryCategory] = items
+            
+            // Delete the row from the table view
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            if (items.isEmpty){
+                self.sections = getSections()
+                tableView.reloadData()
+            }
+            // Perform any additional deletion operations here, such as updating the backend
+            
+            // For demonstration purposes, you can print the deleted item
+            print("Deleted item: \(item)")
+        }
+    }
+    
     var expiringNavigationController : ExpiringNavigationViewController?
     var expiringCategorizedItems : [ExpiryCategory: [Item]] = [:]
-    var sections : [String]{
+    var sections : [String] = []
+    
+    func getSections() -> [String] {
+        
         var tempSections = [String]()
         let todayItemsCount = expiringCategorizedItems[.today]?.count ?? 0
         let tomorrowItemsCount = expiringCategorizedItems[.tomorrow]?.count ?? 0
         let thisWeekItemsCount = expiringCategorizedItems[.thisWeek]?.count ?? 0
+        //        print(expiredItemsCount)
+        //        print(todayItemsCount)
+        //        print(thisMonthItemsCount)
+        //        print(laterItemsCount)
         
         if todayItemsCount > 0 {
             tempSections.append("Today")
-//            print("\(tempSections[tempSections.count-1]) appended")
-
+            //            print("\(tempSections[tempSections.count-1]) appended")
+            
         }
         if tomorrowItemsCount > 0 {
             tempSections.append("Tomorrow")
-//            print("\(tempSections[tempSections.count-1]) appended")
+            //            print("\(tempSections[tempSections.count-1]) appended")
         }
         if thisWeekItemsCount > 0 {
             tempSections.append("This Week")
-//            print("\(tempSections[tempSections.count-1]) appended")
-
+            //            print("\(tempSections[tempSections.count-1]) appended")
+            
         }
-
+        
         return tempSections
     }
     
@@ -121,7 +172,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             let bottomContainerHexcode = "#F4B7BD"
             let upperStackColor = UIColor(hex: upperStackHexcode)
             let bottomContainerColor = UIColor(hex: bottomContainerHexcode)
-            let expiredItemsCount = HouseholdData.getInstance().house?.storages[4].items.filter { $0.isExpired }.count ?? 0
+            let expiredItemsCount = StorageLocation.all.items.filter { $0.isExpired }.count
             cell.topLabel.text = "\(expiredItemsCount) Items"
             cell.bottomLabel.text = "Expired Items"
             cell.upperStackView.backgroundColor = upperStackColor
@@ -131,42 +182,27 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         }
         cell.layer.cornerRadius = 10
         cell.layer.masksToBounds = true
-        print("cell \(indexPath.row)")
         return cell
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         // Perform the segue programmatically
-        let location = sender.location(in: expiringCollectionView)
-        if let indexPath = expiringCollectionView.indexPathForItem(at: location){
-            performSegue(withIdentifier: "ExpiredSegue", sender: indexPath)
-        }
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if let indexPath = sender as? IndexPath{
-            if let destinationVC = segue.destination as? ExpiredViewController {
-                destinationVC.expiringViewController = self
-                self.expiredViewController = destinationVC
-            }
-        }
-        
-        
+        performSegue(withIdentifier: "ExpiredSegue", sender: nil)
     }
     
-//    @IBOutlet var homeTableView: UITableView!
+    //    @IBOutlet var homeTableView: UITableView!
     
     @IBOutlet var expiringCollectionView: UICollectionView!
     
     @IBOutlet var expiringTableView: UITableView!
-
-    var expiredViewController : ExpiredViewController?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let items = HouseholdData.getInstance().house?.storages[4].items ?? []
-       
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(items)
+        validateAuth()
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
+        sections = getSections()
         expiringTableView.dataSource = self
         expiringTableView.delegate = self
         let layout = generateGridLayout()
@@ -177,7 +213,61 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         
         
     }
-
+    
+    func validateAuth(){
+        if FirebaseAuth.Auth.auth().currentUser == nil {
+            print("not logged in")
+            guard let loginNavigationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginNavigationVC") as? LoginNavigationController else {
+                return
+            }
+            loginNavigationViewController.modalPresentationStyle = .fullScreen
+            loginNavigationViewController.storedTabBarController = expiringNavigationController?.storedTabBarController
+           present(loginNavigationViewController, animated: true)
+        }else {
+            guard let email = FirebaseAuth.Auth.auth().currentUser?.email else {
+                print("email not found")
+                return
+            }
+            DatabaseManager.shared.getUserFromDatabase(email: email) { user in
+                if let user = user {
+                    UserData.getInstance().user = user
+                    
+                } else {
+                    // User data retrieval failed or user does not exist
+                    print("Failed to retrieve user data.")
+                }
+            }
+            
+            
+            
+            
+            
+        }
+    }
+    
+    func reloadTable(){
+        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
+        expiringTableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ToStorageSegue" {
+            if let indexPath = sender as? IndexPath {
+                let section = indexPath.section
+                let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+                guard var items = expiringCategorizedItems[expiryCategory] else { return }
+                
+                let item = items[indexPath.row]
+                let storage = StorageData.getInstance().getStorage(for: item.storage)
+                if let destinationVC = segue.destination as? InventoryStorageViewController {
+                    destinationVC.storage = storage
+                }
+            }
+        }
+    }
+    
+    
+    
     func generateGridLayout() -> UICollectionViewLayout {
         
         let padding : CGFloat = 10.0
@@ -188,14 +278,14 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.9)), subitem: item, count: 2)
         
         group.interItemSpacing = .fixed(padding)
-
+        
         
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = padding
         
-//        section.contentInsets = NSDirectionalEdgeInsets(top: padding, leading: 0, bottom: padding, trailing: 0)
+        //        section.contentInsets = NSDirectionalEdgeInsets(top: padding, leading: 0, bottom: padding, trailing: 0)
         
-//        section.boundarySupplementaryItems = [generateHeader()]
+        //        section.boundarySupplementaryItems = [generateHeader()]
         
         return UICollectionViewCompositionalLayout(section: section)
         
@@ -206,13 +296,13 @@ extension UIColor {
     convenience init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var rgb: UInt64 = 0
-
+        
         Scanner(string: hex).scanHexInt64(&rgb)
-
+        
         let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
         let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
         let blue = CGFloat(rgb & 0x0000FF) / 255.0
-
+        
         self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
 }

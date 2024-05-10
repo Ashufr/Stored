@@ -8,32 +8,32 @@
 import Foundation
 
 class Household {
-    var mid : String?
     var name: String
     var code: String
-    var storages : [Storage]
+    var storages : [StorageLocation]
     
     // Static set to store generated IDs
     private static var generatedIDs: Set<String> = Set<String>()
     
+    init(name : String, storages : [StorageLocation]) {
+        self.name = name
+        self.storages = storages
+        self.code = ""
+        self.code = generateUniqueID()
+    }
+    
+    init(name : String,code : String, storages : [StorageLocation]) {
+        self.name = name
+        self.storages = storages
+        self.code = code
+    }
+    
     init(name: String) {
         self.name = name
         self.code = ""
-        self.storages = []
-        self.code = generateUniqueID()
-    }
-    init(mid: String , name: String) {
-        self.mid = mid
-        self.name = name
-        self.code = ""
-        self.storages = []
-        self.code = generateUniqueID()
-    }
-    init(mid: String , name: String, storages : [Storage]) {
-        self.mid = mid
-        self.name = name
-        self.code = ""
-        self.storages = storages
+        self.storages = [StorageLocation(name: "Pantry", items: [Item]()), StorageLocation(name: "Fridge", items: [Item]()), StorageLocation(name: "Freezer", items: [Item]()), StorageLocation(name: "Shelf", items: [Item]()),
+            StorageLocation(name: "All", items: [Item]())
+        ]
         self.code = generateUniqueID()
     }
     
@@ -70,12 +70,6 @@ class HouseholdData{
         instance
     }
     
+    
     var household = Household(name: "Ashu's House")
-    
-    var house : Household?
-    
-    var members : [User]?
-    
-    
-    
 }

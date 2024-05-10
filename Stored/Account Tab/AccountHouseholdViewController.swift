@@ -41,21 +41,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         }else if indexPath.section == 1{
             let cell = accountHouseholdTableView.dequeueReusableCell(withIdentifier: "AccountHouseholdUserTableViewCell", for: indexPath) as! AccountHouseholdUserTableViewCell
             guard let user = members?[indexPath.row] else {return UITableViewCell()}
-            if let image = user.image{
-                cell.userImage.image = image
-            }else{
-                ItemData.getInstance().loadImageFrom(url: user.imageURL){ image in
-                    if let image = image {
-                        cell.userImage.image = image
-                        user.image = image
-                    } else {
-                        // Handle case where image couldn't be loaded
-                        print("Failed to load image")
-                    }
-                }
-            }
-            cell.userImage.contentMode = .scaleAspectFill
-            cell.userImage.clipsToBounds = true
+            cell.userImage.image = UIImage(named: user.firstName)
             cell.userImage.layer.cornerRadius = 25
             cell.userLabel.text = user.firstName
             cell.userEmailLabel.text = user.email
@@ -93,20 +79,18 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet var accountHouseholdTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.members = HouseholdData.getInstance().members
-//        print(members)
         accountHouseholdTableView.dataSource = self
         accountHouseholdTableView.delegate  = self
         accountHouseholdTableView.isScrollEnabled = false
-//        if let household = household {
-//            var filteredUsers: [User] = []
-//            for user in UserData.getInstance().users {
-//                if user.household.name == household.name {
-//                    filteredUsers.append(user)
-//                }
-//            }
-//            members = filteredUsers
-//        }
+        if let household = household {
+            var filteredUsers: [User] = []
+            for user in UserData.getInstance().users {
+                if user.household?.name == household.name {
+                    filteredUsers.append(user)
+                }
+            }
+            members = filteredUsers
+        }
         // Do any additional setup after loading the view.
     }
     

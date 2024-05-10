@@ -16,5 +16,6 @@ class ExpiringNavigationViewController: UINavigationController {
         }
         expiringViewController = lastViewController
         lastViewController.expiringNavigationController = self
+        expiringViewController?.validateAuth()
     }
 }
