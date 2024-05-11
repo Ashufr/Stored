@@ -2,7 +2,11 @@ import Foundation
 
 class StorageLocation {
     var name : String
-    var items : [Item]
+    var items : [Item] {
+        didSet {
+            print("item added to \(self.name)")
+        }
+    }
     
     var count : Int {
         items.count
@@ -58,21 +62,21 @@ enum ExpiryCategory {
     case later
 }
 
-class StorageData {
+class StorageLocationData {
     
     var storages: [StorageLocation] = [
-        StorageLocation(name: "Pantry", items: ItemData.getInstance().pantryItems),
-        StorageLocation(name: "Fridge", items: ItemData.getInstance().fridgeItems),
-        StorageLocation(name: "Freezer", items: ItemData.getInstance().freezerItems),
-        StorageLocation(name: "Shelf", items: ItemData.getInstance().shelfItems),
-        StorageLocation(name: "All", items:[ItemData.getInstance().pantryItems,ItemData.getInstance().fridgeItems,ItemData.getInstance().freezerItems,ItemData.getInstance().shelfItems])
+//        StorageLocation(name: "Pantry", items: ItemData.getInstance().pantryItems),
+//        StorageLocation(name: "Fridge", items: ItemData.getInstance().fridgeItems),
+//        StorageLocation(name: "Freezer", items: ItemData.getInstance().freezerItems),
+//        StorageLocation(name: "Shelf", items: ItemData.getInstance().shelfItems),
+//        StorageLocation(name: "All", items:[ItemData.getInstance().pantryItems,ItemData.getInstance().fridgeItems,ItemData.getInstance().freezerItems,ItemData.getInstance().shelfItems])
     ]
     
-    private static var instance: StorageData = StorageData()
+    private static var instance: StorageLocationData = StorageLocationData()
     
     private init() {}
     
-    static func getInstance() -> StorageData{
+    static func getInstance() -> StorageLocationData{
         return instance
     }
     
@@ -160,20 +164,7 @@ class StorageData {
         return categorizedStorage
     }
 
-    func getStorage(for storage : String) -> StorageLocation {
-        switch storage {
-        case "Pantry":
-            return storages[0]
-        case "Fridge":
-            return storages[1]
-        case "Freezer":
-            return storages[2]
-        case "Shelf":
-            return storages[3]
-        default:
-            return StorageLocation(name: "", items: [Item]())
-        }
-    }
+
     
     func getStorageIndex(for storage : String) -> Int {
         switch storage {

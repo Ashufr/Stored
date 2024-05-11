@@ -18,7 +18,6 @@ class StoredTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        validateAuth()
         DatabaseManager.shared.storedTabBarController  = self
         
         if let viewController = viewControllers?[0] as? ExpiringNavigationViewController {

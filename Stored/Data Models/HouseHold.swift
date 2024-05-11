@@ -31,7 +31,11 @@ class Household {
     init(name: String) {
         self.name = name
         self.code = ""
-        self.storages = [StorageLocation(name: "Pantry", items: [Item]()), StorageLocation(name: "Fridge", items: [Item]()), StorageLocation(name: "Freezer", items: [Item]()), StorageLocation(name: "Shelf", items: [Item]()),
+        self.storages = [
+            StorageLocation(name: "Pantry", items: [Item]()), 
+            StorageLocation(name: "Fridge", items: [Item]()),
+            StorageLocation(name: "Freezer", items: [Item]()),
+            StorageLocation(name: "Shelf", items: [Item]()),
             StorageLocation(name: "All", items: [Item]())
         ]
         self.code = generateUniqueID()
@@ -58,6 +62,15 @@ class Household {
         
         return uniqueID
     }
+    
+    func getStorage(for storageName : String) -> StorageLocation? {
+        for storage in self.storages {
+            if storage.name == storageName {
+                return storage
+            }
+        }
+        return nil
+    }
 }
 
 
@@ -69,6 +82,7 @@ class HouseholdData{
     static func getInstance() -> HouseholdData{
         instance
     }
+    
     
     
     var household = Household(name: "Ashu's House")

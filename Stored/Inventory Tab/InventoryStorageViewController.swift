@@ -5,13 +5,13 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     
     
     func itemAdded() {
-        categorizedItems = StorageData.getInstance().categorizeStorageItems(storage?.items ?? [])
+        categorizedItems = StorageLocationData.getInstance().categorizeStorageItems(storage?.items ?? [])
         inventoryStorageTableView.reloadData()
     }
     
     func finishedAddingItem() {
         print("Finalalal")
-        categorizedItems = StorageData.getInstance().categorizeStorageItems(storage?.items ?? [])
+        categorizedItems = StorageLocationData.getInstance().categorizeStorageItems(storage?.items ?? [])
         inventoryStorageTableView.reloadData()
     }
     
@@ -62,7 +62,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+        let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
 //        print("\(expiryCategory) : \(categorizedItems[expiryCategory]?.count ?? 0)")
         return categorizedItems[expiryCategory]?.count ?? 0
     }
@@ -70,7 +70,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = inventoryStorageTableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! InventoryStorageTableViewCell
-        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
+        let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
         guard let items = categorizedItems[expiryCategory] else {return UITableViewCell()}
         
         let item = items[indexPath.row]
@@ -125,7 +125,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = indexPath.section
-        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+        let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
         guard let items = categorizedItems[expiryCategory] else {return}
         print("\(items[indexPath.row].isExpired) \(items[indexPath.row])")
     }
@@ -157,7 +157,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
             if editingStyle == .delete {
                 // Perform the deletion here
                 let section = indexPath.section
-                let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+                let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
                 guard var items = categorizedItems[expiryCategory] else { return }
                 
                 
@@ -167,8 +167,8 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
                 if let index = storage?.items.firstIndex(where: { $0 === item }) {
                     storage?.items.remove(at: index)
                 }
-                if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-                    StorageData.getInstance().storages[4].items.remove(at: index)
+                if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+                    StorageLocationData.getInstance().storages[4].items.remove(at: index)
                 }
                 inventoryViewController?.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
                 inventoryViewController?.inventoryCollectionView.reloadData()
@@ -198,7 +198,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         }
             
         let section = indexPath.section
-        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+        let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
         guard var items = categorizedItems[expiryCategory] else { return }
         
         
@@ -208,15 +208,15 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         if let index = storage?.items.firstIndex(where: { $0 === item }) {
             storage?.items.remove(at: index)
         }
-        if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-            StorageData.getInstance().storages[4].items.remove(at: index)
+        if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+            StorageLocationData.getInstance().storages[4].items.remove(at: index)
         }
 
         customAlertController.productTitle = item.name
         customAlertController.productImageUrl = item.imageURL?.absoluteString
         customAlertController.productImage = item.image
         customAlertController.productExpiry = item.expiryDate
-        let index = StorageData.getInstance().getStorageIndex(for: item.storage)
+        let index = StorageLocationData.getInstance().getStorageIndex(for: item.storage)
         print(index)
         customAlertController.productStorageIndex = index
         customAlertController.productQuanity = item.quantity
@@ -234,7 +234,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
     func deleteItem(at indexPath: IndexPath) {
         print("dekete")
         let section = indexPath.section
-        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+        let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
         guard var items = categorizedItems[expiryCategory] else { return }
         
         let item = items[indexPath.row]
@@ -243,8 +243,8 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         if let index = storage?.items.firstIndex(where: { $0 === item }) {
             storage?.items.remove(at: index)
         }
-        if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-            StorageData.getInstance().storages[4].items.remove(at: index)
+        if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+            StorageLocationData.getInstance().storages[4].items.remove(at: index)
         }
         inventoryViewController?.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
         inventoryViewController?.inventoryCollectionView.reloadData()
@@ -269,7 +269,7 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         super.viewDidLoad()
         
         if let storage = storage {
-            categorizedItems = StorageData.getInstance().categorizeStorageItems(storage.items)
+            categorizedItems = StorageLocationData.getInstance().categorizeStorageItems(storage.items)
         }
         sections = getSections()
         

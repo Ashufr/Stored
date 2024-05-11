@@ -4,23 +4,23 @@ import FirebaseAuth
 class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
     func itemAdded() {
         print("Tabel refefefe")
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
+//        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(StorageLocationData.getInstance().storages[4].items)
         expiringTableView.reloadData()
     }
     
     func finishedAddingItem() {
         print("Custom refreshs")
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
+        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(StorageLocationData.getInstance().storages[4].items)
         expiringTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        expiringCategorizedItems[StorageData.getInstance().getExpiryCategory(forString: sections[section])]?.count ?? 0
+        expiringCategorizedItems[StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = expiringTableView.dequeueReusableCell(withIdentifier: "ExpiringTableViewCell", for: indexPath) as! ExpiringTableViewCell
-        let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
+        let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[indexPath.section])
         guard let items = expiringCategorizedItems[expiryCategory] else {return UITableViewCell()}
         let item = items[indexPath.row]
         
@@ -83,20 +83,20 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             // Perform the deletion here
          
             let section = indexPath.section
-            let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+            let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
             guard var items = expiringCategorizedItems[expiryCategory] else { return }
             
             
             let item = items[indexPath.row]
-            let storage = StorageData.getInstance().getStorage(for: item.storage)
-            // Remove the item from storage.items
-            if let index = storage.items.firstIndex(where: { $0 === item }) {
-                storage.items.remove(at: index)
-            }
-            
-            if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-                StorageData.getInstance().storages[4].items.remove(at: index)
-            }
+//            let storage = StorageLocationData.getInstance().getStorage(for: item.storage)
+//            // Remove the item from storage.items
+//            if let index = storage.items.firstIndex(where: { $0 === item }) {
+//                storage.items.remove(at: index)
+//            }
+//            
+//            if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+//                StorageLocationData.getInstance().storages[4].items.remove(at: index)
+//            }
 
             
             expiringNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
@@ -200,8 +200,8 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        validateAuth()
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
+        validateAuth(class : self)
+//        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(StorageLocationData.getInstance().storages[4].items)
         sections = getSections()
         expiringTableView.dataSource = self
         expiringTableView.delegate = self
@@ -214,7 +214,8 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    func validateAuth(){
+    func validateAuth(class : ExpiringViewController){
+//        print("Called")
         if FirebaseAuth.Auth.auth().currentUser == nil {
             print("not logged in")
             guard let loginNavigationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginNavigationVC") as? LoginNavigationController else {
@@ -228,12 +229,38 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
                 print("email not found")
                 return
             }
-            DatabaseManager.shared.getUserFromDatabase(email: email) { user in
+            DatabaseManager.shared.getUserFromDatabase(email: email) { user, houseCode in
                 if let user = user {
-                    UserData.getInstance().user = user
-                    
+                    if let code = houseCode {
+                        DatabaseManager.shared.fetchHouseholdData(for: code) { household in
+                            if let household = household {
+                                user.household = household
+                                UserData.getInstance().user = user
+                                
+                                DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
+                                print("assisgend")
+                            } else {
+                                print("Failed to fetch household data")
+                            }
+                        }
+                        
+                    }else{
+                        guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
+                            return
+                        }
+                        joinOrCreateHouseholdViewController.user = user
+                        joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
+                        joinOrCreateHouseholdViewController.storedTabBarController = self.expiringNavigationController?.storedTabBarController
+                        
+                        
+                    }
                 } else {
-                    // User data retrieval failed or user does not exist
+                    guard let loginNavigationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginNavigationVC") as? LoginNavigationController else {
+                        return
+                    }
+                    loginNavigationViewController.modalPresentationStyle = .fullScreen
+                    loginNavigationViewController.storedTabBarController = self.expiringNavigationController?.storedTabBarController
+                    self.present(loginNavigationViewController, animated: true)
                     print("Failed to retrieve user data.")
                 }
             }
@@ -246,7 +273,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func reloadTable(){
-        expiringCategorizedItems = StorageData.getInstance().categorizeExpiringItems(StorageData.getInstance().storages[4].items)
+//        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(StorageLocationData.getInstance().storages[4].items)
         expiringTableView.reloadData()
     }
     
@@ -254,14 +281,14 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         if segue.identifier == "ToStorageSegue" {
             if let indexPath = sender as? IndexPath {
                 let section = indexPath.section
-                let expiryCategory = StorageData.getInstance().getExpiryCategory(forString: sections[section])
+                let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
                 guard var items = expiringCategorizedItems[expiryCategory] else { return }
                 
                 let item = items[indexPath.row]
-                let storage = StorageData.getInstance().getStorage(for: item.storage)
-                if let destinationVC = segue.destination as? InventoryStorageViewController {
-                    destinationVC.storage = storage
-                }
+//                let storage = StorageLocationData.getInstance().getStorage(for: item.storage)
+//                if let destinationVC = segue.destination as? InventoryStorageViewController {
+//                    destinationVC.storage = storage
+//                }
             }
         }
     }

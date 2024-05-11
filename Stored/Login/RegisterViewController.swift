@@ -85,7 +85,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 } else {
                     print("User created successfully")
                     
-//                    strongSelf.navigationController?.dismiss(animated: true, completion: nil)
                 }
             }
             UserDefaults.standard.setValue(email, forKey: "email")

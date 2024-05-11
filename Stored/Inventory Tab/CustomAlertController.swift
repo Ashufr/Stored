@@ -1,4 +1,5 @@
 import UIKit
+import FirebaseAuth
 
 protocol CustomAlertDismissalDelegate: AnyObject {
     func alertDismissed()
@@ -177,11 +178,17 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
         let selectedStorageIndex = pickerView.selectedRow(inComponent: 0)
         let itemStorage = storageLocations[selectedStorageIndex]
         
+        guard let email = FirebaseAuth.Auth.auth().currentUser?.email else {
+            print("email not found")
+            return
+        }
+        let safeEmail = StorageManager.safeEmail(email: email)
+        
         if let url = productImageUrl {
-            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, imageUrl: url, image: itemImage, dateAdded : productDateAdded ?? Date())
+            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, dateAdded : productDateAdded ?? Date(), expiryDate: itemExpiryDate, imageURL: url, image: itemImage, userId: safeEmail)
             addItemToStorage(newItem, at: selectedStorageIndex)
         }else {
-            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, expiryDate: itemExpiryDate, image: itemImage, dateAdded : productDateAdded ?? Date())
+            let newItem = Item(name: itemName, quantity: itemQuantity, storage: itemStorage, dateAdded : productDateAdded ?? Date(), expiryDate: itemExpiryDate, image: itemImage, userId: safeEmail)
             addItemToStorage(newItem, at: selectedStorageIndex)
         }
         
@@ -201,9 +208,9 @@ class CustomAlertController: UIViewController, UIImagePickerControllerDelegate &
     
     
     private func addItemToStorage(_ item: Item, at index: Int) {
-        let storage = StorageData.getInstance().storages[index]
+        let storage = StorageLocationData.getInstance().storages[index]
         storage.items.append(item)
-        StorageData.getInstance().storages[4].items.append(item)
+        StorageLocationData.getInstance().storages[4].items.append(item)
         if let inventoryStorageTableDelegate = inventoryStorageTableDelegate {
             inventoryStorageTableDelegate.finishedAddingItem()
         }

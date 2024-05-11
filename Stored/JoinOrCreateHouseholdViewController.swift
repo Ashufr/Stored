@@ -19,6 +19,7 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         codeTextField.delegate = self
     }
     
+    
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -34,14 +35,22 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
             print("Enter Household Name")
             return
         }
+        guard let user = self.user else {
+            print("User not found")
+            return
+        }
         let house = Household(name: name)
-        DatabaseManager.shared.insertHousehold(by : user! , with: house) { success in
+        DatabaseManager.shared.insertHousehold(by : user , with: house) { success in
             if success {
-                UserData.getInstance().user?.household = house
-                DatabaseManager.shared.updateHousehold(for: self.user!.email, with: house) { success in
+                print("Created Successfully")
+                DatabaseManager.shared.updateHousehold(for: user.email, with: house) { success in
                     if success {
+                        user.household = house
+                        print(user.safeEmail)
                         print("Household updated successfully")
-                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
+                        DatabaseManager.shared.observeAllStorages(user: user, for: house.code)
                         self.dismiss(animated: true, completion: nil)
                     } else {
                         let alertController = UIAlertController(title: "Household Not Found", message: "The household you've been trying to access doesn't exist", preferredStyle: .alert)
@@ -51,6 +60,7 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
                         
                     }
                 }
+                print(house.storages)
                 
             }
         }
@@ -58,11 +68,16 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
     
     @IBAction func joinButtonTapped() {
         guard let code = codeTextField.text else { return }
+        guard let user = self.user else {
+            print("User not found")
+            return
+        }
         DatabaseManager.shared.fetchHouseholdData(for: code) { household in
             if let household = household {
                 
-                DatabaseManager.shared.updateHousehold(for: self.user!.email, with: household) { success in
+                DatabaseManager.shared.updateHousehold(for: user.email, with: household) { success in
                     if success {
+                        DatabaseManager.shared.observeAllStorages(user: user, for: code)
                         print("Household Joined successfully")
                         self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
                         self.dismiss(animated: true, completion: nil)
@@ -70,7 +85,7 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
                 }
                 
                 UserData.getInstance().user?.household = household
-                print("Houshold assigned")
+                print("Houshold after joining assigned")
                 self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
                 self.dismiss(animated: true, completion: nil)
             } else {

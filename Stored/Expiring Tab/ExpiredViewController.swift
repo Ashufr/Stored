@@ -2,12 +2,12 @@ import UIKit
 
 class ExpiredViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        StorageData.getInstance().storages[4].items.filter({$0.isExpired}).count
+        StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired}).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = expiredTableView.dequeueReusableCell(withIdentifier: "ExpiredTableViewCell", for: indexPath) as! ExpiredTableViewCell
-        let items = StorageData.getInstance().storages[4].items.filter({$0.isExpired})
+        let items = StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired})
         let item = items[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemDescriptionLabel.text = item.expiryDescription
@@ -38,10 +38,10 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = expiredCollectionView.dequeueReusableCell(withReuseIdentifier: "ExpiredCollectionViewCell", for: indexPath) as! ExpiredCollectionViewCell
         if indexPath.row == 0 {
-            cell.topLabel.text = "\(StorageData.getInstance().storages[4].items.filter({$0.isExpired}).count)kg"
+            cell.topLabel.text = "\(StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired}).count)kg"
             cell.bottomLabel.text = "Of food wasted"
         }else{
-            cell.topLabel.text = "₹\(StorageData.getInstance().storages[4].items.filter({$0.isExpired}).count * Int.random(in: 500...1000))"
+            cell.topLabel.text = "₹\(StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired}).count * Int.random(in: 500...1000))"
             cell.bottomLabel.text = "Money wasted"
         }
         cell.layer.cornerRadius = 10
@@ -72,18 +72,18 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
         // Perform deletion action here
         print("Delete image tapped")
       
-        let storage5 = StorageData.getInstance().storages[4].items.filter({$0.isExpired})
-        
-        for item in storage5 {
-            let storage = StorageData.getInstance().getStorage(for: item.storage)
-            if let index = storage.items.firstIndex(where: { $0 === item }) {
-                storage.items.remove(at: index)
-            }
-            
-            if let index = StorageData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-                StorageData.getInstance().storages[4].items.remove(at: index)
-            }
-        }
+//        let storage5 = StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired})
+//        
+//        for item in storage5 {
+//            let storage = StorageLocationData.getInstance().getStorage(for: item.storage)
+//            if let index = storage.items.firstIndex(where: { $0 === item }) {
+//                storage.items.remove(at: index)
+//            }
+//            
+//            if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
+//                StorageLocationData.getInstance().storages[4].items.remove(at: index)
+//            }
+//        }
         expiredCollectionView.reloadData()
         expiredTableView.reloadData()
     }

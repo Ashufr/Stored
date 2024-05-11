@@ -24,6 +24,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InventoryRecentlyCell", for: indexPath) as! InventoryTableViewCell
+        return cell
         let item = recentlyAddedItems[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
@@ -50,12 +51,18 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        StorageData.getInstance().storages.count
+        let count = UserData.getInstance().user?.household?.storages.count ?? 0
+        print("Inventory Collection count : \(count)")
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InventoryCollectionCell", for: indexPath) as! InventoryCollectionViewCell
-        let storage = StorageData.getInstance().storages[indexPath.row]
+         
+        guard let storage = UserData.getInstance().user?.household?.storages[indexPath.row] else {
+            print("no storage found")
+            return cell
+        }
         cell.storageImage.image  = UIImage(named: storage.name)
         cell.storageName.text = storage.name
         cell.storageItemsCount.text = "\(storage.count)"
@@ -77,16 +84,11 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
-    var recentlyAddedItems : [Item] {
-        let sortedItems = StorageData.getInstance().storages[4].items.sorted(by: { $0.dateAdded > $1.dateAdded })
-        let firstThreeItems = Array(sortedItems.prefix(3))
-        return firstThreeItems
-    }
+    var recentlyAddedItems = [Item]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(navigationController?.tabBarController?.viewControllers)
         inventoryTableView.dataSource = self
         inventoryTableView.delegate = self
         inventoryTableView.isScrollEnabled = false
@@ -107,7 +109,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         
         if segue.identifier == "StorageSegue" {
             if let indexPath = sender as? IndexPath{
-                let storage = StorageData.getInstance().storages[indexPath.row]
+                let storage = UserData.getInstance().user?.household?.storages[indexPath.row]
                 if let destinationVC = segue.destination as? InventoryStorageViewController {
 //                    print(storage)
                     destinationVC.storage = storage

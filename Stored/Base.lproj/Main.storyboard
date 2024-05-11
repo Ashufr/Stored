@@ -318,7 +318,6 @@
                                         <color key="backgroundColor" name="Table Color"/>
                                         <connections>
                                             <outlet property="accountSmallNameLabel" destination="MJJ-3e-ZxC" id="sXe-MN-CdK"/>
-                                            <segue destination="Kk5-AF-RqU" kind="show" identifier="HouseholdSegue" id="oBF-T0-uJn"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -337,6 +336,7 @@
                     <navigationItem key="navigationItem" title="Account" id="hXn-DT-WpE"/>
                     <connections>
                         <outlet property="accountTableView" destination="M08-24-M4g" id="c18-2j-WIa"/>
+                        <segue destination="Kk5-AF-RqU" kind="show" identifier="HouseholdSegue" id="xWy-Er-RcS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0eg-2G-ACA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2014,6 +2014,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="X39-kK-MOE">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.55686277149999996" green="0.82352948189999997" blue="0.35686278339999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -2439,7 +2440,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="M3C-R8-7cm"/>
+        <segue reference="hr7-Ap-IEg"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Anna" width="1024" height="1024"/>

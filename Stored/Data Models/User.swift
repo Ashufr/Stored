@@ -1,7 +1,6 @@
 import Foundation
 
 class User {
-    var mid : String?
     var firstName: String
     var lastName: String
     var email: String
@@ -89,7 +88,11 @@ class UserData {
         instance
     }
     
-    var user: User? 
+    var user: User?{
+        didSet {
+            print("User")
+        }
+    }
     
   
     

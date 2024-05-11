@@ -69,14 +69,14 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
                 return
             }
 
-            let storage = StorageData.getInstance().getStorage(for: item.storage)
-            let newItem = Item(quickAddItem: item, quantity : Int(cell.itemStepper.value) )
+//            let storage = StorageLocationData.getInstance().getStorage(for: item.storage)
+//            let newItem = Item(quickAddItem: item, quantity : Int(cell.itemStepper.value) )
             
             
             DatabaseManager.shared.insertItem(with: item, householdCode: UserData.getInstance().user?.household?.code ?? "x", storageName: item.storage) { success in
                 if success {
-                    storage.items.append(newItem)
-                    StorageData.getInstance().storages[4].items.append(item)
+//                    storage.items.append(newItem)
+//                    StorageData.getInstance().storages[4].items.append(item)
                     self.quickAddNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
                     self.quickAddNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryTableView.reloadData()
                     self.quickAddNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()

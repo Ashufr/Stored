@@ -10,11 +10,16 @@ import FirebaseDatabase
 
 final class DatabaseManager {
     
-    var storedTabBarController : StoredTabBarController?
+    var storedTabBarController : StoredTabBarController? {
+        didSet{
+            print("Assigned to DataBase")
+        }
+    }
     
     static let shared = DatabaseManager()
     
     private let database = Database.database().reference()
+    var databaseHandles: [DatabaseHandle] = []
     
     private let itemsRef: DatabaseReference
     
@@ -65,7 +70,6 @@ extension DatabaseManager {
         let householdData: [String: Any] = [
             "name": household.name,
             "code": household.code,
-            // Add other household properties as needed
         ]
         let safeEmail = StorageManager.safeEmail(email: email)
         
@@ -80,46 +84,50 @@ extension DatabaseManager {
         }
     }
     
+    func updateHouseholdName(code: String, newName: String, completion: @escaping (Bool) -> Void) {
+        let householdData: [String: Any] = [
+            "name": newName,
+            "code" : code
+        ]
+        
+        database.child("households").child(code).updateChildValues(householdData) { error, _ in
+            if let error = error {
+                print("Failed to update household name:", error.localizedDescription)
+                completion(false)
+            } else {
+                print("Household name updated successfully")
+                completion(true)
+            }
+        }
+    }
+
+
     
-    public func getUserFromDatabase(email: String, completion: @escaping (User?) -> Void) {
+    public func getUserFromDatabase(email: String, completion: @escaping (User?, String?) -> Void) {
         let safeEmail = StorageManager.safeEmail(email: email)
         print(safeEmail)
         database.child("users").child(safeEmail).observeSingleEvent(of: .value, with : { snapshot  in
             guard let userData = snapshot.value as? [String: Any] else {
                 // User data not found or error occurred
-                completion(nil)
+                completion(nil, nil)
                 print("returning")
                 return
             }
-            let firstName = userData["first_name"] as? String ?? "first"
-            let lastName = userData["last_name"] as? String ?? "Last"
-            let householdData = userData["household"]
+            guard let firstName = userData["first_name"] as? String,
+                    let lastName = userData["last_name"] as? String
+            else{
+                print("user data not found")
+                completion(nil,nil)
+                return
+            }
             let user = User(firstName: firstName, lastName: lastName, email: email)
-            
-            if let householdData = householdData as? [String: Any],
-               let name = householdData["name"] as? String,
-               let code = householdData["code"] as? String {
-                self.fetchHouseholdData(for: code) { household in
-                    if let household = household {
-                        user.household = household
-                        DatabaseManager.shared.observeAllStorages(for: household.code)
-                        print("assisgend")
-                    } else {
-                        print("Failed to fetch household data")
-                    }
-                }
-            }else {
-                print("no house")
+            if let householdData = userData["household"] as? [String: Any] {
+                completion(user, householdData["code"] as? String )
+            }else{
+                print("NO HOUSEEE")
+                completion(user, nil)
             }
             
-            
-            
-            
-            // Parse the user data and create a User object
-            
-            
-            // Call the completion handler with the user object
-            completion(user)
         })
     }
     
@@ -128,6 +136,9 @@ extension DatabaseManager {
     public func insertHousehold(by user : User, with house: Household, completion: @escaping (Bool) -> Void) {
         // Convert storages and items to dictionaries for Firebase
         let storagesDict: [String: [String: Any]] = house.storages.reduce(into: [:]) { result, storage in
+            if storage.name == "All" {
+                    return
+            }
             // Map the items of the current storage to dictionaries
             let itemsDict = storage.items.map { item in
                 return [
@@ -205,53 +216,57 @@ extension DatabaseManager {
     // Helper function to parse household data
     private func parseHousehold(from data: [String: Any]) -> Household? {
         guard let name = data["name"] as? String,
-              let code = data["code"] as? String
+              let code = data["code"] as? String,
+              let storagesData = data["storages"] as? [String: Any]
         else {
+            print("returning")
             return nil
         }
-        if let storagesData = data["storages"] as? [[String: Any]] {
-            var storages: [StorageLocation] = []
-            for storageData in storagesData {
-                if let storage = parseStorage(from: storageData) {
-                    storages.append(storage)
+        print(storagesData)
+        var allItems = [Item]()
+        var storages: [StorageLocation] = []
+        for (storageName, storageData) in storagesData {
+            print(storageName)
+            if let storage = parseStorage(name : storageName, from: storageData) {
+                storages.append(storage)
+                for item in storage.items {
+                    allItems.append(item)
                 }
             }
-            
-            return Household(name: name, code: code, storages: storages)
-        }else{
-            return Household(name: name, code: code, storages: [])
         }
-        
-        
-        
-        
+        storages.sort { $0.name > $1.name }
+        storages.append(StorageLocation(name: "All", items: allItems))
+        return Household(name: name, code: code, storages: storages)
     }
     
-    // Helper function to parse storage data
-    private func parseStorage(from data: [String: Any]) -> StorageLocation? {
-        guard let name = data["name"] as? String,
-              let itemsData = data["items"] as? [[String: Any]] else {
+    // Helper function to parse storage dxata
+    private func parseStorage(name : String, from data: Any) -> StorageLocation? {
+        guard let data = data as? [String : Any] else {
             return nil
         }
-        
+        let itemsData = data["items"] as? [String: Any] ?? [String : Any]()
         var items: [Item] = []
         for itemData in itemsData {
-            if let item = parseItem(from: itemData) {
+            if let item = parseItem(from: [itemData.key : itemData.value]) {
                 items.append(item)
             }
         }
-        
-        return StorageLocation(name: name, items: items)
+    
+        let storage = StorageLocation(name: name, items: items)
+        return storage
     }
     
     // Helper function to parse item data
     private func parseItem(from data: [String: Any]) -> Item? {
+//        print(data["userId"])
         guard let name = data["name"] as? String,
               let quantity = data["quantity"] as? Int,
               let storage = data["storage"] as? String,
               let dateAddedTimestamp = data["dateAdded"] as? TimeInterval,
               let expiryDateTimestamp = data["expiryDate"] as? TimeInterval,
-              let imageUrlString = data["imageUrl"] as? String, let imageUrl = URL(string: imageUrlString) else {
+              let imageUrl = data["imageUrl"] as? String,
+              let userId = data["userId"] as? String
+        else {
             return nil
         }
         
@@ -260,7 +275,7 @@ extension DatabaseManager {
         
         // You can parse other item properties here
         
-        return Item(name: name, quantity: quantity, storage: storage, expiryDate: expiryDate, dateAdded: dateAdded, imageUrl: imageUrl)
+        return Item(name: name, quantity: quantity, storage: storage, dateAdded: dateAdded, expiryDate: expiryDate, imageURL: imageUrl, userId: userId)
     }
     
     
@@ -274,54 +289,65 @@ extension DatabaseManager {
             "storage": storageName,
             "dateAdded": item.dateAdded.timeIntervalSince1970,
             "expiryDate": item.expiryDate.timeIntervalSince1970,
-            "imageUrl" : item.imageURL?.absoluteString ?? ""
+            "imageUrl" : item.imageURL?.absoluteString ?? "",
+            "userId" : item.userId
             // Add other item properties as needed
         ]
-        
-       
-        
-        let allStoragePath = "\(householdCode)/storages/All/items"
-        database.child("households").child(allStoragePath).childByAutoId().setValue(itemData) { error, _ in
+//        var insertionError : (any Error)?
+        let storagePath = "\(householdCode)/storages/\(storageName)/items"
+        database.child("households").child(storagePath).childByAutoId().setValue(itemData) { error, _ in
             guard error == nil else {
                 print("Failed to write item to database")
                 completion(false)
+//                insertionError = error
                 return
             }
-            self.notifyUsersInHousehold(householdCode: householdCode)
             completion(true)
+            self.notifyUsersInHousehold(householdCode: householdCode)
         }
-        print("complellelel")
+    
+       
     }
     
-    func observeAllStorages(for householdCode: String) {
-        
-        database.child("households").child(householdCode).child("storages").observe(.childAdded) { storageSnapshot in
+    func observeAllStorages(user : User, for householdCode: String) {
+        print("Observing for \(householdCode) by user : \(user.firstName)")
+        let handle = database.child("households").child(householdCode).child("storages").observe(.childAdded) { storageSnapshot in
             let storageName = storageSnapshot.key
             
-            self.observeItemsAdded(for: householdCode, storageName: storageName)
+            self.observeItemsAdded(user : user, for: householdCode, storageName: storageName)
         }
+        
+        databaseHandles.append(handle)
     }
     
-    func observeItemsAdded(for householdCode: String, storageName: String) {
+    func observeItemsAdded(user : User, for householdCode: String, storageName: String) {
         database.child("households").child(householdCode).child("storages").child(storageName).child("items").observe(.childAdded) { itemSnapshot in
             // Handle item added event
             let itemID = itemSnapshot.key
-            let itemData = itemSnapshot.value as? [String: Any] ?? [:]
+            
             
             // Update UI or perform any necessary actions
             self.getItem(householdCode: householdCode, storage: storageName, withID: itemID) { item in
                 if let item = item {
-                    let storage = StorageData.getInstance().getStorage(for: item.storage)
-                    let storageAll = StorageData.getInstance().storages[4]
-                    storage.items.append(item)
-                    storageAll.items.append(item)
-                    self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
-                    self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryTableView.reloadData()
-                    self.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
-                    self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()
+                    
+                    if var storage = UserData.getInstance().user?.household?.getStorage(for: item.storage), var allStorage = UserData.getInstance().user?.household?.getStorage(for: "All") {
+                        
+                        storage.items.append(item)
+                        allStorage.items.append(item)
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryTableView.reloadData()
+                        self.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()
+                        print("Item added to local storage successfully")
+                    }else{
+                        print("Local Storage not found")
+                    }
+                    
 //                    print("Item retrieved:", item)
                 } else {
                     // Item not found or failed to retrieve
+                    print(itemID)
+                    
                     print("Failed to retrieve item.")
                 }
             }
@@ -329,10 +355,17 @@ extension DatabaseManager {
         }
     }
     
+    func removePreviousObservers() {
+        for handle in databaseHandles {
+            database.removeObserver(withHandle: handle)
+        }
+        // Clear the handles array
+        databaseHandles.removeAll()
+    }
+    
     func getItem(householdCode : String, storage : String, withID itemID: String, completion: @escaping (Item?) -> Void) {
         
         let itemRef = database.child("households").child(householdCode).child("storages").child(storage).child("items").child(itemID)
-        print(itemRef)
         // Retrieve the item data from the database
         itemRef.observeSingleEvent(of: .value) { snapshot in
             guard let itemData = snapshot.value as? [String: Any] else {

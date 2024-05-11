@@ -7,14 +7,12 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func nameChanged() {
         // indexPath of the row you want to reload
         let indexPath = IndexPath(row: 1, section: 0)
-
+        
         // Reload the row at the specified indexPath
         accountTableView.reloadRows(at: [indexPath], with: .automatic)
-
+        
     }
     
-    
-    var household : Household?
     var users : [User]?
     var profilePhoto : UIImage?
     var profileName : String?
@@ -38,7 +36,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             cell.userImage.image = profilePhoto ?? UIImage(systemName: "person.fill")
             cell.userImage.contentMode = .scaleAspectFill
             cell.userImage.layer.cornerRadius = 25
-            cell.userName.text = "\(user.firstName ?? "")"
+            cell.userName.text = "\(user.firstName)"
             cell.userNumber.text = "\(user.email)"
             
             
@@ -46,10 +44,9 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }else if indexPath.section == 0 && indexPath.row == 1 {
             let cell = accountTableView.dequeueReusableCell(withIdentifier: "AccountSmallTableViewCell", for: indexPath) as! AccountSmallTableViewCell
             cell.accessoryType = .none
-            cell.accountSmallNameLabel.text = household?.name
+            cell.accountSmallNameLabel.text = user?.household?.name
             
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-            cell.addGestureRecognizer(tapGesture)
+            
             return cell
         }else{
             let cell = accountTableView.dequeueReusableCell(withIdentifier: "AccountSmallTableViewCell", for: indexPath) as! AccountSmallTableViewCell
@@ -76,10 +73,29 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
             cell.accountSmallNameLabel.text = title
             
-            cell.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(handleTap(_:))))
             
             return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath == IndexPath(row: 0, section: 1){
+            print(indexPath)
+            performSegue(withIdentifier: "HouseholdSegue", sender: indexPath)
+        }
+        
+        if indexPath == IndexPath(row: 1, section: 1) {
+            guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
+                return
+            }
+            joinOrCreateHouseholdViewController.user = UserData.getInstance().user!
+            print(joinOrCreateHouseholdViewController.user)
+            joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
+            joinOrCreateHouseholdViewController.storedTabBarController = self.accountNavigtionController?.storedTabBarController
+            self.present(joinOrCreateHouseholdViewController, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        
     }
     
     @objc func logoutTapped(){
@@ -91,11 +107,11 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
             print("prese")
             loginNavigationViewController.modalPresentationStyle = .fullScreen
-           present(loginNavigationViewController, animated: true)
+            present(loginNavigationViewController, animated: true)
+            self.accountNavigtionController?.storedTabBarController?.selectedIndex = 0
             // Perform any additional actions after logout, such as navigating to a different screen or updating UI
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
-            // Handle sign out error, if needed
         }
     }
     
@@ -103,14 +119,15 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         4
     }
     
-
+    
     @IBOutlet var accountTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         user = UserData.getInstance().user
-        household = UserData.getInstance().user?.household
+        let household = UserData.getInstance().user?.household
         if let household = household {
             var filteredUsers: [User] = []
             for user in UserData.getInstance().users {
@@ -130,28 +147,19 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             getUserData()
         }
     }
-    
-    @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        print("ss")
-        let location = sender.location(in: accountTableView)
-        if let indexPath = accountTableView.indexPathForRow(at: location), indexPath == IndexPath(row: 0, section: 1){
-            print(indexPath)
-            performSegue(withIdentifier: "HouseholdSegue", sender: indexPath)
-        }
-        
-    }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "HouseholdSegue" {
             if let destinationVC = segue.destination as? AccountHouseholdViewController {
-                destinationVC.household = household
+                destinationVC.household = user?.household
                 destinationVC.accountViewController = self
             }
         }
     }
     
     func getUserData(){
-        print("asasas") 
+        print("asasas")
         guard let email = UserDefaults.standard.object(forKey: "email") as? String else {
             return
         }
@@ -188,7 +196,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
         }).resume()
     }
-
-
+    
+    
 }
 //cell.accessoryType = .none

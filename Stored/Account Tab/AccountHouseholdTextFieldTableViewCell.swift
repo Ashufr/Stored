@@ -29,9 +29,22 @@ class AccountHouseholdTextFieldTableViewCell: UITableViewCell, UITextFieldDelega
         guard let text = sender.text, !text.isEmpty else {
             return
         }
-        household?.name = text
-        accountDelegate?.nameChanged()
-        householdDelegate?.nameChanged()
+        guard let code = household?.code else {
+            print("Household Code not found")
+            return
+        }
+        DatabaseManager.shared.updateHouseholdName(code: code, newName: text) { success in
+            if success {
+                self.household?.name = text
+                self.accountDelegate?.nameChanged()
+                self.householdDelegate?.nameChanged()
+                print("Household name updated successfully to \(text)")
+            } else {
+                print("Failed to update household name")
+            }
+        }
+        
+        
     }
 
     // MARK: - UITextFieldDelegate

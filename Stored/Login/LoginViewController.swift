@@ -11,18 +11,17 @@ import FirebaseAuth
 class LoginViewController: UIViewController {
     
     var storedTabBarController : StoredTabBarController?
-
+    
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var loginButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         
     }
-
-
+    
+    
     @IBAction func loginButtonTapped() {
         guard let email = emailTextField.text, let password = passwordTextField.text else {return}
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] authResult, error in
@@ -35,13 +34,35 @@ class LoginViewController: UIViewController {
                 return
             }
             let user = result.user
-            print(user)
-            DatabaseManager.shared.getUserFromDatabase(email: email) { user in
+            DatabaseManager.shared.getUserFromDatabase(email: email) { user,householdCode in
                 if let user = user {
                     UserData.getInstance().user = user
-                    
+                    if let code = householdCode {
+                        DatabaseManager.shared.fetchHouseholdData(for: code) { household in
+                            if let household = household {
+                                user.household = household
+                                UserData.getInstance().user = user
+                                
+                                DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
+                                print("assisgend")
+                            } else {
+                                print("Failed to fetch household data")
+                            }
+                        }
+                        
+                    }else{
+                        print("user no huse")
+                        guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
+                            return
+                        }
+                        joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
+                        joinOrCreateHouseholdViewController.storedTabBarController = strongSelf.storedTabBarController
+                        // Inside LoginViewController
+                        // After successful login
+                        
+
+                    }
                 } else {
-                    // User data retrieval failed or user does not exist
                     print("Failed to retrieve user data.")
                 }
             }
@@ -58,7 +79,6 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController : UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("ener")
         if textField == emailTextField {
             passwordTextField.becomeFirstResponder()
         }

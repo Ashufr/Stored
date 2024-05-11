@@ -35,6 +35,7 @@ class InventoryNavigationController: UINavigationController, AVCapturePhotoCaptu
         }
         inventoryViewController = lastViewController
         lastViewController.inventoryNavigationController = self
+        print("Found inventory")
     }
     
     // MARK: - Button Actions
