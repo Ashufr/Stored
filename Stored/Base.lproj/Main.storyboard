@@ -1784,17 +1784,20 @@
                                     <action selector="loginButtonTapped" destination="qO0-p9-Od0" eventType="touchUpInside" id="qpz-gk-Nrh"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4J-Vc-qLb">
+                                <rect key="frame" x="154" y="459" width="87" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Register"/>
+                                <connections>
+                                    <segue destination="Sb7-Xa-qZr" kind="show" id="F0r-la-geQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2ud-p6-aJg"/>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Login" id="qgE-WV-gn3">
-                        <barButtonItem key="rightBarButtonItem" title="Register" id="W8F-JZ-p7w">
-                            <connections>
-                                <segue destination="Sb7-Xa-qZr" kind="show" identifier="LoginRegisterSegue" id="TMc-pt-RcQ"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Login" id="qgE-WV-gn3"/>
                     <connections>
                         <outlet property="emailTextField" destination="bpJ-ZE-tDv" id="lsb-PX-wXZ"/>
                         <outlet property="loginButton" destination="mTz-8R-SY4" id="R5z-WI-sGy"/>
@@ -2441,7 +2444,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0lj-f6-nCi"/>
+        <segue reference="63b-6v-17n"/>
         <segue reference="hr7-Ap-IEg"/>
     </inferredMetricsTieBreakers>
     <resources>

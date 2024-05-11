@@ -40,9 +40,10 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
             return
         }
         let house = Household(name: name)
-        DatabaseManager.shared.insertHousehold(by : user , with: house) { success in
-            if success {
+        DatabaseManager.shared.insertHousehold(by : user , with: house) { code in
+            if let code = code {
                 print("Created Successfully")
+                house.code = code
                 DatabaseManager.shared.updateHousehold(for: user, with: house) { success in
                     if success {
                         user.household = house
@@ -95,6 +96,7 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
                 let alertController = UIAlertController(title: "Household Not Found", message: "The household you've been trying to access doesn't exist", preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 alertController.addAction(okAction)
+                self.present(alertController, animated: true)
                 print("Failed to update household")
                 
             }

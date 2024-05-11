@@ -24,6 +24,5 @@ class AccountNavigationController: UINavigationController {
         }
         accountViewController = lastViewController
         lastViewController.accountNavigtionController = self
-        print("dnoo")
     }
 }

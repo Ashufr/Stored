@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class User {
     var firstName: String
@@ -9,6 +10,7 @@ class User {
     var currentStreak: Int
     var maxStreak: Int
     var badges : [Badge]
+    var image : UIImage?
     
     var safeEmail : String {
         var safeEmail = email.replacingOccurrences(of: ".", with: "-")
@@ -29,7 +31,6 @@ class User {
         self.currentStreak = currentStreak
         self.maxStreak = maxStreak
         self.badges = []
-        
     }
     
     init(firstName: String, lastName: String, email: String, expiredItems: Int = 0, currentStreak: Int = 0, maxStreak: Int = 0) {
@@ -40,7 +41,6 @@ class User {
         self.currentStreak = currentStreak
         self.maxStreak = maxStreak
         self.badges = []
-        
     }
     
     func addBadge(badge : Badge){
@@ -57,27 +57,27 @@ class UserData {
   
     private init() {
         
-        users[0].addBadge(badge: BadgeData.getInstance().januaryBadge)
-        users[0].addBadge(badge: BadgeData.getInstance().februaryBadge)
-        users[0].addBadge(badge: BadgeData.getInstance().marchBadge)
-        users[0].addBadge(badge: BadgeData.getInstance().days100Badge)
-        users[0].addBadge(badge: BadgeData.getInstance().julyBadge)
-        
-        
-        // Adding random badges to Anna Hathaway
-        users[1].addBadge(badge: BadgeData.getInstance().aprilBadge)
-        users[1].addBadge(badge: BadgeData.getInstance().mayBadge)
-        users[1].addBadge(badge: BadgeData.getInstance().juneBadge)
-        users[1].addBadge(badge: BadgeData.getInstance().days50Badge)
-        
-        
-        // Adding random badges to Steve Jobs
-        users[2].addBadge(badge: BadgeData.getInstance().julyBadge)
-        users[2].addBadge(badge: BadgeData.getInstance().augustBadge)
-        users[2].addBadge(badge: BadgeData.getInstance().septemberBadge)
-        users[2].addBadge(badge: BadgeData.getInstance().januaryBadge)
-        users[2].addBadge(badge: BadgeData.getInstance().days50Badge)
-        users[2].addBadge(badge: BadgeData.getInstance().novemberBadge)
+//        users[0].addBadge(badge: BadgeData.getInstance().januaryBadge)
+//        users[0].addBadge(badge: BadgeData.getInstance().februaryBadge)
+//        users[0].addBadge(badge: BadgeData.getInstance().marchBadge)
+//        users[0].addBadge(badge: BadgeData.getInstance().days100Badge)
+//        users[0].addBadge(badge: BadgeData.getInstance().julyBadge)
+//        
+//        
+//        // Adding random badges to Anna Hathaway
+//        users[1].addBadge(badge: BadgeData.getInstance().aprilBadge)
+//        users[1].addBadge(badge: BadgeData.getInstance().mayBadge)
+//        users[1].addBadge(badge: BadgeData.getInstance().juneBadge)
+//        users[1].addBadge(badge: BadgeData.getInstance().days50Badge)
+//        
+//        
+//        // Adding random badges to Steve Jobs
+//        users[2].addBadge(badge: BadgeData.getInstance().julyBadge)
+//        users[2].addBadge(badge: BadgeData.getInstance().augustBadge)
+//        users[2].addBadge(badge: BadgeData.getInstance().septemberBadge)
+//        users[2].addBadge(badge: BadgeData.getInstance().januaryBadge)
+//        users[2].addBadge(badge: BadgeData.getInstance().days50Badge)
+//        users[2].addBadge(badge: BadgeData.getInstance().novemberBadge)
         
         
         // Load user from device

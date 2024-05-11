@@ -10,7 +10,11 @@ import UIKit
 class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var accountViewController : AccountViewController?
-    var members : [User]?
+    var members : [User] = [] {
+        didSet {
+            accountHouseholdTableView.reloadData()
+        }
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         3
@@ -21,7 +25,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         case 0:
             1
         case 1:
-            members?.count ?? 0
+            members.count
         case 2:
             1
         default:
@@ -39,18 +43,56 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
             return cell
         }else if indexPath.section == 1{
             let cell = accountHouseholdTableView.dequeueReusableCell(withIdentifier: "AccountHouseholdUserTableViewCell", for: indexPath) as! AccountHouseholdUserTableViewCell
-            guard let user = members?[indexPath.row] else {return UITableViewCell()}
+            let user = members[indexPath.row]
+            if let image = user.image {
+                cell.userImage.image = image
+            }else{
+                let path = "images/\(user.profilePictureFileName)"
+                StorageManager.shared.downloadURL(for: path, completion: {result in
+                    switch result {
+                    case .success(let url) :
+                        self.downloadImage(from: url){ image in
+                            if let image = image {
+                                DispatchQueue.main.async {
+                                    cell.userImage.image = image
+                                    cell.userImage.contentMode = .scaleAspectFit
+                                    user.image = image
+                                    print("Member image set")
+                                }
+                                
+                            }
+                        }
+                    case .failure(let error) :
+                        print("image not set")
+                    }
+                })
+            }
             cell.userImage.image = UIImage(named: user.firstName)
             cell.userImage.layer.cornerRadius = 25
+            cell.userImage.contentMode = .scaleAspectFit
             cell.userLabel.text = user.firstName
             cell.userEmailLabel.text = user.email
             return cell
         }else{
             let cell = accountHouseholdTableView.dequeueReusableCell(withIdentifier: "AccountHouseholdCodeTableViewCell", for: indexPath) as! AccountHouseholdCodeTableViewCell
-            cell.codeLabel.text = "\(UserData.getInstance().user?.household?.code)"
+            cell.codeLabel.text = "\(UserData.getInstance().user?.household?.code ?? "")"
             return cell
         }
     }
+    
+    func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil else {
+                print("Failed to download image:", error?.localizedDescription ?? "Unknown error")
+                completion(nil)
+                return
+            }
+            
+            let image = UIImage(data: data)
+            completion(image)
+        }.resume()
+    }
+
     
     let sections = ["", "Members", "Household Code"]
     
@@ -76,22 +118,43 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     @IBOutlet var accountHouseholdTableView: UITableView!
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        accountHouseholdTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         accountHouseholdTableView.dataSource = self
         accountHouseholdTableView.delegate  = self
         accountHouseholdTableView.isScrollEnabled = false
         if let household = UserData.getInstance().user?.household {
-            var filteredUsers: [User] = []
-            for user in UserData.getInstance().users {
-                if user.household?.name == household.name {
-                    filteredUsers.append(user)
+            for userID in household.userIDs {
+                DatabaseManager.shared.getUserFromDatabase(email: userID){user,_ in
+                    print(userID)
+                    if let user = user {
+                        print(user.firstName)
+                        self.members.append(user)
+                    }
                 }
             }
-            members = filteredUsers
         }
         // Do any additional setup after loading the view.
     }
     
-
+    func getMembers(){
+        if let household = UserData.getInstance().user?.household {
+            var filteredUsers: [User] = []
+            for userID in household.userIDs {
+                DatabaseManager.shared.getUserFromDatabase(email: userID){user,_ in
+                    if let user = user {
+                        filteredUsers.append(user)
+                    }
+                }
+            }
+            
+            members = filteredUsers
+            print(members)
+        }
+    }
 }

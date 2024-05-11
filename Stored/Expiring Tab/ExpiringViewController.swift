@@ -236,7 +236,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
                             if let household = household {
                                 user.household = household
                                 UserData.getInstance().user = user
-                                
+                                self.expiringNavigationController?.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0),IndexPath(row: 1, section: 0)], with: .automatic)
                                 DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
                                 print("assisgend")
                             } else {
@@ -260,6 +260,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
                         
                     }
                 } else {
+                    print("User not found in Realtime Databaswe")
                     guard let loginNavigationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginNavigationVC") as? LoginNavigationController else {
                         return
                     }

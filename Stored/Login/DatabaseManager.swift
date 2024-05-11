@@ -95,8 +95,7 @@ extension DatabaseManager {
     func updateHouseholdName(code: String, newName: String, completion: @escaping (Bool) -> Void) {
         let householdData: [String: Any] = [
             "name": newName,
-            "code" : code,
-            
+            "code" : code
         ]
         
         database.child("households").child(code).updateChildValues(householdData) { error, _ in
@@ -114,7 +113,6 @@ extension DatabaseManager {
     
     public func getUserFromDatabase(email: String, completion: @escaping (User?, String?) -> Void) {
         let safeEmail = StorageManager.safeEmail(email: email)
-        print(safeEmail)
         database.child("users").child(safeEmail).observeSingleEvent(of: .value, with : { snapshot  in
             guard let userData = snapshot.value as? [String: Any] else {
                 // User data not found or error occurred
@@ -165,7 +163,7 @@ extension DatabaseManager {
         }
     }
 
-    public func insertHousehold(by user : User, with house: Household, completion: @escaping (Bool) -> Void) {
+    public func insertHousehold(by user : User, with house: Household, completion: @escaping (String?) -> Void) {
         // Convert storages and items to dictionaries for Firebase
         let storagesDict: [String: [String: Any]] = house.storages.reduce(into: [:]) { result, storage in
             if storage.name == "All" {
@@ -192,22 +190,24 @@ extension DatabaseManager {
             
             result[storage.name] = storageDict
         }
+        let ref = database.child("households").childByAutoId()
         
-        let householdData: [String: Any] = [
+        let uniqueId = ref.key ?? "NO REF"
+        let householdData : [String : Any] = [
             "name": house.name,
-            "code": house.code,
+            "code": uniqueId,
             "storages": storagesDict,
             "userIDs" : user.firstName
         ]
         
-        database.child("households").child(house.code).setValue(householdData) { error, _ in
+        database.child("households").child(uniqueId).setValue(householdData){ error, _ in
             guard error == nil else {
                 print("Failed to write to database")
-                completion(false)
+                completion(nil)
                 return
             }
             print("House hold created successfully")
-            completion(true)
+            completion(uniqueId)
         }
     }
     
