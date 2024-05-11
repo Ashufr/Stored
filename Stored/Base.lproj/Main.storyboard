@@ -1799,11 +1799,12 @@
                         <outlet property="emailTextField" destination="bpJ-ZE-tDv" id="lsb-PX-wXZ"/>
                         <outlet property="loginButton" destination="mTz-8R-SY4" id="R5z-WI-sGy"/>
                         <outlet property="passwordTextField" destination="HhJ-gF-uhS" id="tRa-cZ-C2Y"/>
+                        <segue destination="Vgq-xv-Qdi" kind="show" identifier="JoinCreateSegue" id="0lj-f6-nCi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U3D-NJ-8pY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2901.5267175572517" y="-2225.3521126760565"/>
+            <point key="canvasLocation" x="3152" y="-2661"/>
         </scene>
         <!--Register View Controller-->
         <scene sceneID="TWD-KI-8gz">
@@ -1866,7 +1867,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="haS-Ev-5T2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4280" y="-2218"/>
+            <point key="canvasLocation" x="3152" y="-1888"/>
         </scene>
         <!--Join Or Create Household View Controller-->
         <scene sceneID="PUc-3k-E22">
@@ -1920,7 +1921,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uHd-AK-iga" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5283.2061068702287" y="-2218.3098591549297"/>
+            <point key="canvasLocation" x="5201" y="-2225"/>
         </scene>
         <!--Stored Tab Bar Controller-->
         <scene sceneID="v3o-PR-VS2">
@@ -2440,6 +2441,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="0lj-f6-nCi"/>
         <segue reference="hr7-Ap-IEg"/>
     </inferredMetricsTieBreakers>
     <resources>

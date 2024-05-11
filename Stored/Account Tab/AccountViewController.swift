@@ -85,14 +85,21 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }
         
         if indexPath == IndexPath(row: 1, section: 1) {
-            guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
-                return
+            
+            DatabaseManager.shared.leaveHousehold(user: UserData.getInstance().user!) { success in
+                if success {
+                    guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
+                        return
+                    }
+                    joinOrCreateHouseholdViewController.user = UserData.getInstance().user!
+                    joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
+                    joinOrCreateHouseholdViewController.storedTabBarController = self.accountNavigtionController?.storedTabBarController
+                    
+                    self.present(joinOrCreateHouseholdViewController, animated: true)
+                } else {
+                    print("Failed to leave household")
+                }
             }
-            joinOrCreateHouseholdViewController.user = UserData.getInstance().user!
-            print(joinOrCreateHouseholdViewController.user)
-            joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
-            joinOrCreateHouseholdViewController.storedTabBarController = self.accountNavigtionController?.storedTabBarController
-            self.present(joinOrCreateHouseholdViewController, animated: true)
             tableView.deselectRow(at: indexPath, animated: true)
         }
         
@@ -147,12 +154,11 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             getUserData()
         }
     }
-
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "HouseholdSegue" {
             if let destinationVC = segue.destination as? AccountHouseholdViewController {
-                destinationVC.household = user?.household
                 destinationVC.accountViewController = self
             }
         }

@@ -70,17 +70,17 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
             }
 
 //            let storage = StorageLocationData.getInstance().getStorage(for: item.storage)
-//            let newItem = Item(quickAddItem: item, quantity : Int(cell.itemStepper.value) )
+            let newItem = Item(quickAddItem: item, quantity : Int(cell.itemStepper.value) )
             
             
-            DatabaseManager.shared.insertItem(with: item, householdCode: UserData.getInstance().user?.household?.code ?? "x", storageName: item.storage) { success in
+            DatabaseManager.shared.insertItem(with: newItem, householdCode: UserData.getInstance().user?.household?.code ?? "x", storageName: newItem.storage) { success in
                 if success {
 //                    storage.items.append(newItem)
 //                    StorageData.getInstance().storages[4].items.append(item)
                     self.quickAddNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
                     self.quickAddNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryTableView.reloadData()
                     self.quickAddNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()
-                    let alertController = UIAlertController(title: "Item Added", message: "\(item.name) x\(Int(cell.itemStepper.value)) has been added to your \(item.storage)", preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Item Added", message: "\(newItem.name) x\(Int(cell.itemStepper.value)) has been added to your \(item.storage)", preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                     alertController.addAction(okAction)
                     
@@ -95,7 +95,16 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
                     print("Item inserted successfully")
                 } else {
                     
+                    let alertController = UIAlertController(title: "Failed to add", message: "\(newItem.name) x\(Int(cell.itemStepper.value)) wasn't added to your \(item.storage)", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(okAction)
                     
+                    // Get the topmost view controller to present the alert
+                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                        if let window = scene.windows.first(where: { $0.isKeyWindow }) {
+                            window.rootViewController?.present(alertController, animated: true, completion: nil)
+                        }
+                    }
                     print("Failed to insert item")
                 }
                 cell.itemStepper.value = 1

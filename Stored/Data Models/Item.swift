@@ -118,15 +118,15 @@ class Item {
 //        self.imageURL = URL(string: imageUrl)
 //        self.userId = UserData.getInstance().user?.safeEmail ?? "no id"
 //    }
-//    init(quickAddItem : Item, quantity : Int) {
-//        self.name = quickAddItem.name
-//        self.quantity = quantity
-//        self.storage = quickAddItem.storage
-//        self.expiryDate = Calendar.current.date(byAdding: .day, value: quickAddItem.expiryDays!, to: Date())!
-//        self.imageURL = quickAddItem.imageURL
-//        self.dateAdded = Date()
-//        self.userId = quickAddItem.userId
-//    }
+    init(quickAddItem : Item, quantity : Int) {
+        self.name = quickAddItem.name
+        self.quantity = quantity
+        self.storage = quickAddItem.storage
+        self.expiryDate = Calendar.current.date(byAdding: .day, value: quickAddItem.expiryDays!, to: Date())!
+        self.imageURL = quickAddItem.imageURL
+        self.dateAdded = Date()
+        self.userId = quickAddItem.userId
+    }
     
 }
 

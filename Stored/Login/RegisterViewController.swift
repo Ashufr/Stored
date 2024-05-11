@@ -12,7 +12,12 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        nameTextField.delegate = self
+        lastNameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
         // Add tap gesture recognizer to imageView
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         imageView.isUserInteractionEnabled = true
@@ -75,46 +80,56 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             }
             guard !exist else {
                 print("User already Exists")
+                let alertController = UIAlertController(title: "User Already Exists", message: "This user already exists.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(okAction)
+                strongSelf.present(alertController, animated: true, completion: nil)
                 return
             }
+            
             
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
                 guard let strongSelf = self else { return }
                 if let error = error {
-                    print("Error creating user:", error)
+                    print(error.localizedDescription)
+                    let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    strongSelf.present(alertController, animated: true, completion: nil)
                 } else {
+                    UserDefaults.standard.setValue(email, forKey: "email")
+                    UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
+                    
+                    let user = User(firstName: firstName, lastName: lastName, email: email)
+                    DatabaseManager.shared.insertUser(with: user , completion: { success in
+                        if success {
+                            print("User created successfully")
+                            
+                            UserData.getInstance().user = user
+                            
+                            strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
+                            guard let image = strongSelf.imageView.image, let data = image.pngData() else {
+                                print("No Image Selected")
+                                return
+                            }
+                            let fileName = user.profilePictureFileName
+                            StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
+                                switch result {
+                                case .success(let downloadUrl) :
+                                    UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                                    print(downloadUrl)
+                                case .failure(let error) :
+                                    print("Storage Manager Error : \(error)")
+                                    
+                                }
+                            })
+                        }
+                    })
                     print("User created successfully")
                     
                 }
             }
-            UserDefaults.standard.setValue(email, forKey: "email")
-                            UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
             
-            let user = User(firstName: firstName, lastName: lastName, email: email)
-            DatabaseManager.shared.insertUser(with: user , completion: { success in
-                if success {
-                    print("User created successfully")
-                    
-                    UserData.getInstance().user = user
-                    
-                    strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
-                    guard let image = strongSelf.imageView.image, let data = image.pngData() else {
-                        print("No Image Selected")
-                        return
-                    }
-                    let fileName = user.profilePictureFileName
-                    StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
-                        switch result {
-                        case .success(let downloadUrl) :
-                            UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
-                            print(downloadUrl)
-                        case .failure(let error) :
-                            print("Storage Manager Error : \(error)")
-                        
-                        }
-                    })
-                }
-            })
             
             
         })
@@ -128,5 +143,12 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             destinationVC.user = user
             destinationVC.storedTabBarController = self.storedTabBarController
         }
+    }
+}
+
+extension RegisterViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

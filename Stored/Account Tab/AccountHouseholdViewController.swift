@@ -10,7 +10,6 @@ import UIKit
 class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var accountViewController : AccountViewController?
-    var household : Household?
     var members : [User]?
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -33,8 +32,8 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = accountHouseholdTableView.dequeueReusableCell(withIdentifier: "AccountHouseholdTextFieldTableViewCell", for: indexPath) as! AccountHouseholdTextFieldTableViewCell
-            cell.houseHoldTextField.text = household?.name
-            cell.household = household
+            cell.houseHoldTextField.text = UserData.getInstance().user?.household?.name
+            cell.household = UserData.getInstance().user?.household
             cell.accountDelegate = accountViewController
             cell.householdDelegate = accountViewController!.accountNavigtionController?.storedTabBarController?.householdNavigationController?.householdViewController
             return cell
@@ -48,7 +47,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
             return cell
         }else{
             let cell = accountHouseholdTableView.dequeueReusableCell(withIdentifier: "AccountHouseholdCodeTableViewCell", for: indexPath) as! AccountHouseholdCodeTableViewCell
-            cell.codeLabel.text = "\(household!.code)"
+            cell.codeLabel.text = "\(UserData.getInstance().user?.household?.code)"
             return cell
         }
     }
@@ -82,7 +81,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         accountHouseholdTableView.dataSource = self
         accountHouseholdTableView.delegate  = self
         accountHouseholdTableView.isScrollEnabled = false
-        if let household = household {
+        if let household = UserData.getInstance().user?.household {
             var filteredUsers: [User] = []
             for user in UserData.getInstance().users {
                 if user.household?.name == household.name {

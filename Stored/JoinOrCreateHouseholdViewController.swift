@@ -43,12 +43,13 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         DatabaseManager.shared.insertHousehold(by : user , with: house) { success in
             if success {
                 print("Created Successfully")
-                DatabaseManager.shared.updateHousehold(for: user.email, with: house) { success in
+                DatabaseManager.shared.updateHousehold(for: user, with: house) { success in
                     if success {
                         user.household = house
+                        UserData.getInstance().user = user
                         print(user.safeEmail)
                         print("Household updated successfully")
-                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 1, section: 0),IndexPath(row: 0, section: 0)], with: .automatic)
                         self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
                         DatabaseManager.shared.observeAllStorages(user: user, for: house.code)
                         self.dismiss(animated: true, completion: nil)
@@ -75,11 +76,13 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         DatabaseManager.shared.fetchHouseholdData(for: code) { household in
             if let household = household {
                 
-                DatabaseManager.shared.updateHousehold(for: user.email, with: household) { success in
+                DatabaseManager.shared.updateHousehold(for: user, with: household) { success in
                     if success {
                         DatabaseManager.shared.observeAllStorages(user: user, for: code)
                         print("Household Joined successfully")
                         self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
+                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
                         self.dismiss(animated: true, completion: nil)
                     }
                 }

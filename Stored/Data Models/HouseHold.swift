@@ -11,6 +11,7 @@ class Household {
     var name: String
     var code: String
     var storages : [StorageLocation]
+    var userIDs : [String]
     
     // Static set to store generated IDs
     private static var generatedIDs: Set<String> = Set<String>()
@@ -18,14 +19,16 @@ class Household {
     init(name : String, storages : [StorageLocation]) {
         self.name = name
         self.storages = storages
+        self.userIDs = []
         self.code = ""
         self.code = generateUniqueID()
     }
     
-    init(name : String,code : String, storages : [StorageLocation]) {
+    init(name : String, code : String, storages : [StorageLocation], userIds : [String]) {
         self.name = name
         self.storages = storages
         self.code = code
+        self.userIDs = userIds
     }
     
     init(name: String) {
@@ -38,6 +41,7 @@ class Household {
             StorageLocation(name: "Shelf", items: [Item]()),
             StorageLocation(name: "All", items: [Item]())
         ]
+        self.userIDs = []
         self.code = generateUniqueID()
     }
     

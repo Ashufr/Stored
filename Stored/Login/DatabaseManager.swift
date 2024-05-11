@@ -66,20 +66,28 @@ extension DatabaseManager {
         })
     }
     
-    public func updateHousehold(for email: String, with household: Household, completion: @escaping (Bool) -> Void) {
+    public func updateHousehold(for user: User, with household: Household, completion: @escaping (Bool) -> Void) {
         let householdData: [String: Any] = [
             "name": household.name,
             "code": household.code,
         ]
-        let safeEmail = StorageManager.safeEmail(email: email)
+        let safeEmail = user.safeEmail
         
         database.child("users").child(safeEmail).child("household").setValue(householdData) { error, _ in
             if let error = error {
-                print("Failed to update household:", error.localizedDescription)
+                print("Failed to update household : ", error.localizedDescription)
                 completion(false)
             } else {
-                print("Household updated successfully")
-                completion(true)
+                self.database.child("households").child(household.code).child("userIDs").updateChildValues([safeEmail :"\( user.firstName) \(user.lastName)"]) { error,_ in
+                    if let error = error {
+                        print("Failed to add user to household : ", error.localizedDescription)
+                        completion(false)
+                    }
+                    else{
+                        print("User added to household")
+                        completion(true)
+                    }
+                }
             }
         }
     }
@@ -87,7 +95,8 @@ extension DatabaseManager {
     func updateHouseholdName(code: String, newName: String, completion: @escaping (Bool) -> Void) {
         let householdData: [String: Any] = [
             "name": newName,
-            "code" : code
+            "code" : code,
+            
         ]
         
         database.child("households").child(code).updateChildValues(householdData) { error, _ in
@@ -124,15 +133,38 @@ extension DatabaseManager {
             if let householdData = userData["household"] as? [String: Any] {
                 completion(user, householdData["code"] as? String )
             }else{
-                print("NO HOUSEEE")
+                print("User doesn't have a house")
                 completion(user, nil)
             }
             
         })
     }
     
-    
-    
+    public func leaveHousehold(user: User, completion: @escaping (Bool) -> Void) {
+        guard let householdCode = user.household?.code else{
+            print("User already is not a part of any household")
+            completion(false)
+            return
+        }
+        database.child("users").child(user.safeEmail).child("household").removeValue { error, _ in
+            if let error = error {
+                print("Couldn't leave household:", error.localizedDescription)
+                completion(false)
+            } else {
+                self.database.child("household").child(householdCode).child("userIDs").child(user.safeEmail).removeValue { error,_  in
+                    if let error = error {
+                        print("Couldn't delete user from  household:", error.localizedDescription)
+                        completion(false)
+                    }else {
+                        print("Household left successfully")
+                        completion(true)
+                    }
+                }
+                
+            }
+        }
+    }
+
     public func insertHousehold(by user : User, with house: Household, completion: @escaping (Bool) -> Void) {
         // Convert storages and items to dictionaries for Firebase
         let storagesDict: [String: [String: Any]] = house.storages.reduce(into: [:]) { result, storage in
@@ -153,21 +185,19 @@ extension DatabaseManager {
                 ]
             }
             
-            // Create a dictionary for the current storage
             let storageDict: [String: Any] = [
                 "name": storage.name,
                 "items": itemsDict
             ]
             
-            // Add the storage dictionary to the result with the storage name as the key
             result[storage.name] = storageDict
         }
-        
         
         let householdData: [String: Any] = [
             "name": house.name,
             "code": house.code,
-            "storages": storagesDict
+            "storages": storagesDict,
+            "userIDs" : user.firstName
         ]
         
         database.child("households").child(house.code).setValue(householdData) { error, _ in
@@ -217,10 +247,15 @@ extension DatabaseManager {
     private func parseHousehold(from data: [String: Any]) -> Household? {
         guard let name = data["name"] as? String,
               let code = data["code"] as? String,
-              let storagesData = data["storages"] as? [String: Any]
+              let storagesData = data["storages"] as? [String: Any],
+              let userIDs = data["userIDs"] as? [String : Any]
         else {
             print("returning")
             return nil
+        }
+        var ids = [String]()
+        for (userID, userName) in userIDs {
+            ids.append(userID)
         }
         print(storagesData)
         var allItems = [Item]()
@@ -236,7 +271,7 @@ extension DatabaseManager {
         }
         storages.sort { $0.name > $1.name }
         storages.append(StorageLocation(name: "All", items: allItems))
-        return Household(name: name, code: code, storages: storages)
+        return Household(name: name, code: code, storages: storages, userIds: ids)
     }
     
     // Helper function to parse storage dxata

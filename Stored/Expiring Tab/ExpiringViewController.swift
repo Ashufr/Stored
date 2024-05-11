@@ -245,13 +245,18 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
                         }
                         
                     }else{
+                        print("Presenting create screen")
                         guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
                             return
                         }
                         joinOrCreateHouseholdViewController.user = user
                         joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
                         joinOrCreateHouseholdViewController.storedTabBarController = self.expiringNavigationController?.storedTabBarController
-                        
+                        self.present(joinOrCreateHouseholdViewController, animated: true){
+                            self.expiringNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
+                            
+                        }
+                        print("Done create screen")
                         
                     }
                 } else {

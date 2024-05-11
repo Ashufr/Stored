@@ -43,22 +43,20 @@ class LoginViewController: UIViewController {
                                 user.household = household
                                 UserData.getInstance().user = user
                                 
+                                strongSelf.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
+                                strongSelf.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
                                 DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
+                                
                                 print("assisgend")
                             } else {
+                                strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
                                 print("Failed to fetch household data")
                             }
                         }
-                        
+                        strongSelf.navigationController?.dismiss(animated: true, completion: nil)
                     }else{
                         print("user no huse")
-                        guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
-                            return
-                        }
-                        joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
-                        joinOrCreateHouseholdViewController.storedTabBarController = strongSelf.storedTabBarController
-                        // Inside LoginViewController
-                        // After successful login
+                        strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
                         
 
                     }
@@ -66,12 +64,13 @@ class LoginViewController: UIViewController {
                     print("Failed to retrieve user data.")
                 }
             }
-            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            
         })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "LoginRegisterSegue", let destinationVC = segue.destination as? RegisterViewController {
+        if let user = sender as? User, let destinationVC = segue.destination as? JoinOrCreateHouseholdViewController {
+            destinationVC.user = user
             destinationVC.storedTabBarController = self.storedTabBarController
         }
     }
