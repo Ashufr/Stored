@@ -147,7 +147,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     
     
-    @objc func logoutTapped(){
+    func conformLogout(){
         do {
             try Auth.auth().signOut()
             print("User logged out successfully")
@@ -164,6 +164,37 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
+    }
+    
+    @objc func logoutTapped(){
+        
+        let alertController = UIAlertController(title: "Log out?", message: "Are you sure you want to log out?", preferredStyle: .alert)
+
+        // Log Out action
+        let logOutAction = UIAlertAction(title: "Log Out", style: .default) { _ in
+            self.conformLogout()
+        }
+        // Customize Log Out button color to red
+        logOutAction.setValue(UIColor.red, forKey: "titleTextColor")
+        alertController.addAction(logOutAction)
+
+        // Cancel action
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        // Present buttons side by side using a horizontal stack view
+        let subview = alertController.view.subviews.first! as UIView
+        let alertContentView = subview.subviews.first! as UIView
+        for constraint in alertContentView.constraints {
+            if constraint.description.contains("Width") {
+                constraint.isActive = false
+                NSLayoutConstraint(item: alertContentView, attribute: .width, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 250).isActive = true
+                break
+            }
+        }
+
+        self.present(alertController, animated: true, completion: nil)
+
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

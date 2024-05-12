@@ -248,7 +248,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="75.333335876464844"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.and.arrow.up.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="B9z-5H-ecc">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="B9z-5H-ecc">
                                                     <rect key="frame" x="12" y="12.666666666666664" width="52" height="50.666666666666671"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="52" id="JS9-vz-yq0"/>
@@ -392,8 +392,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="62.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Anna" translatesAutoresizingMaskIntoConstraints="NO" id="JLZ-3y-Xfd">
-                                                    <rect key="frame" x="8" y="6" width="50" height="50.333333333333336"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="JLZ-3y-Xfd">
+                                                    <rect key="frame" x="8" y="6.9999999999999964" width="50" height="49"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="HMr-hb-Jh1"/>
                                                         <constraint firstAttribute="width" constant="50" id="ihK-mn-DLX"/>
@@ -489,9 +489,17 @@
                             <constraint firstItem="4xg-23-FgN" firstAttribute="top" secondItem="X9E-nl-nr5" secondAttribute="top" id="c7Q-io-18j"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Manage Household" largeTitleDisplayMode="never" id="HDI-my-KDn"/>
+                    <navigationItem key="navigationItem" title="Manage Household" largeTitleDisplayMode="never" id="HDI-my-KDn">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="ivr-PX-nzc">
+                            <color key="tintColor" red="0.55686277149999996" green="0.82352948189999997" blue="0.35686278339999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <connections>
+                                <action selector="saveButtonTapped:" destination="Kk5-AF-RqU" id="ZGm-Cp-mP3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="accountHouseholdTableView" destination="4xg-23-FgN" id="h6H-av-DYx"/>
+                        <outlet property="saveButton" destination="ivr-PX-nzc" id="EXF-wx-dAy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RrS-21-CuY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -529,8 +537,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="70.333335876464844"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="LAJ-Ai-pl3">
-                                                    <rect key="frame" x="8" y="10.333333333333336" width="50" height="50"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="LAJ-Ai-pl3">
+                                                    <rect key="frame" x="8" y="11.333333333333336" width="50" height="48.666666666666671"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="ViF-6Q-oQt"/>
                                                         <constraint firstAttribute="width" constant="50" id="bmG-oE-Hii"/>
@@ -2059,8 +2067,8 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="miW-Ib-RLF">
                                 <rect key="frame" x="121.66666666666669" y="103" width="150" height="180"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Anna" translatesAutoresizingMaskIntoConstraints="NO" id="Vkj-dH-eBv">
-                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Vkj-dH-eBv">
+                                        <rect key="frame" x="0.0" y="1" width="150" height="148.66666666666666"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="150" id="8bA-vB-uPC"/>
                                             <constraint firstAttribute="height" constant="150" id="Ayd-k2-TK3"/>
@@ -2448,21 +2456,19 @@
         <segue reference="hr7-Ap-IEg"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="Anna" width="1024" height="1024"/>
         <image name="Clear All" width="392" height="392"/>
         <image name="Pantry" width="404" height="404"/>
         <image name="bag" catalog="system" width="128" height="128"/>
         <image name="bell" catalog="system" width="125" height="128"/>
         <image name="bolt.circle" catalog="system" width="128" height="123"/>
         <image name="house" catalog="system" width="128" height="104"/>
-        <image name="pencil.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="pencil.circle.fill" catalog="system" width="32" height="32"/>
         <image name="person" catalog="system" width="128" height="121"/>
+        <image name="person.circle" catalog="system" width="128" height="123"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="photo" catalog="system" width="128" height="93"/>
         <image name="plus.circle" catalog="system" width="128" height="123"/>
         <image name="square.3.layers.3d.top.filled" catalog="system" width="128" height="125"/>
-        <image name="square.and.arrow.up.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="user" width="54" height="54"/>
         <namedColor name="Background Color">
             <color red="0.94900000095367432" green="0.94900000095367432" blue="0.96899998188018799" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

@@ -9,7 +9,9 @@ import UIKit
 
 class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet var saveButton: UIBarButtonItem!
     var accountViewController : AccountViewController?
+    var householdNameCell : AccountHouseholdTextFieldTableViewCell?
     var members : [User] = HouseholdData.getInstance().householdMembers {
         didSet {
             accountHouseholdTableView.reloadData()
@@ -40,6 +42,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
             cell.household = UserData.getInstance().user?.household
             cell.accountDelegate = accountViewController
             cell.householdDelegate = accountViewController!.accountNavigtionController?.storedTabBarController?.householdNavigationController?.householdViewController
+            self.householdNameCell = cell
             return cell
         }else if indexPath.section == 1{
             let cell = accountHouseholdTableView.dequeueReusableCell(withIdentifier: "AccountHouseholdUserTableViewCell", for: indexPath) as! AccountHouseholdUserTableViewCell
@@ -133,5 +136,28 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+        guard let code = UserData.getInstance().user?.household?.code else {
+            print("Household Code not found")
+            return
+        }
+        guard let text = householdNameCell?.houseHoldTextField.text, !text.isEmpty , text != UserData.getInstance().user?.household?.name else {
+            print("same name")
+            return
+        }
+        
+        
+        DatabaseManager.shared.updateHouseholdName(code: code, newName: text) { success in
+            if success {
+                self.householdNameCell?.household?.name = text
+                self.householdNameCell?.accountDelegate?.nameChanged()
+                self.householdNameCell?.householdDelegate?.nameChanged()
+                print("Household name updated successfully to \(text)")
+            } else {
+                print("Failed to update household name")
+            }
+        }
+    }
     
 }
+
