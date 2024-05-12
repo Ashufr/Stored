@@ -126,28 +126,54 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }
         
         if indexPath == IndexPath(row: 1, section: 1) {
-            
-            DatabaseManager.shared.leaveHousehold(user: UserData.getInstance().user!) { success in
-                if success {
-                    guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
-                        return
-                    }
-                    joinOrCreateHouseholdViewController.user = UserData.getInstance().user!
-                    joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
-                    joinOrCreateHouseholdViewController.storedTabBarController = self.accountNavigtionController?.storedTabBarController
-                    
-                    self.present(joinOrCreateHouseholdViewController, animated: true)
-                } else {
-                    print("Failed to leave household")
+            let alertController = UIAlertController(title: "Leave this house?", message: "Are you sure you want to leave this household?", preferredStyle: .alert)
+
+            // Log Out action
+            let logOutAction = UIAlertAction(title: "Leave", style: .default) { _ in
+                self.confirmLeaveHousehold()
+            }
+            // Customize Log Out button color to red
+            logOutAction.setValue(UIColor.red, forKey: "titleTextColor")
+            alertController.addAction(logOutAction)
+
+            // Cancel action
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+
+            // Present buttons side by side using a horizontal stack view
+            let subview = alertController.view.subviews.first! as UIView
+            let alertContentView = subview.subviews.first! as UIView
+            for constraint in alertContentView.constraints {
+                if constraint.description.contains("Width") {
+                    constraint.isActive = false
+                    NSLayoutConstraint(item: alertContentView, attribute: .width, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 250).isActive = true
+                    break
                 }
             }
-            tableView.deselectRow(at: indexPath, animated: true)
+
+            self.present(alertController, animated: true, completion: nil)
         }
-        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func confirmLeaveHousehold(){
+        DatabaseManager.shared.leaveHousehold(user: UserData.getInstance().user!) { success in
+            if success {
+                guard let joinOrCreateHouseholdViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "JoinCreateVC") as? JoinOrCreateHouseholdViewController else {
+                    return
+                }
+                joinOrCreateHouseholdViewController.user = UserData.getInstance().user!
+                joinOrCreateHouseholdViewController.modalPresentationStyle = .fullScreen
+                joinOrCreateHouseholdViewController.storedTabBarController = self.accountNavigtionController?.storedTabBarController
+                
+                self.present(joinOrCreateHouseholdViewController, animated: true)
+            } else {
+                print("Failed to leave household")
+            }
+        }
+    }
     
-    func conformLogout(){
+    func confirmLogout(){
         do {
             try Auth.auth().signOut()
             print("User logged out successfully")
@@ -172,7 +198,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
 
         // Log Out action
         let logOutAction = UIAlertAction(title: "Log Out", style: .default) { _ in
-            self.conformLogout()
+            self.confirmLogout()
         }
         // Customize Log Out button color to red
         logOutAction.setValue(UIColor.red, forKey: "titleTextColor")

@@ -149,6 +149,12 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         
         DatabaseManager.shared.updateHouseholdName(code: code, newName: text) { success in
             if success {
+                
+                let alertController = UIAlertController(title: "Name Updated", message: "Your household name has been changed to \(text)", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true)
+                
                 self.householdNameCell?.household?.name = text
                 self.householdNameCell?.accountDelegate?.nameChanged()
                 self.householdNameCell?.householdDelegate?.nameChanged()

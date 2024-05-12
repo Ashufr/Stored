@@ -22,7 +22,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     @IBOutlet var inventoryTableView: UITableView!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        3 < recentlyAddedItems.count ? 3 : recentlyAddedItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -127,7 +127,6 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         if segue.identifier == "StorageSegue" {
             if let indexPath = sender as? IndexPath{
                 let storage = UserData.getInstance().user?.household?.storages[indexPath.row]

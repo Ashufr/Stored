@@ -67,6 +67,53 @@ extension DatabaseManager {
         })
     }
     
+    public func editUser(with user : User, completion : @escaping (Bool) -> Void){
+        let userData : [String:Any] = [
+            "first_name" : user.firstName,
+            "last_name" : user.lastName,
+            "email" : user.email,
+            "household" : user.household as Any,
+        ]
+        database.child("users").child(user.safeEmail).setValue(userData, withCompletionBlock: { error, _ in
+            guard error == nil else {
+                print("Failed to write to database")
+                return
+            }
+            completion(true)
+        })
+    }
+    
+    public func getUserFromDatabase(email: String, completion: @escaping (User?, String?) -> Void) {
+        let safeEmail = StorageManager.safeEmail(email: email)
+        database.child("users").child(safeEmail).observeSingleEvent(of: .value, with : { snapshot  in
+            guard let userData = snapshot.value as? [String: Any] else {
+                // User data not found or error occurred
+                completion(nil, nil)
+                print("returning")
+                return
+            }
+            guard let firstName = userData["first_name"] as? String,
+                    let lastName = userData["last_name"] as? String,
+                  let userEmail = userData["email"] as? String
+                
+            else{
+                print("user data not found")
+                completion(nil,nil)
+                return
+            }
+            let user = User(firstName: firstName, lastName: lastName, email: userEmail)
+            if let householdData = userData["household"] as? [String: Any] {
+                self.storedTabBarController?.householdNavigationController?.householdViewController?.householdTableView.reloadData()
+                completion(user, householdData["code"] as? String )
+            }else{
+                print("User doesn't have a house")
+                completion(user, nil)
+            }
+            
+        })
+    }
+    
+    
     public func updateHousehold(for user: User, with household: Household, completion: @escaping (Bool) -> Void) {
         let householdData: [String: Any] = [
             "name": household.name,
@@ -86,6 +133,9 @@ extension DatabaseManager {
                     }
                     else{
                         print("User added to household")
+                        self.storedTabBarController?.expiringNavigationController?.expiringViewController?.itemAdded()
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
+                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
                         completion(true)
                     }
                 }
@@ -112,34 +162,6 @@ extension DatabaseManager {
 
 
     
-    public func getUserFromDatabase(email: String, completion: @escaping (User?, String?) -> Void) {
-        let safeEmail = StorageManager.safeEmail(email: email)
-        database.child("users").child(safeEmail).observeSingleEvent(of: .value, with : { snapshot  in
-            guard let userData = snapshot.value as? [String: Any] else {
-                // User data not found or error occurred
-                completion(nil, nil)
-                print("returning")
-                return
-            }
-            guard let firstName = userData["first_name"] as? String,
-                    let lastName = userData["last_name"] as? String,
-                  let userEmail = userData["email"] as? String
-                
-            else{
-                print("user data not found")
-                completion(nil,nil)
-                return
-            }
-            let user = User(firstName: firstName, lastName: lastName, email: userEmail)
-            if let householdData = userData["household"] as? [String: Any] {
-                completion(user, householdData["code"] as? String )
-            }else{
-                print("User doesn't have a house")
-                completion(user, nil)
-            }
-            
-        })
-    }
     
     public func leaveHousehold(user: User, completion: @escaping (Bool) -> Void) {
         guard let householdCode = user.household?.code else{
@@ -239,7 +261,10 @@ extension DatabaseManager {
                 return
             }
             if let household = self.parseHousehold(from: householdData) {
-               
+                self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
+                self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
+                
+                self.storedTabBarController?.expiringNavigationController?.expiringViewController?.itemAdded()
                 completion(household)
                 
                 

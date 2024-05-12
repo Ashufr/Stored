@@ -5,6 +5,7 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
     var user: User?
     var storedTabBarController: StoredTabBarController?
     
+    @IBOutlet var logoImageView: UIImageView!
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var codeTextField: UITextField!
     @IBOutlet var createButton: UIButton!
@@ -13,7 +14,9 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        
+        logoImageView.layer.cornerRadius = 20
+        createButton.layer.cornerRadius = 4
+        joinButton.layer.cornerRadius = 4
         // Set the delegate for text fields
         nameTextField.delegate = self
         codeTextField.delegate = self
@@ -81,9 +84,7 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
                     if success {
                         DatabaseManager.shared.observeAllStorages(user: user, for: code)
                         print("Household Joined successfully")
-                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
-                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
+                        
                         self.dismiss(animated: true, completion: nil)
                     }
                 }

@@ -8,11 +8,13 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var passwordTextField: UITextField!
-    
+    @IBOutlet var confirmPasswordTextField: UITextField!
+    @IBOutlet var registerButton: UIButton!
     var storedTabBarController : StoredTabBarController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerButton.layer.cornerRadius = 5
         nameTextField.delegate = self
         lastNameTextField.delegate = self
         emailTextField.delegate = self
@@ -73,6 +75,14 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBAction func didTapRegister() {
         guard let firstName = nameTextField.text, let lastName = lastNameTextField.text, let email = emailTextField.text, let password = passwordTextField.text, let image = imageView.image, image.isSymbolImage == false else { return }
         
+        guard passwordTextField.text == confirmPasswordTextField.text else {
+            let alertController = UIAlertController(title: "Check Password", message: "The passwords you have typed don't match", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
+            return
+        }
+        
         DatabaseManager.shared.userExists(with: email, completion: { [ weak self ] exist in
             
             guard let strongSelf = self else {
@@ -103,9 +113,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                     let user = User(firstName: firstName, lastName: lastName, email: email)
                     UserData.getInstance().user = user
                     strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
-                    
-                    DispatchQueue.global().async {
-                        strongSelf.uploadProfilePicture(for: user, image: image)
+                    DatabaseManager.shared.insertUser(with: user) { success in
+                        if success {
+                            strongSelf.uploadProfilePicture(for: user, image: image)
+                        }
                     }
                 }
             }
@@ -125,11 +136,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             switch result {
             case .success(let downloadUrl):
                 UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
-                DatabaseManager.shared.insertUser(with: user) { success in
-                    if !success {
-                        strongSelf.showUploadAlert(user: user, image: image)
-                    }
-                }
+                
             case .failure(let error):
                 print("Storage Manager Error : \(error)")
                 strongSelf.showUploadAlert(user: user, image: image)

@@ -12,13 +12,15 @@ class LoginViewController: UIViewController {
     
     var storedTabBarController : StoredTabBarController?
     
+    @IBOutlet var logoImageView: UIImageView!
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var loginButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loginButton.layer.cornerRadius = 4
+        logoImageView.layer.cornerRadius = 20
     }
     
     
@@ -42,8 +44,7 @@ class LoginViewController: UIViewController {
                                 user.household = household
                                 UserData.getInstance().user = user
                                 
-                                strongSelf.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
-                                strongSelf.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.itemAdded()
+                                
                                 DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
                                 
                                 print("assisgend")
