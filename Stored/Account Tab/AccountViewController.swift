@@ -6,15 +6,19 @@ import FirebaseAuth
 class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, HouseholdDelegate {
     func nameChanged() {
         // indexPath of the row you want to reload
-        let indexPath = IndexPath(row: 1, section: 0)
+        let indexPaths = [IndexPath(row: 1, section: 0), IndexPath(row: 1, section: 0)]
         
-        // Reload the row at the specified indexPath
-        accountTableView.reloadRows(at: [indexPath], with: .automatic)
+        accountTableView.reloadRows(at: indexPaths, with: .automatic)
         
     }
     
     var users : [User]?
-    var profilePhoto : UIImage?
+    var profilePhoto : UIImage?{
+        didSet{
+            print("profiiile")
+            self.nameChanged()
+        }
+    }
     var profileName : String?
     
     var user : User?
@@ -33,7 +37,31 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             guard let user = self.user else {
                 return UITableViewCell()
             }
-            cell.userImage.image = profilePhoto ?? UIImage(systemName: "person.fill")
+            if let image = user.image {
+                cell.userImage.image = image
+                cell.userImage.contentMode = .scaleAspectFit
+                print("Member image found")
+            }else{
+                let path = "images/\(user.profilePictureFileName)"
+                StorageManager.shared.downloadURL(for: path, completion: {result in
+                    switch result {
+                    case .success(let url) :
+                        self.downloadImage(from: url){ image in
+                            if let image = image {
+                                DispatchQueue.main.async {
+                                    cell.userImage.image = image
+                                    cell.userImage.contentMode = .scaleAspectFit
+                                    user.image = image
+                                    print("Member image set")
+                                }
+                                
+                            }
+                        }
+                    case .failure(let error) :
+                        print("image not set")
+                    }
+                })
+            }
             cell.userImage.contentMode = .scaleAspectFill
             cell.userImage.layer.cornerRadius = 25
             cell.userName.text = "\(user.firstName)"
@@ -78,6 +106,19 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }
     }
     
+    func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil else {
+                print("Failed to download image:", error?.localizedDescription ?? "Unknown error")
+                completion(nil)
+                return
+            }
+            
+            let image = UIImage(data: data)
+            completion(image)
+        }.resume()
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath == IndexPath(row: 0, section: 1){
             print(indexPath)
@@ -105,6 +146,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
     }
     
+    
     @objc func logoutTapped(){
         do {
             try Auth.auth().signOut()
@@ -115,6 +157,8 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
             print("prese")
             loginNavigationViewController.modalPresentationStyle = .fullScreen
             present(loginNavigationViewController, animated: true)
+            HouseholdData.getInstance().householdMembers = []
+            UserData.getInstance().user = nil
             self.accountNavigtionController?.storedTabBarController?.selectedIndex = 0
             // Perform any additional actions after logout, such as navigating to a different screen or updating UI
         } catch let signOutError as NSError {
@@ -132,7 +176,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        HouseholdData.getInstance().getMembers()
         user = UserData.getInstance().user
         let household = UserData.getInstance().user?.household
         if let household = household {
@@ -205,4 +249,3 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     
 }
-//cell.accessoryType = .none

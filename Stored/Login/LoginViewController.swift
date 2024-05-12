@@ -36,7 +36,6 @@ class LoginViewController: UIViewController {
             let user = result.user
             DatabaseManager.shared.getUserFromDatabase(email: email) { user,householdCode in
                 if let user = user {
-                    UserData.getInstance().user = user
                     if let code = householdCode {
                         DatabaseManager.shared.fetchHouseholdData(for: code) { household in
                             if let household = household {

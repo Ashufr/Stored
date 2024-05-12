@@ -100,48 +100,57 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                     UserDefaults.standard.setValue(email, forKey: "email")
                     UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
                     
+                    let user = User(firstName: firstName, lastName: lastName, email: email)
+                    UserData.getInstance().user = user
+                    strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
                     
-                    let safeEmail = StorageManager.safeEmail(email: email)
-                    guard let image = strongSelf.imageView.image, let data = image.pngData() else {
-                        print("No Image Selected")
-                        return
+                    DispatchQueue.global().async {
+                        strongSelf.uploadProfilePicture(for: user, image: image)
                     }
-                    let fileName = "\(safeEmail)_profile_picture.png"
-                    StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName, completion: { result in
-                        switch result {
-                        case .success(let downloadUrl) :
-                            UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
-                            
-                            let user = User(firstName: firstName, lastName: lastName, email: email)
-                            DatabaseManager.shared.insertUser(with: user , completion: { success in
-                                if success {
-                                    print("User created successfully")
-                                    
-                                    UserData.getInstance().user = user
-                                    
-                                    strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
-                                    
-                                }
-                            })
-                            print("User created successfully")
-                        case .failure(let error) :
-                            print("Storage Manager Error : \(error)")
-                            
-                        }
-                    })
-                    
-                    
                 }
             }
-            
-            
-            
         })
-        
-        
     }
     
-
+    func uploadProfilePicture(for user: User, image: UIImage) {
+        let safeEmail = StorageManager.safeEmail(email: user.email)
+        guard let data = image.pngData() else {
+            print("No Image Selected")
+            return
+        }
+        let fileName = "\(safeEmail)_profile_picture.png"
+        
+        StorageManager.shared.uploadProfilePicture(with: data, fileName: fileName) { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let downloadUrl):
+                UserDefaults.standard.set(downloadUrl, forKey: "profile_picture_url")
+                DatabaseManager.shared.insertUser(with: user) { success in
+                    if !success {
+                        strongSelf.showUploadAlert(user: user, image: image)
+                    }
+                }
+            case .failure(let error):
+                print("Storage Manager Error : \(error)")
+                strongSelf.showUploadAlert(user: user, image: image)
+            }
+        }
+    }
+    
+    func showUploadAlert(user: User, image: UIImage) {
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else { return }
+            let alertController = UIAlertController(title: "Error", message: "Failed to upload profile picture. Would you like to try again?", preferredStyle: .alert)
+            let tryAgainAction = UIAlertAction(title: "Try Again", style: .default) { _ in
+                strongSelf.uploadProfilePicture(for: user, image: image)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(tryAgainAction)
+            alertController.addAction(cancelAction)
+            strongSelf.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let user = sender as? User, let destinationVC = segue.destination as? JoinOrCreateHouseholdViewController {

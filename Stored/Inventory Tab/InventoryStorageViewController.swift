@@ -1,10 +1,9 @@
 import UIKit
 
 class InventoryStorageViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomAlertRefreshDelegate, QuickAddDelegate, UIContextMenuInteractionDelegate {
-  
-    
     
     func itemAdded() {
+        
         categorizedItems = StorageLocationData.getInstance().categorizeStorageItems(storage?.items ?? [])
         inventoryStorageTableView.reloadData()
     }
@@ -85,14 +84,22 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
             cell.itemImage.image = image
             print("Image Found")
         }else{
-            ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
-                if let image = image {
-                    cell.itemImage.image = image
-                    item.image = image
-                    print("Image Sett")
-                } else {
-                    // Handle case where image couldn't be loaded
-                    print("Failed to load image")
+            if item.imageURL?.absoluteString.contains("firebasestorage.googleapis.com") ?? false{
+                StorageManager.shared.getImageFromURL(item.imageURL!.absoluteString){image in
+                    if let image = image {
+                        cell.itemImage.image = image
+                        item.image = image
+                    }
+                }
+            }else{
+                ItemData.getInstance().loadImageFrom(url: item.imageURL){ image in
+                    if let image = image {
+                        cell.itemImage.image = image
+                        item.image = image
+                        print("Image Sett")
+                    } else {
+                        
+                    }
                 }
             }
         }
@@ -164,30 +171,27 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
                 let item = items[indexPath.row]
                 
                 // Remove the item from storage.items
-                if let index = storage?.items.firstIndex(where: { $0 === item }) {
-                    storage?.items.remove(at: index)
-                }
-                if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-                    StorageLocationData.getInstance().storages[4].items.remove(at: index)
-                }
-                inventoryViewController?.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
-                inventoryViewController?.inventoryCollectionView.reloadData()
+//                if let index = storage?.items.firstIndex(where: { $0 === item }) {
+//                    storage?.items.remove(at: index)
+//                }
+//                if let index = UserData.getInstance().user?.household.storages[4].items.firstIndex(where: { $0 === item }) {
+//                    StorageLocationData.getInstance().storages[4].items.remove(at: index)
+//                }
+//                inventoryViewController?.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
+//                inventoryViewController?.inventoryCollectionView.reloadData()
                 
                 // Remove the item from the categorizedItems dictionary
-                items.remove(at: indexPath.row)
-                categorizedItems[expiryCategory] = items
+//                items.remove(at: indexPath.row)
+//                categorizedItems[expiryCategory] = items
                 
                 // Delete the row from the table view
-                
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                if (items.isEmpty){
-                    self.sections = getSections()
-                    tableView.reloadData()
-                }
-                // Perform any additional deletion operations here, such as updating the backend
-                
-                // For demonstration purposes, you can print the deleted item
-//                tableView.reloadData()
+                deleteItem(at: indexPath)
+//                tableView.deleteRows(at: [indexPath], with: .fade)
+//                if (items.isEmpty){
+//                    self.sections = getSections()
+//                    self.categorizedItems = StorageLocationData.getInstance().categorizeStorageItems(UserData.getInstance().user?.household?.storages[4].items ?? [])
+//                    tableView.reloadData()
+//                }
                 print("Deleted item: \(item)")
             }
         }
@@ -204,14 +208,6 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         
         let item = items[indexPath.row]
         
-        // Remove the item from storage.items
-        if let index = storage?.items.firstIndex(where: { $0 === item }) {
-            storage?.items.remove(at: index)
-        }
-        if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-            StorageLocationData.getInstance().storages[4].items.remove(at: index)
-        }
-
         customAlertController.productTitle = item.name
         customAlertController.productImageUrl = item.imageURL?.absoluteString
         customAlertController.productImage = item.image
@@ -221,11 +217,13 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         customAlertController.productStorageIndex = index
         customAlertController.productQuanity = item.quantity
         customAlertController.productDateAdded = item.dateAdded
+        customAlertController.itemId = item.itemId
+        customAlertController.oldStorage = item.storage
         customAlertController.modalTransitionStyle = .crossDissolve
         customAlertController.modalPresentationStyle = .overFullScreen
         customAlertController.inventoryStorageTableDelegate = self
         customAlertController.inventoryCollectionDelegate = inventoryViewController
-        
+        customAlertController.isUpdating = true
         customAlertController.expiringDelegate = self
             
         present(customAlertController, animated: true, completion: nil)
@@ -239,20 +237,13 @@ class InventoryStorageViewController: UIViewController, UITableViewDataSource, U
         
         let item = items[indexPath.row]
         
-        // Remove the item from storage.items
-        if let index = storage?.items.firstIndex(where: { $0 === item }) {
-            storage?.items.remove(at: index)
-        }
-        if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-            StorageLocationData.getInstance().storages[4].items.remove(at: index)
+        DatabaseManager.shared.deleteItem(householdCode: UserData.getInstance().user?.household?.code ?? "", for: item){_ in 
+            
         }
         inventoryViewController?.inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
         inventoryViewController?.inventoryCollectionView.reloadData()
         
-        // Remove the item from the categorizedItems dictionary
-        items.remove(at: indexPath.row)
-        categorizedItems[expiryCategory] = items
-        inventoryStorageTableView.deleteRows(at: [indexPath], with: .fade)
+//        inventoryStorageTableView.deleteRows(at: [indexPath], with: .fade)
         // Perform any additional deletion operations here, such as updating the backend
         
         // For demonstration purposes, you can print the deleted item

@@ -57,6 +57,7 @@ extension DatabaseManager {
         database.child("users").child(user.safeEmail).setValue([
             "first_name" : user.firstName,
             "last_name" : user.lastName,
+            "email" : user.email
         ], withCompletionBlock: { error, _ in
             guard error == nil else {
                 print("Failed to write to database")
@@ -121,13 +122,15 @@ extension DatabaseManager {
                 return
             }
             guard let firstName = userData["first_name"] as? String,
-                    let lastName = userData["last_name"] as? String
+                    let lastName = userData["last_name"] as? String,
+                  let userEmail = userData["email"] as? String
+                
             else{
                 print("user data not found")
                 completion(nil,nil)
                 return
             }
-            let user = User(firstName: firstName, lastName: lastName, email: email)
+            let user = User(firstName: firstName, lastName: lastName, email: userEmail)
             if let householdData = userData["household"] as? [String: Any] {
                 completion(user, householdData["code"] as? String )
             }else{
@@ -149,7 +152,7 @@ extension DatabaseManager {
                 print("Couldn't leave household:", error.localizedDescription)
                 completion(false)
             } else {
-                self.database.child("household").child(householdCode).child("userIDs").child(user.safeEmail).removeValue { error,_  in
+                self.database.child("households").child(householdCode).child("userIDs").child(user.safeEmail).removeValue { error,_  in
                     if let error = error {
                         print("Couldn't delete user from  household:", error.localizedDescription)
                         completion(false)
@@ -178,7 +181,8 @@ extension DatabaseManager {
                     "dateAdded": item.dateAdded.timeIntervalSince1970,
                     "expiryDate": item.expiryDate.timeIntervalSince1970,
                     "imageUrl" : item.imageURL?.absoluteString ?? "",
-                    "userID" : user.safeEmail
+                    "userID" : user.safeEmail,
+                    "itemID" : item.itemId ?? ""
                     // Add other item properties as needed
                 ]
             }
@@ -235,7 +239,10 @@ extension DatabaseManager {
                 return
             }
             if let household = self.parseHousehold(from: householdData) {
+               
                 completion(household)
+                
+                
             } else {
                 print("Failed to parse household data")
                 completion(nil)
@@ -254,10 +261,9 @@ extension DatabaseManager {
             return nil
         }
         var ids = [String]()
-        for (userID, userName) in userIDs {
+        for (userID, _) in userIDs {
             ids.append(userID)
         }
-        print(storagesData)
         var allItems = [Item]()
         var storages: [StorageLocation] = []
         for (storageName, storageData) in storagesData {
@@ -300,7 +306,8 @@ extension DatabaseManager {
               let dateAddedTimestamp = data["dateAdded"] as? TimeInterval,
               let expiryDateTimestamp = data["expiryDate"] as? TimeInterval,
               let imageUrl = data["imageUrl"] as? String,
-              let userId = data["userId"] as? String
+              let userId = data["userId"] as? String,
+              let itemId = data["itemId"] as? String
         else {
             return nil
         }
@@ -310,12 +317,17 @@ extension DatabaseManager {
         
         // You can parse other item properties here
         
-        return Item(name: name, quantity: quantity, storage: storage, dateAdded: dateAdded, expiryDate: expiryDate, imageURL: imageUrl, userId: userId)
+        return Item(name: name, quantity: quantity, storage: storage, dateAdded: dateAdded, expiryDate: expiryDate, imageURL: imageUrl, userId: userId, itemId: itemId)
     }
     
     
     
-    func insertItem(with item: Item, householdCode: String, storageName: String, completion: @escaping (Bool) -> Void) {
+    func insertItem(with item: Item, householdCode: String, storageName: String, completion: @escaping (String?) -> Void) {
+        
+        
+//        var insertionError : (any Error)?
+        let storagePath = "\(householdCode)/storages/\(storageName)/items"
+        let itemId = database.child("households").child(storagePath).childByAutoId().key ?? "id not generated"
         
         // Convert item properties to dictionary
         let itemData: [String: Any] = [
@@ -325,23 +337,95 @@ extension DatabaseManager {
             "dateAdded": item.dateAdded.timeIntervalSince1970,
             "expiryDate": item.expiryDate.timeIntervalSince1970,
             "imageUrl" : item.imageURL?.absoluteString ?? "",
-            "userId" : item.userId
+            "userId" : item.userId,
+            "itemId" : itemId
             // Add other item properties as needed
         ]
-//        var insertionError : (any Error)?
-        let storagePath = "\(householdCode)/storages/\(storageName)/items"
-        database.child("households").child(storagePath).childByAutoId().setValue(itemData) { error, _ in
+        
+        database.child("households").child(storagePath).child(itemId).setValue(itemData) { error, itemRef in
             guard error == nil else {
                 print("Failed to write item to database")
-                completion(false)
+                completion(nil)
 //                insertionError = error
                 return
             }
-            completion(true)
+            completion(itemRef.key)
             self.notifyUsersInHousehold(householdCode: householdCode)
         }
     
        
+    }
+    
+    func updateItemImageURL(householdCode : String, storageName : String,  forItemWithID itemID: String, imageURL: String, completion: @escaping (Error?) -> Void) {
+        let itemRef = database.child("households").child(householdCode).child("storages").child(storageName).child("items").child(itemID)
+
+        itemRef.updateChildValues(["imageUrl": imageURL]) { error, ss in
+            if let error = error {
+                print("Error updating item image URL: \(error.localizedDescription)")
+                completion(error)
+            } else {
+                print(ss)
+                print("Item image URL updated successfully")
+                completion(nil)
+            }
+        }
+    }
+    
+    func updateItem(householdCode : String, oldStorageName : String, for item: Item, completion: @escaping (Error?) -> Void) {
+
+        
+        guard let itemId = item.itemId else {
+            print("Item doesn't have and id")
+            return
+        }
+        
+        if oldStorageName != item.storage {
+            print("storage changed")
+            database.child("households").child(householdCode).child("storages").child(oldStorageName).child("items").child(itemId).removeValue()
+        }
+        
+        let itemRef = database.child("households").child(householdCode).child("storages").child(item.storage).child("items").child(itemId)
+        
+        let itemData: [String: Any] = [
+            "name": item.name,
+            "quantity": item.quantity,
+            "storage": item.storage,
+            "dateAdded": item.dateAdded.timeIntervalSince1970,
+            "expiryDate": item.expiryDate.timeIntervalSince1970,
+            "imageUrl" : item.imageURL?.absoluteString ?? "",
+            "userId" : item.userId,
+            "itemId" : itemId
+            // Add other item properties as needed
+        ]
+        
+        itemRef.setValue(itemData) { error, ss in
+            if let error = error {
+                print("Error updating item image URL: \(error.localizedDescription)")
+                completion(error)
+            } else {
+                print(ss)
+                print("Item image URL updated successfully")
+                completion(nil)
+            }
+        }
+    }
+    
+    func deleteItem(householdCode : String, for item: Item, completion: @escaping (Error?) -> Void) {
+
+        
+        guard let itemId = item.itemId else {
+            print("Item doesn't have and id")
+            return
+        }
+        
+        database.child("households").child(householdCode).child("storages").child(item.storage).child("items").child(itemId).removeValue(){ error, _ in
+            // Handle any error that occurred during the removal process
+            if let error = error {
+                print("Error removing value:", error.localizedDescription)
+            } else {
+                print("Value removed successfully")
+            }
+        }
     }
     
     func observeAllStorages(user : User, for householdCode: String) {
@@ -350,6 +434,8 @@ extension DatabaseManager {
             let storageName = storageSnapshot.key
             
             self.observeItemsAdded(user : user, for: householdCode, storageName: storageName)
+            self.observeItemsUpdated(user: user, for: householdCode, storageName: storageName)
+            self.observeItemsDeleted(for: householdCode, storageName: storageName)
         }
         
         databaseHandles.append(handle)
@@ -373,6 +459,8 @@ extension DatabaseManager {
                         self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryTableView.reloadData()
                         self.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
                         self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()
+                        self.storedTabBarController?.expiringNavigationController?.expiringViewController?.itemAdded()
+                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
                         print("Item added to local storage successfully")
                     }else{
                         print("Local Storage not found")
@@ -383,12 +471,92 @@ extension DatabaseManager {
                     // Item not found or failed to retrieve
                     print(itemID)
                     
+                    print("Failed to retrieve item..")
+                }
+            }
+//            print("New item added to \(storageName): \(itemID)")
+        }
+    }
+    
+    func observeItemsUpdated(user : User, for householdCode: String, storageName : String) {
+        database.child("households").child(householdCode).child("storages").child(storageName).child("items").observe(.childChanged) { itemSnapshot in
+            // Handle item added event
+            let itemId = itemSnapshot.key
+            
+            
+            // Update UI or perform any necessary actions
+            self.getItem(householdCode: householdCode, storage: storageName, withID: itemId) { item in
+                if let item = item {
+                    
+                    if var storage = UserData.getInstance().user?.household?.getStorage(for: item.storage),
+                       var allStorage = UserData.getInstance().user?.household?.getStorage(for: "All") {
+
+                        // Update item within specific storage
+                        if let index = storage.items.firstIndex(where: { $0.itemId == item.itemId }) {
+                            print(itemId)
+                            storage.items[index] = item
+                        }
+
+                        // Update item within "All" storage
+                        if let index = allStorage.items.firstIndex(where: { $0.itemId == item.itemId }) {
+                            print(itemId)
+                            allStorage.items[index] = item
+                        }
+
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryTableView.reloadData()
+                        self.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
+                        self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()
+                        print("Item upadated to local storage successfully")
+                    }else{
+                        print("Local Storage not found")
+                    }
+                    
+//                    print("Item retrieved:", item)
+                } else {
+                    // Item not found or failed to retrieve
+                    print(itemId)
+                    
                     print("Failed to retrieve item.")
                 }
             }
 //            print("New item added to \(storageName): \(itemID)")
         }
     }
+    
+    func observeItemsDeleted(for householdCode: String, storageName: String) {
+        let itemsRef = database.child("households").child(householdCode).child("storages").child(storageName).child("items")
+        
+        itemsRef.observe(.childRemoved) { itemSnapshot in
+            let itemId = itemSnapshot.key
+            
+            // Remove the item from local storage
+            if var storage = UserData.getInstance().user?.household?.getStorage(for: storageName),
+               var allStorage = UserData.getInstance().user?.household?.getStorage(for: "All") {
+                
+                // Remove the item from specific storage
+                if let index = storage.items.firstIndex(where: { $0.itemId == itemId }) {
+                    storage.items.remove(at: index)
+                }
+
+                // Remove the item from "All" storage
+                if let index = allStorage.items.firstIndex(where: { $0.itemId == itemId }) {
+                    allStorage.items.remove(at: index)
+                }
+                
+                // Reload UI or perform any necessary actions
+                self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
+                self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryTableView.reloadData()
+                self.storedTabBarController?.expiringNavigationController?.expiringViewController?.reloadTable()
+                self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()
+                
+                print("Item deleted from local storage successfully")
+            } else {
+                print("Local Storage not found")
+            }
+        }
+    }
+
     
     func removePreviousObservers() {
         for handle in databaseHandles {
@@ -405,6 +573,7 @@ extension DatabaseManager {
         itemRef.observeSingleEvent(of: .value) { snapshot in
             guard let itemData = snapshot.value as? [String: Any] else {
                 // Item not found or data is invalid
+                print("returnn")
                 completion(nil)
                 return
             }

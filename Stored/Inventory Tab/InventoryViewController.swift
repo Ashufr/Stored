@@ -2,11 +2,14 @@ import UIKit
 
 class InventoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
     func itemAdded() {
+        updateRecentlyAddedItems()
         inventoryTableView.reloadData()
         inventoryCollectionView.reloadData()
+        inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController!.reloadTable()
     }
     
     func finishedAddingItem() {
+        updateRecentlyAddedItems()
         inventoryNavigationController?.storedTabBarController?.expiringNavigationController?.expiringViewController!.reloadTable()
         inventoryTableView.reloadData()
         inventoryCollectionView.reloadData()
@@ -24,7 +27,6 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "InventoryRecentlyCell", for: indexPath) as! InventoryTableViewCell
-        return cell
         let item = recentlyAddedItems[indexPath.row]
         cell.itemNameLabel.text = item.name
         cell.itemExpiryLabel.text = item.expiryDescription
@@ -85,9 +87,29 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     var recentlyAddedItems = [Item]()
+    
+    func updateRecentlyAddedItems() {
+        // Assuming your local storage contains all items
+        if let allItems = UserData.getInstance().user?.household?.storages[4].items {
+            // Sort items by creation timestamp in descending order
+            let sortedItems = allItems.sorted(by: { $0.dateAdded > $1.dateAdded })
+            
+            // Take the top 3 items
+            let top3Items = Array(sortedItems.prefix(3))
+            self.recentlyAddedItems = top3Items
+            
+            
+            print("Recently added items updated:", self.recentlyAddedItems)
+        } else {
+            print("Local storage is empty or not available")
+        }
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateRecentlyAddedItems()
         
         inventoryTableView.dataSource = self
         inventoryTableView.delegate = self
@@ -100,8 +122,7 @@ class InventoryViewController: UIViewController, UICollectionViewDelegate, UICol
         // Do any additional setup after loading the view.
         inventoryCollectionView.isScrollEnabled = false
         
-//        scanButton.setupUI(in: view)
-//        navigationController?.addScanButton()
+
     }
 
     

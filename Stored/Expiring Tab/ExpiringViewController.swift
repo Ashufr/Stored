@@ -4,13 +4,14 @@ import FirebaseAuth
 class ExpiringViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate,UICollectionViewDataSource, CustomAlertRefreshDelegate, QuickAddDelegate {
     func itemAdded() {
         print("Tabel refefefe")
-//        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(StorageLocationData.getInstance().storages[4].items)
+        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(UserData.getInstance().user?.household?.storages[4].items ?? [])
+        upadateSections()
         expiringTableView.reloadData()
     }
     
     func finishedAddingItem() {
         print("Custom refreshs")
-        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(StorageLocationData.getInstance().storages[4].items)
+        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(UserData.getInstance().user?.household?.storages[4].items ?? [])
         expiringTableView.reloadData()
     }
     
@@ -88,15 +89,6 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             
             
             let item = items[indexPath.row]
-//            let storage = StorageLocationData.getInstance().getStorage(for: item.storage)
-//            // Remove the item from storage.items
-//            if let index = storage.items.firstIndex(where: { $0 === item }) {
-//                storage.items.remove(at: index)
-//            }
-//            
-//            if let index = StorageLocationData.getInstance().storages[4].items.firstIndex(where: { $0 === item }) {
-//                StorageLocationData.getInstance().storages[4].items.remove(at: index)
-//            }
 
             
             expiringNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()
@@ -108,7 +100,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             if (items.isEmpty){
-                self.sections = getSections()
+                self.upadateSections()
                 tableView.reloadData()
             }
             // Perform any additional deletion operations here, such as updating the backend
@@ -122,7 +114,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     var expiringCategorizedItems : [ExpiryCategory: [Item]] = [:]
     var sections : [String] = []
     
-    func getSections() -> [String] {
+    func upadateSections(){
         
         var tempSections = [String]()
         let todayItemsCount = expiringCategorizedItems[.today]?.count ?? 0
@@ -148,7 +140,7 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             
         }
         
-        return tempSections
+        self.sections = tempSections
     }
     
     
@@ -201,8 +193,8 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         validateAuth(class : self)
-//        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(StorageLocationData.getInstance().storages[4].items)
-        sections = getSections()
+        expiringCategorizedItems = StorageLocationData.getInstance().categorizeExpiringItems(UserData.getInstance().user?.household?.storages[4].items ?? [])
+        upadateSections()
         expiringTableView.dataSource = self
         expiringTableView.delegate = self
         let layout = generateGridLayout()
@@ -215,7 +207,6 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func validateAuth(class : ExpiringViewController){
-//        print("Called")
         if FirebaseAuth.Auth.auth().currentUser == nil {
             print("not logged in")
             guard let loginNavigationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginNavigationVC") as? LoginNavigationController else {
@@ -236,7 +227,8 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
                             if let household = household {
                                 user.household = household
                                 UserData.getInstance().user = user
-                                self.expiringNavigationController?.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0),IndexPath(row: 1, section: 0)], with: .automatic)
+                                HouseholdData.getInstance().getMembers()
+                                
                                 DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
                                 print("assisgend")
                             } else {

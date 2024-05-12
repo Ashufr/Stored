@@ -2,7 +2,7 @@ import UIKit
 
 class ExpiredViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired}).count
+        UserData.getInstance().user?.household?.storages[4].items.filter({$0.isExpired}).count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

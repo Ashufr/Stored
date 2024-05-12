@@ -10,7 +10,7 @@ import UIKit
 class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var accountViewController : AccountViewController?
-    var members : [User] = [] {
+    var members : [User] = HouseholdData.getInstance().householdMembers {
         didSet {
             accountHouseholdTableView.reloadData()
         }
@@ -46,6 +46,8 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
             let user = members[indexPath.row]
             if let image = user.image {
                 cell.userImage.image = image
+                cell.userImage.contentMode = .scaleAspectFit
+                print("Member image found")
             }else{
                 let path = "images/\(user.profilePictureFileName)"
                 StorageManager.shared.downloadURL(for: path, completion: {result in
@@ -67,7 +69,6 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
                     }
                 })
             }
-            cell.userImage.image = UIImage(named: user.firstName)
             cell.userImage.layer.cornerRadius = 25
             cell.userImage.contentMode = .scaleAspectFit
             cell.userLabel.text = user.firstName
@@ -120,7 +121,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet var accountHouseholdTableView: UITableView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        accountHouseholdTableView.reloadData()
+//        accountHouseholdTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -128,33 +129,9 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         accountHouseholdTableView.dataSource = self
         accountHouseholdTableView.delegate  = self
         accountHouseholdTableView.isScrollEnabled = false
-        if let household = UserData.getInstance().user?.household {
-            for userID in household.userIDs {
-                DatabaseManager.shared.getUserFromDatabase(email: userID){user,_ in
-                    print(userID)
-                    if let user = user {
-                        print(user.firstName)
-                        self.members.append(user)
-                    }
-                }
-            }
-        }
+        print(members)
         // Do any additional setup after loading the view.
     }
     
-    func getMembers(){
-        if let household = UserData.getInstance().user?.household {
-            var filteredUsers: [User] = []
-            for userID in household.userIDs {
-                DatabaseManager.shared.getUserFromDatabase(email: userID){user,_ in
-                    if let user = user {
-                        filteredUsers.append(user)
-                    }
-                }
-            }
-            
-            members = filteredUsers
-            print(members)
-        }
-    }
+    
 }

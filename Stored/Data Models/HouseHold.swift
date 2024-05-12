@@ -35,7 +35,7 @@ class Household {
         self.name = name
         self.code = ""
         self.storages = [
-            StorageLocation(name: "Pantry", items: [Item]()), 
+            StorageLocation(name: "Pantry", items: [Item]()),
             StorageLocation(name: "Fridge", items: [Item]()),
             StorageLocation(name: "Freezer", items: [Item]()),
             StorageLocation(name: "Shelf", items: [Item]()),
@@ -54,10 +54,10 @@ class Household {
             let randomIndex = Int(arc4random_uniform(UInt32(letters.count)))
             randomString += String(letters[letters.index(letters.startIndex, offsetBy: randomIndex)])
         }
-
+        
         var uniqueID = "\(randomString)\(timestamp)"
         uniqueID = String(uniqueID.prefix(10))
-
+        
         while Household.generatedIDs.contains(uniqueID) {
             uniqueID = generateUniqueID()
         }
@@ -88,6 +88,34 @@ class HouseholdData{
     }
     
     
-    
+    var householdMembers = [User]()
     var household = Household(name: "Ashu's House")
+    
+    func getMembers() {
+        guard let household = UserData.getInstance().user?.household else {
+            return
+        }
+        
+        var addedUserIDs = Set<String>() // To keep track of added user IDs
+        
+        for userID in household.userIDs {
+            // Check if the user ID has already been added
+            if addedUserIDs.contains(userID) {
+                continue // Skip if already added
+            }
+            
+            // Add user ID to the set to mark it as added
+            addedUserIDs.insert(userID)
+            
+            DatabaseManager.shared.getUserFromDatabase(email: userID) { [weak self] user, _ in
+                guard let self = self, let user = user else { return }
+                // Check if the user is already in the householdMembers array
+                if !self.householdMembers.contains(where: { $0.safeEmail == user.safeEmail }) {
+                    // Add the user if not already present
+                    self.householdMembers.append(user)
+                }
+            }
+        }
+    }
+
 }

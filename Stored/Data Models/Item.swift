@@ -11,6 +11,7 @@ class Item {
     var imageURL : URL?
     var image : UIImage?
     var userId : String
+    var itemId : String?
     
     
     var isExpired : Bool {
@@ -33,7 +34,7 @@ class Item {
         }
     }
     
-    init(name: String, quantity: Int, storage: String, dateAdded: Date = Date(), expiryDate: Date, expiryDays: Int? = nil, imageURL: String? = nil, image: UIImage? = nil, userId: String = UserData.getInstance().user?.safeEmail ?? "") {
+    init(name: String, quantity: Int, storage: String, dateAdded: Date = Date(), expiryDate: Date, expiryDays: Int? = nil, imageURL: String? = nil, image: UIImage? = nil, userId: String = UserData.getInstance().user?.safeEmail ?? "", itemId : String? = nil) {
         self.name = name
         self.quantity = quantity
         self.storage = storage
@@ -43,6 +44,7 @@ class Item {
         self.imageURL = URL(string: imageURL ?? "")
         self.image = image
         self.userId = userId
+        self.itemId = itemId
     }
 
     

@@ -10,9 +10,10 @@ import UIKit
 class HouseholdProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var member : User?
+    var householdViewcontroller : HouseholdViewController?
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        member?.badges.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -91,7 +92,7 @@ class HouseholdProfileViewController: UIViewController, UICollectionViewDelegate
         memberImage.layer.cornerRadius = 75
         
         if let member = member {
-            memberImage.image = UIImage(named: member.firstName)
+            memberImage.image = member.image
             memberNameLabel.text = "\(member.firstName) \(member.lastName)"
         }
         

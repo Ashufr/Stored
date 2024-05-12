@@ -73,8 +73,8 @@ class QuickAddViewController: UIViewController,UITableViewDelegate, UITableViewD
             let newItem = Item(quickAddItem: item, quantity : Int(cell.itemStepper.value) )
             
             
-            DatabaseManager.shared.insertItem(with: newItem, householdCode: UserData.getInstance().user?.household?.code ?? "x", storageName: newItem.storage) { success in
-                if success {
+            DatabaseManager.shared.insertItem(with: newItem, householdCode: UserData.getInstance().user?.household?.code ?? "x", storageName: newItem.storage) { itemRef in
+                if itemRef != nil {
 //                    storage.items.append(newItem)
 //                    StorageData.getInstance().storages[4].items.append(item)
                     self.quickAddNavigationController?.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryCollectionView.reloadData()

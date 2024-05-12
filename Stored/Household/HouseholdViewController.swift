@@ -14,14 +14,39 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        UserData.getInstance().users.count - 1
+        HouseholdData.getInstance().householdMembers.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = householdTableView.dequeueReusableCell(withIdentifier: "HouseholdTableViewCell", for: indexPath) as! HouseholdTableViewCell
         
-        let member = UserData.getInstance().users[indexPath.row + 1]
-        cell.memberImage.image = UIImage(named: member.firstName)
+        let member = HouseholdData.getInstance().householdMembers[indexPath.row]
+        if let image = member.image {
+            cell.memberImage.image = image
+            cell.memberImage.contentMode = .scaleAspectFit
+            print("Member image found")
+        }else{
+            let path = "images/\(member.profilePictureFileName)"
+            StorageManager.shared.downloadURL(for: path, completion: {result in
+                switch result {
+                case .success(let url) :
+                    self.downloadImage(from: url){ image in
+                        if let image = image {
+                            DispatchQueue.main.async {
+                                cell.memberImage.image = image
+                                cell.memberImage.contentMode = .scaleAspectFit
+                                member.image = image
+                                self.householdProfileViewController?.memberImage.image = image
+                                print("Member image set")
+                            }
+                            
+                        }
+                    }
+                case .failure(let error) :
+                    print("image not set")
+                }
+            })
+        }
         cell.memberImage.layer.cornerRadius = 25
         cell.memberNameLabel.text = member.firstName
         cell.memberStreakLabel.text = "\(member.currentStreak) Days"
@@ -42,7 +67,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         titleLabel.frame = CGRect(x: 0, y: 0, width: tableView.frame.width - 30, height: 40)
     
         titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
-        titleLabel.text = HouseholdData.getInstance().household.name
+        titleLabel.text = UserData.getInstance().user?.household?.name
         headerView.addSubview(titleLabel)
             
         return headerView
@@ -51,6 +76,20 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
+    
+    func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data = data, error == nil else {
+                print("Failed to download image:", error?.localizedDescription ?? "Unknown error")
+                completion(nil)
+                return
+            }
+            
+            let image = UIImage(data: data)
+            completion(image)
+        }.resume()
+    }
+
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         UserData.getInstance().users[0].badges.count
@@ -126,6 +165,8 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
     
     @IBOutlet var householdCollectionView: UICollectionView!
     @IBOutlet var householdTableView: UITableView!
+    
+    var householdProfileViewController : HouseholdProfileViewController?
     
     let titles = ["Expired", "Current Streak", "Max Streak"]
     let cellColors = ["#FFC6CD", "#EAFFB6", "#EFEFEF"]
@@ -258,9 +299,10 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         if segue.identifier == "HouseholdProfileSegue" {
             print("Segg")
             if let householdProfileViewController = segue.destination as? HouseholdProfileViewController, let indexPath = sender as? IndexPath{
-                let member = UserData.getInstance().users[indexPath.row + 1]
+                let member = HouseholdData.getInstance().householdMembers[indexPath.row]
                 householdProfileViewController.member = member
-                
+                householdProfileViewController.householdViewcontroller = self
+                self.householdProfileViewController = householdProfileViewController
             }
         }
     }
