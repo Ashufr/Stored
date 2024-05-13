@@ -1,7 +1,11 @@
 import UIKit
 import FirebaseAuth
 
+// MARK: - View Controller
+
 class LoginViewController: UIViewController {
+    
+    // MARK: Properties
     
     var storedTabBarController: StoredTabBarController?
     
@@ -13,8 +17,22 @@ class LoginViewController: UIViewController {
     // Store original position of the view
     var originalFrame: CGRect!
     
+    // MARK: Lifecycle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
+        registerKeyboardNotifications()
+    }
+    
+    deinit {
+        // Remove observers
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: UI Configuration
+    
+    private func configureUI() {
         loginButton.layer.cornerRadius = 4
         logoImageView.layer.cornerRadius = 20
         
@@ -28,18 +46,14 @@ class LoginViewController: UIViewController {
         
         // Store the original frame of the view
         originalFrame = self.view.frame
-        
-        // Register for keyboard notifications
+    }
+    
+    // MARK: Keyboard Handling
+    
+    private func registerKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
-    deinit {
-        // Remove observers
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    // MARK: - Keyboard Handling
     
     @objc func keyboardWillShow(_ notification: Notification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
@@ -61,7 +75,7 @@ class LoginViewController: UIViewController {
         view.endEditing(true)
     }
     
-    // MARK: - Actions
+    // MARK: Actions
     
     @IBAction func loginButtonTapped() {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
