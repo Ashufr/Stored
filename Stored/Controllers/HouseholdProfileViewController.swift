@@ -90,6 +90,7 @@ class HouseholdProfileViewController: UIViewController, UICollectionViewDelegate
         householdProfileCollectionView.collectionViewLayout = generateGridLayout()
         householdProfileCollectionView.layer.cornerRadius = 10
         memberImage.layer.cornerRadius = 75
+        memberImage.contentMode = .scaleAspectFill
         
         if let member = member {
             memberImage.image = member.image

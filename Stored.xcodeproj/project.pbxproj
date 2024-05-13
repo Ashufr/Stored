@@ -165,73 +165,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3F29CCBD2BE2CAC0002A6425 /* Expiring Tab */ = {
+		3F29CCBD2BE2CAC0002A6425 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3F8A8C382BE67C9E006A285D /* ExpiringNavigationViewController.swift */,
-				3F7D21562BD14583003B3634 /* ExpiringViewController.swift */,
 				3FBE9A7F2BE1FE2E00676303 /* ExpiringCollectionViewCell.swift */,
 				3FDD7AEA2BD7CAD5006F1A34 /* ExpiringTableViewCell.swift */,
-				3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */,
 				3F3875102BE23F3A00F96D88 /* ExpiredCollectionViewCell.swift */,
 				3F4B87102BE24672007D77AF /* ExpiredTableViewCell.swift */,
-			);
-			path = "Expiring Tab";
-			sourceTree = "<group>";
-		};
-		3F29CCBE2BE2CAE9002A6425 /* Inventory Tab */ = {
-			isa = PBXGroup;
-			children = (
-				3F29CCBF2BE2CB4F002A6425 /* InventoryNavigationController.swift */,
-				3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */,
 				3F993F502BD8CBDA006FE29E /* InventoryCollectionViewCell.swift */,
 				3F830C012BD8E9BD00E01E2C /* InventoryTableViewCell.swift */,
-				3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */,
 				3F4A516F2BD944E200F5B930 /* InventoryStorageTableViewCell.swift */,
-				3FB2AA0B2BEB6556000BCFD2 /* BillViewController.swift */,
-				3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */,
-				3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */,
-			);
-			path = "Inventory Tab";
-			sourceTree = "<group>";
-		};
-		3F29CCC12BE2CB6F002A6425 /* Account Tab */ = {
-			isa = PBXGroup;
-			children = (
-				3FE6A9132BE8B54C00D576A9 /* AccountNavigationController.swift */,
-				3F462D492BE264B90077BD42 /* AccountViewController.swift */,
+				3F29CCC52BE2CC21002A6425 /* QuickAddTableViewCell.swift */,
+				3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */,
+				3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */,
+				3F02D9232BE376D200655004 /* HouseholdProfileCollectionViewCell.swift */,
 				3F462D472BE264A80077BD42 /* AccountTableViewCell.swift */,
 				3F462D4B2BE271FA0077BD42 /* AccountSmallTableViewCell.swift */,
-				3FCD0ADD2BE89F6F004F6A70 /* AccountHouseholdViewController.swift */,
 				3FCD0ADF2BE89F78004F6A70 /* AccountHouseholdTextFieldTableViewCell.swift */,
 				3FE6A9152BE8BB7400D576A9 /* AccountHouseholdUserTableViewCell.swift */,
 				3FE6A9172BE8C2C500D576A9 /* AccountHouseholdCodeTableViewCell.swift */,
 			);
-			path = "Account Tab";
-			sourceTree = "<group>";
-		};
-		3F29CCC22BE2CBE8002A6425 /* Quick Add Tab */ = {
-			isa = PBXGroup;
-			children = (
-				3F8A8C3A2BE67D79006A285D /* QuickAddNavigationViewController.swift */,
-				3F29CCC32BE2CC02002A6425 /* QuickAddViewController.swift */,
-				3F29CCC52BE2CC21002A6425 /* QuickAddTableViewCell.swift */,
-			);
-			path = "Quick Add Tab";
-			sourceTree = "<group>";
-		};
-		3F29CCC72BE2EAB5002A6425 /* Household */ = {
-			isa = PBXGroup;
-			children = (
-				3FE6A9112BE8B53A00D576A9 /* HouseholdNavigationController.swift */,
-				3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */,
-				3F29CCCA2BE2EAF1002A6425 /* HouseholdCollectionViewCell.swift */,
-				3FAAE16A2BE35042006E524A /* HouseholdTableViewCell.swift */,
-				3F02D9212BE3683F00655004 /* HouseholdProfileViewController.swift */,
-				3F02D9232BE376D200655004 /* HouseholdProfileCollectionViewCell.swift */,
-				3F39B7B12BE764CB0010D3CB /* BadgeViewController.swift */,
-			);
-			path = Household;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3F7D21462BD14583003B3634 = {
@@ -255,25 +209,58 @@
 		3F7D21512BD14583003B3634 /* Stored */ = {
 			isa = PBXGroup;
 			children = (
-				3FEE655A2BED4B5B002662F9 /* GoogleService-Info.plist */,
-				3F7D21582BD14583003B3634 /* Main.storyboard */,
-				3F7D215D2BD1458F003B3634 /* LaunchScreen.storyboard */,
-				3F7D21522BD14583003B3634 /* AppDelegate.swift */,
-				3F7D21542BD14583003B3634 /* SceneDelegate.swift */,
-				3F8A8C3C2BE68015006A285D /* StoredTabBarController.swift */,
-				3FEE65652BED8784002662F9 /* JoinOrCreateHouseholdViewController.swift */,
-				3FB2AA132BED2E8F000BCFD2 /* Login */,
-				3F29CCBD2BE2CAC0002A6425 /* Expiring Tab */,
-				3F29CCBE2BE2CAE9002A6425 /* Inventory Tab */,
-				3F29CCC22BE2CBE8002A6425 /* Quick Add Tab */,
-				3F29CCC72BE2EAB5002A6425 /* Household */,
-				3F29CCC12BE2CB6F002A6425 /* Account Tab */,
+				3F9756B62BF2163000D3C8A7 /* Resources */,
+				3FB2AA132BED2E8F000BCFD2 /* Managers */,
+				3F9756B52BF2159600D3C8A7 /* Controllers */,
+				3F29CCBD2BE2CAC0002A6425 /* Views */,
 				3F993F4B2BD8B9D3006FE29E /* Data Models */,
 				3FCFBDB12BDA450300ABB9BF /* Button */,
+				3FEE655A2BED4B5B002662F9 /* GoogleService-Info.plist */,
 				3F7D21602BD1458F003B3634 /* Info.plist */,
 				3FD0CA922BE61EE0001CA6C5 /* Assets.xcassets */,
 			);
 			path = Stored;
+			sourceTree = "<group>";
+		};
+		3F9756B52BF2159600D3C8A7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3F8A8C3C2BE68015006A285D /* StoredTabBarController.swift */,
+				3FB2AA182BED3202000BCFD2 /* LoginNavigationController.swift */,
+				3FB2AA142BED2EA2000BCFD2 /* LoginViewController.swift */,
+				3FB2AA162BED2EBE000BCFD2 /* RegisterViewController.swift */,
+				3FEE65652BED8784002662F9 /* JoinOrCreateHouseholdViewController.swift */,
+				3F8A8C382BE67C9E006A285D /* ExpiringNavigationViewController.swift */,
+				3F7D21562BD14583003B3634 /* ExpiringViewController.swift */,
+				3FD3E32B2BE23C59002ED762 /* ExpiredViewController.swift */,
+				3F29CCBF2BE2CB4F002A6425 /* InventoryNavigationController.swift */,
+				3F993F4E2BD8C0AA006FE29E /* InventoryViewController.swift */,
+				3F7BF50A2BD97EA30098FD33 /* InventoryStorageViewController.swift */,
+				3FB2AA0B2BEB6556000BCFD2 /* BillViewController.swift */,
+				3FB8D74C2BDFC40200A5ADB9 /* CameraViewController.swift */,
+				3F5618EB2BDAE56300CC6B8F /* CustomAlertController.swift */,
+				3F8A8C3A2BE67D79006A285D /* QuickAddNavigationViewController.swift */,
+				3F29CCC32BE2CC02002A6425 /* QuickAddViewController.swift */,
+				3FE6A9112BE8B53A00D576A9 /* HouseholdNavigationController.swift */,
+				3F29CCC82BE2EAE6002A6425 /* HouseholdViewController.swift */,
+				3F02D9212BE3683F00655004 /* HouseholdProfileViewController.swift */,
+				3FE6A9132BE8B54C00D576A9 /* AccountNavigationController.swift */,
+				3F462D492BE264B90077BD42 /* AccountViewController.swift */,
+				3FCD0ADD2BE89F6F004F6A70 /* AccountHouseholdViewController.swift */,
+				3F39B7B12BE764CB0010D3CB /* BadgeViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		3F9756B62BF2163000D3C8A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3F7D21582BD14583003B3634 /* Main.storyboard */,
+				3F7D215D2BD1458F003B3634 /* LaunchScreen.storyboard */,
+				3F7D21522BD14583003B3634 /* AppDelegate.swift */,
+				3F7D21542BD14583003B3634 /* SceneDelegate.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		3F993F4B2BD8B9D3006FE29E /* Data Models */ = {
@@ -288,16 +275,13 @@
 			path = "Data Models";
 			sourceTree = "<group>";
 		};
-		3FB2AA132BED2E8F000BCFD2 /* Login */ = {
+		3FB2AA132BED2E8F000BCFD2 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				3FB2AA182BED3202000BCFD2 /* LoginNavigationController.swift */,
-				3FB2AA142BED2EA2000BCFD2 /* LoginViewController.swift */,
-				3FB2AA162BED2EBE000BCFD2 /* RegisterViewController.swift */,
 				3FEE655C2BED57B6002662F9 /* DatabaseManager.swift */,
 				3FEE655E2BED6613002662F9 /* StorageManager.swift */,
 			);
-			path = Login;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		3FBF67EC2BDA1BFE005C58A9 /* Fonts */ = {
