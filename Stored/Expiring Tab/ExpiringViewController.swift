@@ -110,6 +110,16 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("sele")
+        let section = indexPath.section
+        let expiryCategory = StorageLocationData.getInstance().getExpiryCategory(forString: sections[section])
+        guard var items = expiringCategorizedItems[expiryCategory] else { return }
+        let item = items[indexPath.row]
+        tabBarController?.selectedIndex = 1
+        performSegue(withIdentifier: "StorageSegue", sender: IndexPath(item: StorageLocationData.getInstance().getStorageIndex(for: item.storage), section: 0))
+    }
+    
     var expiringNavigationController : ExpiringNavigationViewController?
     var expiringCategorizedItems : [ExpiryCategory: [Item]] = [:]
     var sections : [String] = []

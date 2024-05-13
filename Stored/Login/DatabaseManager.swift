@@ -226,6 +226,9 @@ final class DatabaseManager {
                         print("Failed to remove user from household:", error.localizedDescription)
                         completion(false)
                     } else {
+                        HouseholdData.getInstance().householdMembers = []
+                        self.storedTabBarController?.householdNavigationController?.householdViewController?.householdTableView.reloadData()
+                        self.storedTabBarController?.accountNavigationController?.accountViewController?.accountHouseholdViewController?.accountHouseholdTableView.reloadData()
                         print("User successfully left household")
                         completion(true)
                     }
@@ -614,8 +617,6 @@ final class DatabaseManager {
                         self.storedTabBarController?.accountNavigationController?.accountViewController?.accountTableView.reloadRows(at: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)], with: .automatic)
                         print("Item added to local storage successfully")
                     } else {
-                        print(UserData.getInstance().user?.household?.getStorage(for: item.storage))
-                        print(UserData.getInstance().user?.household?.getStorage(for: "All"))
                         print("Local storage not found")
                     }
                 } else {
@@ -657,8 +658,6 @@ final class DatabaseManager {
                         self.storedTabBarController?.inventoryNavigationController?.inventoryViewController?.inventoryStorageViewController?.itemAdded()
                         print("Item updated in local storage successfully")
                     } else {
-                        print(UserData.getInstance().user?.household?.getStorage(for: item.storage))
-                        print(UserData.getInstance().user?.household?.getStorage(for: "All"))
                         print("Local storage not found")
                     }
                 } else {
@@ -702,8 +701,6 @@ final class DatabaseManager {
                 
                 print("Item deleted from local storage successfully")
             } else {
-                print(UserData.getInstance().user?.household?.getStorage(for: storageName))
-                print(UserData.getInstance().user?.household?.getStorage(for: "All"))
                 print("Local storage not found")
             }
         }

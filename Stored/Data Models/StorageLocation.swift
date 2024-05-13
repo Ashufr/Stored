@@ -168,16 +168,16 @@ class StorageLocationData {
     
     func getStorageIndex(for storage : String) -> Int {
         switch storage {
-        case "Pantry":
-            return 0
-        case "Fridge":
-            return 1
-        case "Freezer":
-            return 2
         case "Shelf":
+            return 0
+        case "Pantry":
+            return 1
+        case "Fridge":
+            return 2
+        case "Freezer":
             return 3
         default:
-            return 0
+            return 4
         }
     }
     
