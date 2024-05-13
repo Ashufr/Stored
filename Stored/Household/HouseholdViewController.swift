@@ -23,7 +23,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
         let member = HouseholdData.getInstance().householdMembers[indexPath.row]
         if let image = member.image {
             cell.memberImage.image = image
-            cell.memberImage.contentMode = .scaleAspectFit
+            cell.memberImage.contentMode = .scaleAspectFill
             print("Member image found")
         }else{
             let path = "images/\(member.profilePictureFileName)"
@@ -34,7 +34,7 @@ class HouseholdViewController: UIViewController, UICollectionViewDelegate, UICol
                         if let image = image {
                             DispatchQueue.main.async {
                                 cell.memberImage.image = image
-                                cell.memberImage.contentMode = .scaleAspectFit
+                                cell.memberImage.contentMode = .scaleAspectFill
                                 member.image = image
                                 self.householdProfileViewController?.memberImage.image = image
                                 print("Member image set")

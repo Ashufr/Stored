@@ -223,11 +223,11 @@ class ExpiringViewController: UIViewController, UITableViewDelegate, UITableView
             DatabaseManager.shared.getUserFromDatabase(email: email) { user, houseCode in
                 if let user = user {
                     if let code = houseCode {
+                        DatabaseManager.shared.observeUsersChanges(for: user, householdCode: code)
                         DatabaseManager.shared.fetchHouseholdData(for: code) { household in
                             if let household = household {
                                 user.household = household
                                 UserData.getInstance().user = user
-                                HouseholdData.getInstance().getMembers()
                                 
                                 DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
                                 print("assisgend")

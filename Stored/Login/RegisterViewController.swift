@@ -24,6 +24,38 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        if let placeholder = nameTextField.placeholder {
+            nameTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
+        if let placeholder = lastNameTextField.placeholder {
+            lastNameTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
+        
+        if let placeholder = emailTextField.placeholder {
+            emailTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
+        if let placeholder = passwordTextField.placeholder {
+            passwordTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
+        if let placeholder = confirmPasswordTextField.placeholder {
+            confirmPasswordTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
     }
     
     

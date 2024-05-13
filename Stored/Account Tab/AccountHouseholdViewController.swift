@@ -12,11 +12,6 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet var saveButton: UIBarButtonItem!
     var accountViewController : AccountViewController?
     var householdNameCell : AccountHouseholdTextFieldTableViewCell?
-    var members : [User] = HouseholdData.getInstance().householdMembers {
-        didSet {
-            accountHouseholdTableView.reloadData()
-        }
-    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         3
@@ -27,7 +22,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         case 0:
             1
         case 1:
-            members.count
+            HouseholdData.getInstance().householdMembers.count
         case 2:
             1
         default:
@@ -46,10 +41,10 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
             return cell
         }else if indexPath.section == 1{
             let cell = accountHouseholdTableView.dequeueReusableCell(withIdentifier: "AccountHouseholdUserTableViewCell", for: indexPath) as! AccountHouseholdUserTableViewCell
-            let user = members[indexPath.row]
+            let user = HouseholdData.getInstance().householdMembers[indexPath.row]
             if let image = user.image {
                 cell.userImage.image = image
-                cell.userImage.contentMode = .scaleAspectFit
+                cell.userImage.contentMode = .scaleAspectFill
                 print("Member image found")
             }else{
                 let path = "images/\(user.profilePictureFileName)"
@@ -60,7 +55,7 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
                             if let image = image {
                                 DispatchQueue.main.async {
                                     cell.userImage.image = image
-                                    cell.userImage.contentMode = .scaleAspectFit
+                                    cell.userImage.contentMode = .scaleAspectFill
                                     user.image = image
                                     print("Member image set")
                                 }
@@ -73,7 +68,6 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
                 })
             }
             cell.userImage.layer.cornerRadius = 25
-            cell.userImage.contentMode = .scaleAspectFit
             cell.userLabel.text = user.firstName
             cell.userEmailLabel.text = user.email
             return cell
@@ -132,7 +126,6 @@ class AccountHouseholdViewController: UIViewController, UITableViewDelegate, UIT
         accountHouseholdTableView.dataSource = self
         accountHouseholdTableView.delegate  = self
         accountHouseholdTableView.isScrollEnabled = false
-        print(members)
         // Do any additional setup after loading the view.
     }
     

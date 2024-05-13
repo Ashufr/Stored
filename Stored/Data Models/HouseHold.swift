@@ -91,30 +91,16 @@ class HouseholdData{
     var householdMembers = [User]()
     var household = Household(name: "Ashu's House")
     
-    func getMembers() {
-        guard let household = UserData.getInstance().user?.household else {
-            return
+    func addMember(user: User) {
+        if !householdMembers.contains(where: { $0.email == user.email }) {
+            householdMembers.append(user)
         }
-        
-        var addedUserIDs = Set<String>() // To keep track of added user IDs
-        
-        for userID in household.userIDs {
-            // Check if the user ID has already been added
-            if addedUserIDs.contains(userID) {
-                continue // Skip if already added
-            }
-            
-            // Add user ID to the set to mark it as added
-            addedUserIDs.insert(userID)
-            
-            DatabaseManager.shared.getUserFromDatabase(email: userID) { [weak self] user, _ in
-                guard let self = self, let user = user else { return }
-                // Check if the user is already in the householdMembers array
-                if !self.householdMembers.contains(where: { $0.safeEmail == user.safeEmail }) {
-                    // Add the user if not already present
-                    self.householdMembers.append(user)
-                }
-            }
+    }
+
+    
+    func removeMember(user : User){
+        if let index = self.householdMembers.firstIndex(where: { $0.email == user.email }) {
+            self.householdMembers.remove(at: index)
         }
     }
 

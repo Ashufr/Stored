@@ -46,6 +46,19 @@ class LoginViewController: UIViewController {
         
         // Store the original frame of the view
         originalFrame = self.view.frame
+        
+        if let placeholder = emailTextField.placeholder {
+            emailTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
+        if let placeholder = passwordTextField.placeholder {
+            passwordTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
     }
     
     // MARK: Keyboard Handling
@@ -95,6 +108,7 @@ class LoginViewController: UIViewController {
                                 user.household = household
                                 UserData.getInstance().user = user
                                 DatabaseManager.shared.observeAllStorages(user: user, for: household.code)
+                                DatabaseManager.shared.observeUsersChanges(for: user, householdCode: household.code)
                                 print("Assigned")
                             } else {
                                 strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)

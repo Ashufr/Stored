@@ -30,6 +30,19 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         // Register for keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        if let placeholder = nameTextField.placeholder {
+            nameTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
+        if let placeholder = codeTextField.placeholder {
+            codeTextField.attributedPlaceholder = NSAttributedString(
+                string: placeholder,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(named: "Description Color")!]
+            )
+        }
     }
     
     deinit {
@@ -79,6 +92,7 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
             if let code = code {
                 print("Created Successfully")
                 house.code = code
+                DatabaseManager.shared.observeUsersChanges(for: user, householdCode : code)
                 DatabaseManager.shared.updateHousehold(for: user, with: house) { success in
                     if success {
                         user.household = house
@@ -110,8 +124,11 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         }
         DatabaseManager.shared.fetchHouseholdData(for: code) { household in
             if let household = household {
+                DatabaseManager.shared.observeUsersChanges(for: user, householdCode : code)
                 DatabaseManager.shared.updateHousehold(for: user, with: household) { success in
                     if success {
+                        user.household = household
+                        UserData.getInstance().user = user
                         DatabaseManager.shared.observeAllStorages(user: user, for: code)
                         print("Household Joined successfully")
                         self.dismiss(animated: true, completion: nil)

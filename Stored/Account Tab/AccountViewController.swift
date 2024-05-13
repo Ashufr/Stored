@@ -24,6 +24,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var user : User?
     
     var accountNavigtionController : AccountNavigationController?
+    var accountHouseholdViewController : AccountHouseholdViewController?
     
     let accountData: [Int : [String]] = [0:["", "Household"], 1 : ["Manage Household", "Leave Houshold"], 2: ["Notifications", "Help", "Privacy Statement", "Tell a Friend"], 3: ["Log Out"]]
     
@@ -50,7 +51,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
                             if let image = image {
                                 DispatchQueue.main.async {
                                     cell.userImage.image = image
-                                    cell.userImage.contentMode = .scaleAspectFit
+                                    cell.userImage.contentMode = .scaleAspectFill
                                     user.image = image
                                     print("Member image set")
                                 }
@@ -233,7 +234,6 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        HouseholdData.getInstance().getMembers()
         user = UserData.getInstance().user
         let household = UserData.getInstance().user?.household
         if let household = household {
@@ -261,6 +261,7 @@ class AccountViewController: UIViewController,UITableViewDelegate,UITableViewDat
         if segue.identifier == "HouseholdSegue" {
             if let destinationVC = segue.destination as? AccountHouseholdViewController {
                 destinationVC.accountViewController = self
+                self.accountHouseholdViewController = destinationVC
             }
         }
     }

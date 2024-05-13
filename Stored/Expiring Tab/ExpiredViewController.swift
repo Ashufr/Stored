@@ -38,10 +38,10 @@ class ExpiredViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = expiredCollectionView.dequeueReusableCell(withReuseIdentifier: "ExpiredCollectionViewCell", for: indexPath) as! ExpiredCollectionViewCell
         if indexPath.row == 0 {
-            cell.topLabel.text = "\(StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired}).count)kg"
+            cell.topLabel.text = "\(UserData.getInstance().user?.household?.storages[4].items.filter({$0.isExpired}).count ?? 0) kg"
             cell.bottomLabel.text = "Of food wasted"
         }else{
-            cell.topLabel.text = "₹\(StorageLocationData.getInstance().storages[4].items.filter({$0.isExpired}).count * Int.random(in: 500...1000))"
+            cell.topLabel.text = "₹\(UserData.getInstance().user?.household?.storages[4].items.filter({$0.isExpired}).count ?? 0 * Int.random(in: 500...1000))"
             cell.bottomLabel.text = "Money wasted"
         }
         cell.layer.cornerRadius = 10
