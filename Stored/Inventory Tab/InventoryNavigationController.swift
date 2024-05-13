@@ -472,20 +472,20 @@ extension InventoryNavigationController: AVCaptureMetadataOutputObjectsDelegate 
            let stringValue = readableObject.stringValue {
             captureSession!.stopRunning()
             
-            backgroundView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
-            guard let backgroundView = backgroundView else { return }
-            backgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
-            backgroundView.layer.cornerRadius = 10
-            
+            let tintColor = UIColor(named: "Text Color")!
+            let bgColor = UIColor(named: "Background Color")!
             loadingIndicator = UIActivityIndicatorView(style: .large)
+            loadingIndicator?.color = tintColor
             loadingIndicator?.startAnimating()
-            loadingIndicator?.center = CGPoint(x: backgroundView.bounds.midX, y: backgroundView.bounds.midY)
-            backgroundView.addSubview(loadingIndicator!)
+            loadingIndicator?.layer.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+            loadingIndicator?.layer.cornerRadius = 10
+            loadingIndicator?.layer.backgroundColor = bgColor.withAlphaComponent(0.8).cgColor
+            loadingIndicator?.center = view.center
+
             
             if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                let topWindow = scene.windows.first {
-                backgroundView.center = topWindow.center
-                topWindow.addSubview(backgroundView)
+                topWindow.addSubview(loadingIndicator!)
             }
             found(code: stringValue)
         } else {
@@ -498,7 +498,9 @@ extension InventoryNavigationController: AVCaptureMetadataOutputObjectsDelegate 
 
 extension InventoryNavigationController: CustomAlertDismissalDelegate {
     func alertDismissed() {
-        captureSession?.startRunning()
+        DispatchQueue.global().async {
+            self.captureSession?.startRunning()
+        }
     }
 }
 

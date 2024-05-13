@@ -11,6 +11,9 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
     @IBOutlet var createButton: UIButton!
     @IBOutlet var joinButton: UIButton!
     
+    // Store original position of the view
+    var originalFrame: CGRect!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
@@ -20,8 +23,19 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         // Set the delegate for text fields
         nameTextField.delegate = self
         codeTextField.delegate = self
+        
+        // Store the original frame of the view
+        originalFrame = self.view.frame
+        
+        // Register for keyboard notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    deinit {
+        // Remove observers
+        NotificationCenter.default.removeObserver(self)
+    }
     
     // MARK: - UITextFieldDelegate
     
@@ -29,6 +43,24 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         // Dismiss the keyboard when return is pressed
         textField.resignFirstResponder()
         return true
+    }
+    
+    // MARK: - Keyboard Handling
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        // Adjust the frame of the view to move it up when the keyboard appears
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame.origin.y = -(keyboardFrame.height / 2)
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        // Restore the original frame of the view when the keyboard hides
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame = self.originalFrame
+        }
     }
     
     // MARK: - Actions
@@ -62,11 +94,10 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
                         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                         alertController.addAction(okAction)
                         print("Failed to update household")
-                        
+                        self.present(alertController, animated: true, completion: nil)
                     }
                 }
                 print(house.storages)
-                
             }
         }
     }
@@ -79,12 +110,10 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
         }
         DatabaseManager.shared.fetchHouseholdData(for: code) { household in
             if let household = household {
-                
                 DatabaseManager.shared.updateHousehold(for: user, with: household) { success in
                     if success {
                         DatabaseManager.shared.observeAllStorages(user: user, for: code)
                         print("Household Joined successfully")
-                        
                         self.dismiss(animated: true, completion: nil)
                     }
                 }
@@ -97,9 +126,8 @@ class JoinOrCreateHouseholdViewController: UIViewController, UITextFieldDelegate
                 let alertController = UIAlertController(title: "Household Not Found", message: "The household you've been trying to access doesn't exist", preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 alertController.addAction(okAction)
-                self.present(alertController, animated: true)
+                self.present(alertController, animated: true, completion: nil)
                 print("Failed to update household")
-                
             }
         }
     }

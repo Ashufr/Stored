@@ -62,7 +62,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             imageView.image = pickedImage
             imageView.contentMode = .scaleAspectFill
         }
-        imageView.layer.cornerRadius = 64
+        imageView.layer.cornerRadius = 75
         dismiss(animated: true, completion: nil)
     }
     

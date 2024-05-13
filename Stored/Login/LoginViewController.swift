@@ -1,70 +1,101 @@
-//
-//  LoginViewController.swift
-//  Stored
-//
-//  Created by student on 09/05/24.
-//
-
 import UIKit
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
-    var storedTabBarController : StoredTabBarController?
+    var storedTabBarController: StoredTabBarController?
     
     @IBOutlet var logoImageView: UIImageView!
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var loginButton: UIButton!
     
+    // Store original position of the view
+    var originalFrame: CGRect!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loginButton.layer.cornerRadius = 4
         logoImageView.layer.cornerRadius = 20
+        
+        // Set the delegate for text fields
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        // Register for tap gesture recognizer to dismiss keyboard
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+        
+        // Store the original frame of the view
+        originalFrame = self.view.frame
+        
+        // Register for keyboard notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    deinit {
+        // Remove observers
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Keyboard Handling
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        // Adjust the frame of the view to move it up when the keyboard appears
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame.origin.y = -(keyboardFrame.height / 2)
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        // Restore the original frame of the view when the keyboard hides
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame = self.originalFrame
+        }
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    // MARK: - Actions
     
     @IBAction func loginButtonTapped() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else {return}
+        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
         FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] authResult, error in
-            guard let strongSelf = self else {
-                return
-            }
+            guard let strongSelf = self else { return }
             guard let result = authResult, error == nil else {
-                print("Error Signinig User")
+                print("Error Signing User")
                 print(error!)
                 return
             }
             let user = result.user
-            DatabaseManager.shared.getUserFromDatabase(email: email) { user,householdCode in
+            DatabaseManager.shared.getUserFromDatabase(email: email) { user, householdCode in
                 if let user = user {
                     if let code = householdCode {
                         DatabaseManager.shared.fetchHouseholdData(for: code) { household in
                             if let household = household {
                                 user.household = household
                                 UserData.getInstance().user = user
-                                
-                                
-                                DatabaseManager.shared.observeAllStorages(user : user ,for: household.code)
-                                
-                                print("assisgend")
+                                DatabaseManager.shared.observeAllStorages(user: user, for: household.code)
+                                print("Assigned")
                             } else {
                                 strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
                                 print("Failed to fetch household data")
                             }
                         }
                         strongSelf.navigationController?.dismiss(animated: true, completion: nil)
-                    }else{
-                        print("user no huse")
+                    } else {
+                        print("User has no household")
                         strongSelf.performSegue(withIdentifier: "JoinCreateSegue", sender: user)
-                        
-
                     }
                 } else {
                     print("Failed to retrieve user data.")
                 }
             }
-            
         })
     }
     
@@ -76,14 +107,11 @@ class LoginViewController: UIViewController {
     }
 }
 
-extension LoginViewController : UITextFieldDelegate {
+// MARK: - UITextFieldDelegate
+
+extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == emailTextField {
-            passwordTextField.becomeFirstResponder()
-        }
-        else if textField == passwordTextField {
-            loginButtonTapped()
-        }
+        textField.resignFirstResponder()
         return true
     }
 }
